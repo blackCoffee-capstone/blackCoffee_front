@@ -1,0 +1,319 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Teko&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Urbanist&display=swap'); */
+
+:root{
+    /* 컬러 */
+	--primary-color : #6667ab;  /* 전체검색도 한번 하기를 */
+    --primary-color-effect: #696bd6;
+    --primary-color-contrast: #fff;
+    --secondary-color: #CC2727;
+    --secondary-color-effect: #e05050;
+    --secondary-color-contrast: #fff;
+
+	--border-color-light : #d9d9d9;
+    --border-color-default : #7b7b7b;
+    --border-color-dark: #222222;
+
+	--base-color-light : #fafafa;
+    --base-color-mid: #cccccc;
+    --base-color-dark: #222222;
+
+    --font-color-default: #222222;
+    --font-color-sub: #888;
+    --font-color-light: #aaa;
+    
+    --disabled-color: #999;     /* 비활성화 색 */
+    --active-color: #28a745;    /* 활성화 색 */
+    --danger-color: #d21818;    /* 경고 색 */
+    --alert-color: #ffa500;     /* 알림 색 */
+    
+    /* 폰트 */
+    --font-size-xxx-large: 3.2rem;
+    --font-size-xx-large: 2.6rem;
+    --font-size-x-large: 2.2rem;
+    --font-size-large: 1.8rem;
+    --font-size-mid: 1.6rem;
+    --font-size-small: 1.4rem;
+    --font-size-x-small: 1.2rem;
+    --font-size-xx-small: 1.1rem;
+
+    --font-w-lighter: 100;
+    --font-w-light: 300;
+    --font-w-regular: 400;
+    --font-w-mid: 500;
+    --font-w-bold: 700;
+    --font-w-bolder: 900;
+
+    /* 사이즈 */
+    --border-radius-small: 0.6rem;  /* 레디우스 크기 조정 (소) */
+    --border-radius-mid: 1rem;      /* 레디우스 크기 조정 (중) */
+    --border-radius-large: 2rem;    /* 레디우스 크기 조정 (대) */
+    --border-radius-full: 100rem;   /* 레디우스 크기 조정 (100%) */
+
+    /* 여백 */
+    --space-small: 3rem;
+    --space-mid: 5rem;
+    --space-large: 8rem;
+    --space-larger: 12rem;
+
+    /* box-shadow */
+    --box-shadow01: rgba(51, 51, 51, 0.1) 0px 4px 12px 0px ;    /* 좀 연하고 짧음 */
+    --box-shadow02: rgba(51, 51, 51, 0.16) 0px 0px 12px 0px;    /* 비교적 진함 */
+
+    /* transition */
+    --transition-faster: 0.05s;
+    --transition-fast: 0.12s;
+    --transition-default: 0.2s;
+    --transition-slow: 0.3s;
+    --transition-slower: 0.5s;
+
+    /* 기타 효과 변수 */
+    --loading-color: #eff1f4;  /* 이미지 로딩 전 배경색 */
+    --effect-color: rgba(105, 107, 214, 0.1);  /* 호버 등의 배경 효과 */
+
+    /* 계산 목적 변수 */
+    --header-height: 7rem;
+    --min-width: 280px;
+    --max-width: 1360px;
+    --inner-width: max(calc(100% - 4rem), 90%); /* 넓이는 90%이지만 최소 2rem씩의 여유를 가짐 */
+}
+
+
+/* ----------- 기본 reset START ----------- */
+/* 웹폰트 깨짐 방지 */
+/* p, span, a, h1, h2, h3, h4, h4, h5, ul, li, tr, td, figure, blockquote{
+    transform: skew(0.1deg);
+} */
+html {
+	font-size: 10px;
+}
+body {
+    -ms-overflow-style: none;
+    color: var(--font-color-default);
+    font-family: 'Noto Sans KR', sans-serif;
+	font-size: var(--font-size-mid);
+	font-weight: var(--font-w-regular);
+    letter-spacing: -0.1px;
+}
+::-webkit-scrollbar {
+    display: none;
+}
+img{ width: 100%; }
+button {
+	background: transparent;
+}
+textarea, input {
+	border: 1px solid var(--border-color-light);
+    background: none;
+    outline: none;
+}
+input {
+    accent-color: var(--primary-color);
+}
+input[type="text"],
+input[type="password"]{
+	padding: 0.5em;
+}
+textarea {
+	padding: 1.5em;
+	resize: none;
+}
+label {
+    cursor: pointer;
+}
+/* select {
+    padding: 1rem;
+    border-radius: 0;
+    background: url("/assets/images/common/btn_select.svg") no-repeat right 1rem center/1.7rem;
+    font-size: var(--font-size-mid);
+    color: var(--font-color-default);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+} */
+select::-ms-expand { 
+    display: none;
+}
+summary {
+    list-style: none;
+    padding-right: 2rem;
+    position: relative;
+    outline: none;
+}
+summary::-webkit-details-marker {
+    display: none;
+}
+summary::after{
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+    display: block; 
+    width : 0.4em;
+    height: 0.4em;
+    border-right: .15rem solid currentColor;
+    border-bottom: .15rem solid currentColor;
+    transition: var(--transition-faster);
+}
+details[open] summary::after{
+    transform: translate(-50%, -50%) rotate(225deg);
+}
+/* ----------- 기본 reset END ----------- */
+
+
+
+/* ----------- style START ----------- */
+/* layout style 시작 */
+.c_main_section {
+    /* 메인 컨테이너(헤더 높이만큼 끌어내리려고) */
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    min-width: var(--min-width);
+    margin-top: var(--header-height);
+}
+.c_section {
+    position: relative;
+    overflow: hidden;
+    min-width: var(--min-width);
+    margin: var(--space-large) auto;
+}
+@media screen and (max-width: 600px) {
+    .c_section {
+        margin: var(--space-mid) auto;
+    }
+}
+.c_inner {
+    position: relative;
+    max-width: var(--max-width);
+    width: var(--inner-width);
+    margin: 0 auto;
+}
+.c_section_title {
+    font-size: var(--font-size-x-large);
+    font-weight: var(--font-w-mid);
+    margin-bottom: 1.5rem;
+}
+.c_section_subtitle {
+    margin-bottom: 1rem;
+    font-size: var(--font-size-large);
+}
+/* layout style 끝 */
+
+/* util성 css 시작 */
+.c_screen_filter {
+    z-index: 99;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.35);
+}
+.c_overflow_hidden{
+    height: 100vh;
+    overflow: hidden;
+}
+@media screen and (min-width: 600px) {
+    .c_mobile_show{ /* 모바일에서만 보이게 */
+        display: none;
+    }
+}
+@media screen and (max-width: 600px) {
+    .c_mobile_hide{ /* 모바일에서 안보이게 */
+        display: none;
+    }
+}
+.c_loading{
+    position: relative;
+    min-height: 15rem;
+}
+.c_loading::before{
+    content: "";
+    z-index: 100;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-effect-color);
+    opacity: 0.65;
+}
+.c_loading::after{
+    content: "";
+    z-index: 100;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    margin-top: -2rem;
+    margin-left: -1.5rem;
+    border: 5px solid var(--border-color-default);
+    border-top-color: var(--primary-color);
+    animation: c_spining 0.7s ease-in-out infinite;
+}
+/* util성 css 끝 */
+
+/* c_btn 시작 */
+[class*="c_btn"]{
+    position: relative;
+    padding: 0.5em 1em;
+    transition: var(--transition-default);
+    cursor: pointer;
+}
+.c_btn-primary{
+    background: var(--primary-color);
+    color: var(--primary-color-contrast);
+}
+.c_btn-primary:hover{
+    background: var(--primary-color-effect);
+}
+.c_btn-primary-reverse{
+    border: 1px solid var(--primary-color);
+    background: var(--primary-color-contrast);
+    color: var(--primary-color);
+}
+.c_btn-primary-reverse:hover{
+    background: var(--primary-color);
+    color: var(--primary-color-contrast);
+}
+/* c_btn 끝 */
+
+/* ----------- style END ----------- */
+
+
+/* ----------- transition & animation 시작 ----------- */
+@keyframes c_spining {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+/* ----------- transition & animation 끝 ----------- */
+
+
+
+/* ----------- 폰트 반응형 START ----------- */
+/* 태블릿 (iPad pro) */
+/* @media screen and (max-width: 1024px) {
+} */
+/* 모바일L (iPad) */
+/* @media screen and (max-width: 768px) {
+} */
+/* 모바일M */
+@media screen and (max-width: 600px) {
+    html {
+        font-size: 9px;
+    }
+}
+/* 모바일S */
+/* @media screen and (max-width: 480px) {
+} */
+/* 모바일s (Galaxy Fold) */
+@media screen and (max-width: 320px) {
+    html {
+        font-size: 8px;
+    }
+}
+/* ----------- 폰트 반응형 END ----------- */
