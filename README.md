@@ -55,6 +55,11 @@
 * `App`에선 주요 컴포넌트 들의 layout만 구성한다.
 * `recoil` 파일들은 _'src/store'_ 폴더에 들어있고, 주요 컴포넌트 별로 _'store/modules'_안에 모듈화 해두었다. 모듈화한 파일들은 `index.js`에서 합쳐서 `export` 된다.
 
+## Memo
+### z-index 목록
+1. Header: 100
+
+
 <br><hr><br>
 
 ## Product Backlog

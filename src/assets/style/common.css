@@ -4,12 +4,18 @@
 
 :root{
     /* 컬러 */
-	--primary-color : #6667ab;  /* 전체검색도 한번 하기를 */
-    --primary-color-effect: #696bd6;
+	--primary-color : #c680ff;  /* 전체검색도 한번 하기를 */
+    /* #FF74B1, #FFA1CF, #FFD6EC */
+    /* #9f9bff */
+    --primary-color-effect: #d780ff;
     --primary-color-contrast: #fff;
-    --secondary-color: #CC2727;
-    --secondary-color-effect: #e05050;
+    --secondary-color: #A7FFE4;
+    --secondary-color-effect: #ff4e37;
     --secondary-color-contrast: #fff;
+
+    --instagram-color1: #833ab4;
+    --instagram-color2: #fd1d1d;
+    --instagram-color4: #fcb045;
 
 	--border-color-light : #d9d9d9;
     --border-color-default : #7b7b7b;
@@ -73,7 +79,7 @@
     --effect-color: rgba(105, 107, 214, 0.1);  /* 호버 등의 배경 효과 */
 
     /* 계산 목적 변수 */
-    --header-height: 7rem;
+    --header-height: 6rem;
     --min-width: 280px;
     --max-width: 1360px;
     --inner-width: max(calc(100% - 4rem), 90%); /* 넓이는 90%이지만 최소 2rem씩의 여유를 가짐 */
