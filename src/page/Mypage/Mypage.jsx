@@ -1,22 +1,22 @@
 // style
 import styled from 'styled-components'
 
-const AboutContainer = styled.section`
+const PageContainer = styled.section`
   .c_inner{
 
   }
 `
 
-function About() {
+function Mypage() {
   return (
-    <AboutContainer className='c_main_section'>
+    <PageContainer className='c_main_section'>
       <div className="c_section">
         <div className="c_inner">
-        About
+          Mypage
         </div>
       </div>
-    </AboutContainer>
+    </PageContainer>
   );
 }
 
-export default About
+export default Mypage

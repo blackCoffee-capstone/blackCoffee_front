@@ -7,10 +7,10 @@
 	--primary-color : #c680ff;  /* 전체검색도 한번 하기를 */
     /* #FF74B1, #FFA1CF, #FFD6EC */
     /* #9f9bff */
-    --primary-color-effect: #d780ff;
+    --primary-color-effect: #d49fff;
     --primary-color-contrast: #fff;
-    --secondary-color: #A7FFE4;
-    --secondary-color-effect: #ff4e37;
+    --secondary-color: #29ffbf;
+    --secondary-color-effect: #9affe1;
     --secondary-color-contrast: #fff;
 
     --instagram-color1: #833ab4;
@@ -82,9 +82,8 @@
     --header-height: 6rem;
     --min-width: 280px;
     --max-width: 1360px;
-    --inner-width: max(calc(100% - 4rem), 90%); /* 넓이는 90%이지만 최소 2rem씩의 여유를 가짐 */
+    --inner-width: min(calc(100% - 4rem), 94%); /* 넓이는 94%이지만 최소 2rem씩의 여유를 가짐 */
 }
-
 
 /* ----------- 기본 reset START ----------- */
 /* 웹폰트 깨짐 방지 */
@@ -100,6 +99,7 @@ body {
     font-family: 'Noto Sans KR', sans-serif;
 	font-size: var(--font-size-mid);
 	font-weight: var(--font-w-regular);
+    line-height: normal;
     letter-spacing: -0.1px;
 }
 ::-webkit-scrollbar {
@@ -184,11 +184,11 @@ details[open] summary::after{
     position: relative;
     overflow: hidden;
     min-width: var(--min-width);
-    margin: var(--space-large) auto;
+    margin: var(--space-mid) auto;
 }
 @media screen and (max-width: 600px) {
     .c_section {
-        margin: var(--space-mid) auto;
+        margin: var(--space-small) auto;
     }
 }
 .c_inner {
@@ -308,11 +308,11 @@ details[open] summary::after{
 /* @media screen and (max-width: 768px) {
 } */
 /* 모바일M */
-@media screen and (max-width: 600px) {
+/* @media screen and (max-width: 600px) {
     html {
         font-size: 9px;
     }
-}
+} */
 /* 모바일S */
 /* @media screen and (max-width: 480px) {
 } */

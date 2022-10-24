@@ -47,7 +47,7 @@ const FooterContainer = styled.footer`
           svg{
             height: 100%;
             width: 100%;
-            transition: var(--transition-default);
+            transition: var(--transition-fast);
           }
           :nth-of-type(1):hover{
             color: #1DA1F2;
@@ -59,7 +59,6 @@ const FooterContainer = styled.footer`
             color: #FF0000;
           }
           :nth-of-type(4):not(:hover) svg{
-            filter: grayscale(1);
             fill: currentColor
           }
         }
@@ -77,11 +76,11 @@ function Footer() {
       <nav className="footer_menu">
         <div className="c_inner">
           {/* <li><a href="">오시는길</a></li> */}
-          <li><a href="javascript:void(0)">고객센터</a></li>
-          <li><a href="javascript:void(0)">개인정보처리방침</a></li>
-          <li><a href="javascript:void(0)">이용약관</a></li>
-          <li><a href="javascript:void(0)">이메일무단수집거부</a></li>
-          <li><a href="javascript:void(0)">여행약관</a></li>
+          <li><Link to="customer">고객센터</Link></li>
+          <li><Link to="privacypolicy">개인정보처리방침</Link></li>
+          <li><Link to="terms">이용약관</Link></li>
+          <li><Link to="emaildenial">이메일무단수집거부</Link></li>
+          {/* <li><a href="">여행약관</a></li> */}
         </div>
       </nav>
 

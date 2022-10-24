@@ -1,22 +1,22 @@
 // style
 import styled from 'styled-components'
 
-const CustomerContainer = styled.section`
+const PageContainer = styled.section`
   .c_inner{
 
   }
 `
 
-function Customer() {
+function Terms() {
   return (
-    <CustomerContainer className='c_main_section'>
+    <PageContainer className='c_main_section'>
       <div className="c_section">
         <div className="c_inner">
-        Customer
+          Terms
         </div>
       </div>
-    </CustomerContainer>
+    </PageContainer>
   );
 }
 
-export default Customer
+export default Terms

@@ -7,16 +7,16 @@ const PageContainer = styled.section`
   }
 `
 
-function NotFound() {
+function Home() {
   return (
     <PageContainer className='c_main_section'>
       <div className="c_section">
         <div className="c_inner">
-          NotFound
+          home
         </div>
       </div>
     </PageContainer>
   );
 }
 
-export default NotFound
+export default Home

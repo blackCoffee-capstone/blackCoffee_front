@@ -7,16 +7,16 @@ const PageContainer = styled.section`
   }
 `
 
-function NotFound() {
+function Trend() {
   return (
     <PageContainer className='c_main_section'>
       <div className="c_section">
         <div className="c_inner">
-          NotFound
+          Trend
         </div>
       </div>
     </PageContainer>
   );
 }
 
-export default NotFound
+export default Trend

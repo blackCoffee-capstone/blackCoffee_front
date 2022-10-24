@@ -1,22 +1,22 @@
 // style
 import styled from 'styled-components'
 
-const HomeContainer = styled.section`
+const PageContainer = styled.section`
   .c_inner{
 
   }
 `
 
-function Home() {
+function Login() {
   return (
-    <HomeContainer className='c_main_section'>
+    <PageContainer className='c_main_section'>
       <div className="c_section">
         <div className="c_inner">
-          home
+          Login
         </div>
       </div>
-    </HomeContainer>
+    </PageContainer>
   );
 }
 
-export default Home
+export default Login
