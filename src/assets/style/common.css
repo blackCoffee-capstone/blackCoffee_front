@@ -237,12 +237,22 @@ details[open] summary::after{
     overflow: hidden;
 }
 @media screen and (min-width: 600px) {
-    .c_mobile_show{ /* 모바일에서만 보이게 */
+    .c_mobile_show{ /* 모바일 크기부터 보이게 */
         display: none;
     }
 }
 @media screen and (max-width: 600px) {
-    .c_mobile_hide{ /* 모바일에서 안보이게 */
+    .c_mobile_hide{ /* 모바일 크기 이전엔 안보이게 */
+        display: none;
+    }
+}
+@media screen and (min-width: 768px) {
+    .c_tablet_show{ /* 태블릿 크기 부터 보이게 */
+        display: none;
+    }
+}
+@media screen and (max-width: 768px) {
+    .c_tablet_hide{ /* 모바일 크기 이전엔 안보이게 */
         display: none;
     }
 }
