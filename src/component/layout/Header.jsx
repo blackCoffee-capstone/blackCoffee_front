@@ -4,188 +4,200 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 // style
 import styled from 'styled-components'
-import Button from 'assets/style/Button'
 // img
-import { ReactComponent as Logo } from "assets/image/common/logo.svg";
+import { ReactComponent as LogoSvg } from "assets/image/common/logo.svg";
+import { ReactComponent as SearchSvg }  from "assets/image/common/icon/icon_search.svg";
+import { ReactComponent as MypageSvg }  from "assets/image/common/icon/icon_mypage.svg";
+import { ReactComponent as MenuSvg }  from "assets/image/common/icon/icon_menu.svg";
+import { ReactComponent as CloseSvg }  from "assets/image/common/icon/close.svg";
 
-const GNB = styled.nav` // M_GNB로 상속됨
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem 2rem;
-  a{
-    padding: 0.5rem;
-    transition: var(--transition-fast);
-    :hover{
-      color: var(--primary-color);
-    }
-  }
-`
-const M_GNB = styled(GNB)`  // GNB 상속
-  z-index: 11;  // M_ToggleBtn 보단 낮아야함
-  position:fixed;
-  top:0;
-  left:0;
-  transform: translateX(-105%); // -100%으로 맞추면 그림자 삐져나옴
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: clamp(23rem, 30vw, 30rem);
-  height:100vh;
-  padding: var(--header-height) 1rem var(--space-mid);
-  background-color: #fff;
-  box-shadow: var(--box-shadow01);
-  transition: all var(--transition-slow);
-  &.on{
-    transform: translateX(0);
-  }
-`
-const M_ToggleBtn = styled.div`
-    z-index:100;  // M_GNB 보단 높아야함
-    position: relative;
-    width:2.5rem;
-    height:calc(1.5rem + 6px);
-    cursor: pointer;
-    div{
-      position:absolute;
-      width:100%;
-      height:2px;
-      background-color: currentColor;
-      transition-duration: var(--transition-slow);
-    }
-    .mid{
-      top: calc(0.75rem + 2px);
-    }
-    .bottom{
-      top: calc(1.5rem + 4px);
-    }
-    &.on .top{
-      top: calc(0.75rem + 2px);
-      transform: rotate(135deg);
-      transition-duration: 0.3s;
-    }
-    &.on .bottom{
-      top: calc(0.75rem + 2px);
-      transform: rotate(225deg);
-      transition-duration: var(--transition-slow);
-    }
-    &.on .mid{
-      opacity: 0;
-    }
-`
 const HeaderContainer = styled.header`
-  z-index: 100;
-  position: fixed;
+  position: fixed; /* fixed 아니고 absolute */
+  z-index: 200;
   top: 0;
+  left: 0;
   width: 100%;
   height: var(--header-height);
-  background-color: #fff;
-  box-shadow: var(--box-shadow01);
-  font-weight: var(--font-w-mid);
-  .c_inner{
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    .ci{
-      width: 10rem;
-      a{
-        color: var(--primary-color);
-        transition: var(--transition-default);
-        :hover{
-          color: var(--primary-color-effect);
-        }
-        svg{
-          color: inherit;
-          width: 100%;
-          height: auto;
-        }
+  color: var(--font-color-default);
+  svg {
+    fill: currentColor; /* 글자색 따라감 */
+    stroke: currentColor;
+    width: 2rem;
+    height: 2rem;
+  }
+  button{
+    border: none;
+  }
+
+  /* gnb_top 시작 */
+  .gnb_top{
+    height: var(--header-height);
+    padding: 1rem 0;
+    font-size: var(--font-size-small);
+    transition: background-color var(--transition-slow) ease-out, color var(--transition-faster);
+    background: rgba(255, 255, 255, 0.95);
+    &:not(.bg_off) { /* 배경있는 헤더 */
+      box-shadow: var(--box-shadow01);
+      color: var(--font-color-default);
+    }
+    &.bg_off {  /* 배경없는 헤더 */
+      color: #fff;
+      background-color: transparent;
+    }
+    @media screen and (max-width: 600px) {
+      &{
+        background: #fff;
       }
     }
-  }
-  @media screen and (min-width: 769px) {
-    .m_toggle_btn{
-      display: none;
-    }
-    .m_gnb{
-      display: none;
-    }
-  }
-  @media screen and (max-width: 768px) {
     .c_inner{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4rem;
+      height: 100%;
       .ci{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        width: 10rem;
+        height: 100%;
+        flex-shrink: 0;
+        svg{
+          width: 100%;
+          height: 100%;
+        }
       }
-      .gnb{
-        display: none;
+      .nav_menu{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.2rem;
+        svg{
+        }
+        .menu_btn {
+          svg {
+            width: 2.2rem;
+            &:last-child {
+              display: none;
+              margin-bottom: 3px;
+            }
+          }
+          &.open{
+            svg:first-child {
+              display: none;
+            }
+            svg:last-child {
+              display: block;
+            }
+          }
+        }
       }
+    }
+  }
+  .gnb_menu{
+    position: fixed;
+    top: var(--header-height);
+    right: -30rem;
+    display: flex;
+    flex-direction: column;
+    width: 30rem;
+    height: calc(100vh - var(--header-height));
+    padding-bottom: 3rem;
+    font-size: var(--font-size-mid);
+    color: var(--font-color-default);
+    background-color: rgba(255, 255, 255, 0.95);
+    transition: var(--transition-default);
+    overflow-y: scroll;
+    &.open{
+      right: 0;
+      box-shadow: var(--box-shadow01);
+    }
+    @media screen and (max-width: 600px) {
+      &{
+        right: -100%;
+        width: 100%;
+      }
+      &.open{
+        background: #fff;
+      }
+    }
+    a{
+      display: flex;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: var(--transition-faster);
+    }
+    a:hover {
+      background-color: var(--effect-color);
     }
   }
 `
 
 function Header() {
-  const navigate = useNavigate(); // for programmatic routing
   const location = useLocation(); // for route change detect
 
-  // mobile 메뉴 열렸는지
-  const [isMOpen, setMToggle] = useState(false);
+  // 메뉴 열렸는지
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuBG, setMenuBG] = useState(location.pathname=="/");
 
   useEffect(() => {
-    mobileMenuToggle('remove');
-  }, [location]);
-
-  // mobile 메뉴 열고 닫는 함수
-  function mobileMenuToggle(action='toggle'){
-    if(action == 'remove'){
-      setMToggle(false);
-    } else if(action == 'toggle'){
-      setMToggle(!isMOpen);
-    } else {
-      setMToggle(true);
+    window.addEventListener('scroll', headerScroll);
+    return () => {
+      window.removeEventListener('scroll', headerScroll); //clean up
+    };
+  }, []);
+    
+  // 홈에서 스크롤되면 헤더에 배경 넣는 함수
+  function headerScroll() {
+    if(window.location.pathname != "/") return;
+  
+    if(window.scrollY >= 10) {
+      setMenuBG(true);
+    }else {
+      setMenuBG(false);
     }
   }
-  
+
+  // 라우트 바뀔때
+  useEffect(() => {
+    setIsMenuOpen(false); // 메뉴 닫기
+    setMenuBG(location.pathname!="/") // 홈이면 메뉴에 배경 뺌
+  }, [location]);
+
   return (
     <HeaderContainer>
-      <div className="c_inner">
-        <div className="ci">
-          <Link to="/">
-            <Logo />
-          </Link>
+      <div className={`gnb_top ${(!isMenuOpen && !isMenuBG) ? 'bg_off' : ''}`}>
+        <div className="c_inner">
+          <div className="ci">
+            <Link to="/">
+              <LogoSvg />
+            </Link>
+          </div>
+
+          <nav className="nav_menu">
+            <Link to="/search">
+              <SearchSvg />
+            </Link>
+            <button className={`menu_btn ${isMenuOpen ? 'open' : ''}`}
+              onClick={()=>setIsMenuOpen(!isMenuOpen)} 
+            >
+              <MenuSvg />
+              <CloseSvg />
+            </button>
+          </nav>
         </div>
-
-        <GNB className="gnb">
-          <Link to="/trend">최신트렌드</Link>
-          <Link to="/search">찾아보기</Link>
-          <Link to="/recommend">맞춤 추천</Link>
-          <Link to="/myplace">나만의 장소</Link>
-          <Button primary onClick={()=>navigate("/login")}>로그인</Button>
-          {/* <Link to="/login">로그인</Link> */}
-        </GNB>
-
-        <M_ToggleBtn className={`m_toggle_btn ${isMOpen ? 'on' : ''}`}
-          onClick={()=>mobileMenuToggle()}
-        >
-          <div className="top"></div>
-          <div className="mid"></div>
-          <div className="bottom"></div>
-        </M_ToggleBtn>
-
-        <M_GNB className={`m_gnb ${isMOpen ? 'on' : ''}`}>
-          <Link to="/trend">최신트렌드</Link>
-          <Link to="/search">찾아보기</Link>
-          <Link to="/recommend">맞춤 추천</Link>
-          <Link to="/myplace">나만의 장소</Link>
-          <Link to="/login">로그인</Link>
-          {/* <Link to="/login">로그인</Link> */}
-        </M_GNB>
-
       </div>
+
+      <nav className={`gnb_menu ${isMenuOpen ? 'open' : ''}`}>
+        <Link to="/trend">최신트렌드</Link>
+        <Link to="/recommend">맞춤 추천</Link>
+        <Link to="/search">찾아보기</Link>
+        <Link to="/myplace">나만의 장소</Link>
+        <Link to="/mypage"><MypageSvg />마이페이지</Link>
+        <Link to="/login">로그인/회원가입</Link>
+      </nav>
     </HeaderContainer>
   );
 }
 
-export default Header;
+export default Header

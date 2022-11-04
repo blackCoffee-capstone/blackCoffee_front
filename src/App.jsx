@@ -1,7 +1,9 @@
 // core
 import { lazy, Suspense } from 'react';
 // router
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// swiper
+import 'swiper/css/bundle'; // swiper style 한번에 적용
 // component - layout
 import Header from './component/layout/Header'  // 헤더
 import Footer from './component/layout/Footer'  // 푸터
@@ -11,8 +13,8 @@ import ErrorBoundary from './component/common/ErrorBoundary'  // 에러
 // page
 import Home from './page/Home/Home' // 홈
 import Trend from './page/Trend/Trend'  // 최신트렌드
+import Recommend from './page/Recommend/Recommend'  // 맞춤 추천
 import Search from './page/Search/Search' // 찾아보기
-import Recommend from './page/Recommend/Recommend' // 맞춤 추천
 import Myplace from './page/Myplace/Myplace'  // 나만의 장소
 import Login from './page/Account/Login'  // 로그인
 import Mypage from './page/Mypage/Mypage' // 마이페이지 
@@ -25,17 +27,15 @@ import NotFound from './page/NotFound'  // 404 NotFound
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-
+      <Router>
         <Header />
-
         <ErrorBoundary>
           <Suspense fallback={<Loading />}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/trend" element={<Trend />} />       
+              <Route path="/recommend" element={<Recommend />} />       
               <Route path="/search" element={<Search />} />     
-              <Route path="/recommend" element={<Recommend />} />
               <Route path="/myplace" element={<Myplace />} />
               <Route path="/login" element={<Login />} />
               <Route path="/mypage" element={<Mypage />} /> 
@@ -47,10 +47,8 @@ function App() {
             </Routes>
           </Suspense>
         </ErrorBoundary>
-        
         <Footer />
-
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }

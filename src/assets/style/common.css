@@ -35,7 +35,7 @@
     --alert-color: #ffa500;     /* 알림 색 */
     
     /* 폰트 */
-    --font-size-xxx-large: 3.2rem;
+    --font-size-xxx-large: 3rem;
     --font-size-xx-large: 2.6rem;
     --font-size-x-large: 2.2rem;
     --font-size-large: 1.8rem;
@@ -75,8 +75,8 @@
     --transition-slower: 0.5s;
 
     /* 기타 효과 변수 */
-    --loading-color: #eff1f4;  /* 이미지 로딩 전 배경색 */
-    --effect-color: rgba(105, 107, 214, 0.1);  /* 호버 등의 배경 효과 */
+    --loading-color: #eeeeee;  /* 이미지 로딩 전 배경색 */
+    --effect-color: rgba(224, 185, 255, 0.1);  /* 호버 등의 배경 효과 */
 
     /* 계산 목적 변수 */
     --header-height: 6rem;
@@ -92,6 +92,7 @@
 } */
 html {
 	font-size: 10px;
+    scrollbar-width: thin;
 }
 body {
     -ms-overflow-style: none;
@@ -198,9 +199,22 @@ details[open] summary::after{
     margin: 0 auto;
 }
 .c_section_title {
-    font-size: var(--font-size-x-large);
+    position: relative;
+    font-size: var(--font-size-xx-large);
     font-weight: var(--font-w-mid);
+    padding-bottom: 0.5rem;
     margin-bottom: 1.5rem;
+    text-align: center;
+}
+.c_section_title::after{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: calc(50% - 2rem);
+    display: block;
+    width: 4rem;
+    height: 2px;
+    background-color: var(--primary-color);
 }
 .c_section_subtitle {
     margin-bottom: 1rem;
