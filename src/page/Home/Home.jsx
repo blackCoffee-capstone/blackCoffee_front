@@ -1,3 +1,5 @@
+// router
+import { Link } from 'react-router-dom';
 // hash-link
 import { HashLink } from 'react-router-hash-link';
 // style
@@ -5,6 +7,8 @@ import styled from 'styled-components'
 // Swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay, EffectFade } from 'swiper';
+// img
+import { ReactComponent as  SlideArrow } from 'assets/image/common/icon/icon_slide.svg'
 
 const PageContainer = styled.section`
   margin: 0;
@@ -72,6 +76,50 @@ const PageContainer = styled.section`
       background-color: var(--base-color-light);
     }
   }
+  .service-intro{
+    .c_inner{
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      @media screen and (max-width: 768px) {
+        &{
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.6rem;
+        }
+      }
+      .intro_box{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        width: 100%;
+        padding: 2.5rem;
+        background-color: #fff;
+        font-size: var(--font-size-large);
+        word-break: keep-all;
+        border-radius: var(--border-radius-large);
+        cursor: pointer;
+        transition: var(--transition-default);
+        aspect-ratio: 1.3/1;
+        &:hover{
+          box-shadow: var(--box-shadow01);
+          transform: translateY(-3px);
+        }
+        @media screen and (max-width: 768px) {
+          &{
+            aspect-ratio: 1.6/1;
+            font-size: var(--font-size-mid);
+          }
+        }
+        img{
+          width: clamp(3rem, 30%, 5rem);
+          opacity: 0.9;
+        }
+      }
+    }
+  }
   .zigzag{
     .c_inner{
       display: flex;
@@ -97,11 +145,31 @@ const PageContainer = styled.section`
           }
         }
         p{
-          font-size: var(--font-size-large);
           color: var(--font-color-sub);
+          font-size: var(--font-size-large);
           @media screen and (max-width: 600px) {
             &{
               font-size: var(--font-size-mid);
+            }
+          }
+        }
+        .direct_link{
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          margin-top: 1rem;
+          color: var(--primary-color);
+          font-size: var(--font-size-large);
+          font-weight: var(--font-w-mid);
+          transition: var(--transition-default);
+          svg{
+            transition: var(--transition-default);
+            width: 3rem;
+          }
+          &:hover{
+            color: var(--primary-color-effect);
+            svg{
+              margin-left: 0.5rem;
             }
           }
         }
@@ -113,6 +181,18 @@ const PageContainer = styled.section`
           flex-direction: row-reverse;
           .textbox{
             text-align: right;
+          }
+          .direct_link{
+            flex-direction: row-reverse;
+            svg{
+              transform: scaleX(-1);
+            }
+            &:hover{
+              color: var(--primary-color-effect);
+              svg{
+                margin-right: 0.5rem;
+              }
+            }
           }
         }
       }
@@ -126,51 +206,7 @@ const PageContainer = styled.section`
       }
     }
   }
-  .service-intro{
-    .c_inner{
-      height: 100%;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2rem;
-      @media screen and (max-width: 768px) {
-        &{
-          grid-template-columns: repeat(2, 1fr);
-          gap: 1.6rem;
-        }
-      }
-      .intro_box{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-        width: 100%;
-        padding: 2.5rem;
-        background-color: #fff;
-        color: var(--primary-color-effect);
-        font-size: var(--font-size-large);
-        word-break: keep-all;
-        border-radius: var(--border-radius-large);
-        cursor: pointer;
-        transition: var(--transition-default);
-        aspect-ratio: 1.3/1;
-        &:hover{
-          box-shadow: var(--box-shadow01);
-          transform: translateY(-3px);
-        }
-        @media screen and (max-width: 768px) {
-          &{
-            aspect-ratio: 1.6/1;
-            font-size: var(--font-size-mid);
-          }
-        }
-        img{
-          width: clamp(3rem, 30%, 5rem);
-          opacity: 0.9;
-        }
-      }
-    }
-  }
+  
   
 `
 
@@ -269,6 +305,7 @@ function Home() {
               SNS 빅데이터 분석을 통해<br />
               최근 떠오르고 있는 트렌디한 여행지를 추천해드립니다.
             </p>
+            <Link className='direct_link' to="/trend">트렌드 여행지 확인하기<SlideArrow /></Link>
           </div>
           <div className="img_wrapper">
             <img src={require('assets/image/main/sample_instagram.jpg')} alt="trend" />
@@ -285,6 +322,7 @@ function Home() {
               테마, 지역, 검색량 등 다양한 필터 검색으로<br />
               내가 원하는 여행지를 찾아보세요!
             </p>
+            <Link className='direct_link' to="/search">여행지 검색하기<SlideArrow /></Link>
           </div>
           <div className="img_wrapper">
             <img src={require('assets/image/main/sample_instagram.jpg')} alt="search" />
@@ -301,6 +339,7 @@ function Home() {
               여행 취향 데이터를 기반으로<br />
               AI가 분석한 나에게 딱 맞는 여행지를 추천 받아보세요
             </p>
+            <Link className='direct_link' to="/recommend">맞춤 추천 받으러가기<SlideArrow /></Link>
           </div>
           <div className="img_wrapper">
             <img src={require('assets/image/main/sample_instagram.jpg')} alt="recommend" />
@@ -317,6 +356,7 @@ function Home() {
               여행지 정보 공유 커뮤니티, &apos;나만의 장소&apos;에서<br />
               숨은 여행지 정보를 교환해볼까요?
             </p>
+            <Link className='direct_link' to="/community">여행지 공유하기<SlideArrow /></Link>
           </div>
           <div className="img_wrapper">
             <img src={require('assets/image/main/sample_instagram.jpg')} alt="community" />

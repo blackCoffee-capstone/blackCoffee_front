@@ -192,7 +192,7 @@ function Header() {
         <Link to="/trend">최신트렌드</Link>
         <Link to="/recommend">맞춤 추천</Link>
         <Link to="/search">찾아보기</Link>
-        <Link to="/myplace">나만의 장소</Link>
+        <Link to="/community">나만의 장소</Link>
         <Link to="/mypage"><MypageSvg />마이페이지</Link>
         <Link to="/login">로그인/회원가입</Link>
       </nav>

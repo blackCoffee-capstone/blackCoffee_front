@@ -15,7 +15,7 @@ import Home from './page/Home/Home' // 홈
 import Trend from './page/Trend/Trend'  // 최신트렌드
 import Recommend from './page/Recommend/Recommend'  // 맞춤 추천
 import Search from './page/Search/Search' // 찾아보기
-import Myplace from './page/Myplace/Myplace'  // 나만의 장소
+import Community from './page/Community/Community'  // 나만의 장소
 import Login from './page/Account/Login'  // 로그인
 import Mypage from './page/Mypage/Mypage' // 마이페이지 
 const Customer = lazy(() => import('./page/Customer/Customer'));  // 고객센터
@@ -36,7 +36,7 @@ function App() {
               <Route path="/trend" element={<Trend />} />       
               <Route path="/recommend" element={<Recommend />} />       
               <Route path="/search" element={<Search />} />     
-              <Route path="/myplace" element={<Myplace />} />
+              <Route path="/community" element={<Community />} />
               <Route path="/login" element={<Login />} />
               <Route path="/mypage" element={<Mypage />} /> 
               <Route path="/customer" element={<Customer />} />
