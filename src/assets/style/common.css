@@ -288,12 +288,15 @@ details[open] summary::after{
 
 /* c_btn 시작 */
 [class*="c_btn"]{
+    border: 1px solid var(--border-color-default);
     position: relative;
     padding: 0.5em 1em;
     transition: var(--transition-default);
+    border-radius: var(--border-radius-mid);
     cursor: pointer;
 }
 .c_btn-primary{
+    border: none;
     background: var(--primary-color);
     color: var(--primary-color-contrast);
 }
@@ -301,7 +304,7 @@ details[open] summary::after{
     background: var(--primary-color-effect);
 }
 .c_btn-primary-reverse{
-    border: 1px solid var(--primary-color);
+    border-color: var(--primary-color);
     background: var(--primary-color-contrast);
     color: var(--primary-color);
 }

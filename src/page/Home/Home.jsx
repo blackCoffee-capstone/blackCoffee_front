@@ -147,11 +147,6 @@ const PageContainer = styled.section`
         p{
           color: var(--font-color-sub);
           font-size: var(--font-size-large);
-          @media screen and (max-width: 600px) {
-            &{
-              font-size: var(--font-size-mid);
-            }
-          }
         }
         .direct_link{
           display: flex;
@@ -206,8 +201,35 @@ const PageContainer = styled.section`
       }
     }
   }
-  
-  
+  .ad{
+    padding: var(--space-large) 0;
+    background-color: var(--primary-color);
+    .textbox{
+      color: var(--primary-color-contrast);
+      text-align: center;
+      font-size: var(--font-size-large);
+      h2{
+        font-size: var(--font-size-xxx-large);
+        font-weight: var(--font-w-bold);
+        margin-bottom: 1rem;
+        @media screen and (max-width: 600px) {
+          &{
+            font-size: var(--font-size-xx-large);
+          }
+        }
+      }
+      button{
+        font-size: var(--font-size-x-large);
+        margin-top: 2rem;
+        color: var(--primary-color-contrast);
+        border-color: var(--primary-color-contrast);
+        &:hover{
+          background-color: var(--primary-color-effect);
+          border-color: var(--primary-color-effect);
+        }
+      }
+    }
+  }
 `
 
 function Home() {
@@ -360,6 +382,20 @@ function Home() {
           </div>
           <div className="img_wrapper">
             <img src={require('assets/image/main/sample_instagram.jpg')} alt="community" />
+          </div>
+        </div>
+      </section>
+      <section className="c_section ad">
+        <div className="c_inner">
+          <div className="textbox">
+            <h2>맞춤 타게팅 광고</h2>
+            <p>
+              여행에 최적화된 광고를 찾고 계신가요? <br />
+              원하는 여행지를 정하여 맞춤 타게팅 광고를 진행해보세요
+            </p>
+            <Link to="/adapplication">
+              <button className='c_btn'>광고 신청하기</button>
+            </Link>
           </div>
         </div>
       </section>
