@@ -12,7 +12,7 @@ const PageContainer = styled.section`
     align-items: center;
     justify-content: center;
     margin: 0;
-    height: 18rem;
+    height: 30rem;
     background-color: #eee;
   }
   .option{
@@ -27,7 +27,7 @@ function Recommend(){
   return(
     <PageContainer className='c_main_section'>
       <section className="c_section recommend_banner">
-        배너 영역
+        <img src={require("assets/image/recommend/banner.jpg")} alt="추천페이지 배너" />
       </section>
       <section className='c_section option'>
         <div className="c_inner">

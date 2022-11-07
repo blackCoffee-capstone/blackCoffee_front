@@ -12,7 +12,7 @@ const PageContainer = styled.section`
     align-items: center;
     justify-content: center;
     margin: 0;
-    height: 18rem;
+    height: 30rem;
     background-color: #eee;
   }
   .option{
@@ -27,7 +27,7 @@ function Trend(){
   return(
     <PageContainer className='c_main_section'>
       <section className="c_section trend_banner">
-        배너 영역
+        <img src={require("assets/image/Trend/banner.jpg")} alt="트렌드 페이지 배너" />
       </section>
       <section className='c_section option'>
         <div className="c_inner">
