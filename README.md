@@ -26,11 +26,12 @@
 > React(^18.2.0), react-router-dom(^6.4.1), Recoil(^0.7.5)  
 
 > `서브`  
-> styled-components(^5.3.5), axios(^0.27.2)
-> react-router-hash-link(^2.4.3)
+> styled-components(^5.3.5), axios(^0.27.2)  
+> react-router-hash-link(^2.4.3) - 앵커 기능  
+> react-daum-postcode - 주소검색  
 
 > `UI 라이브러리`  
-> lottie-react(^2.3.1), swiper(^8.4.4)
+> lottie-react(^2.3.1), swiper(^8.4.4)  
 
 > `개발 환경`  
 > node -v : v16.13.0  

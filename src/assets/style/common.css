@@ -106,6 +106,9 @@ body {
 ::-webkit-scrollbar {
     display: none;
 }
+::placeholder{
+    color: var(--font-color-light);
+}
 img{ width: 100%; }
 button {
 	background: transparent;
@@ -119,8 +122,13 @@ input {
     accent-color: var(--primary-color);
 }
 input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
 input[type="password"]{
-	padding: 0.5em;
+	padding: 0.5em 0.5em 0.5em 1em;
+    width: 100%;
+    border-radius: var(--border-radius-mid);
 }
 textarea {
 	padding: 1.5em;
@@ -314,6 +322,12 @@ details[open] summary::after{
 }
 /* c_btn 끝 */
 
+.c_star::after{
+    content: "*";
+    color: red;
+    margin-left: 0.2em;
+    vertical-align: middle;
+}
 /* ----------- style END ----------- */
 
 

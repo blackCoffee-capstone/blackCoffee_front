@@ -1,78 +1,134 @@
 // core
-import { useState } from 'react';
+import { useRef, useState, useCallback } from 'react';
 // style
 import styled from 'styled-components'
+// 카카오 주소 검색
+import { useDaumPostcodePopup } from 'react-daum-postcode';
+
+// img 
+import { ReactComponent as CloseSvg } from 'assets/image/common/icon/close.svg'
+
 
 const PageContainer = styled.section`
-
+  .fill{
+    margin: 0 auto;
+    max-width: 40rem;
+    &>div{
+      margin: 1.5em 0;
+      h3{
+        margin-bottom: 0.5em;
+        font-size: var(--font-size-large);
+      }
+      input{
+        height: 3em;
+        & + input{
+          margin-top: 1em;
+        }
+      }
+      .file_list{
+        display: flex;
+        align-items: center;
+        gap: 0.4em;
+        margin-top: 1rem;
+        .btn_delete{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 0.9em;
+          color: red;
+          border: none;
+        }
+      }
+    }
+    .btn_submit{
+      width: 100%;
+      height: 3em;
+    }
+  }
 `
 
 function AdApplication(){
+  const [ file, setFile ] = useState(''); // 파일 첨부
+  const inputFileEl = useRef(); // input file element
+  const [address, setAddress] = useState(''); // 주소
+  const [addressCode, setAddressCode] = useState(''); // 주소 코드
+
+  const open = useDaumPostcodePopup();
+  const addrSearchComplete  = useCallback((data) => {
+    let fullAddress = data.address;
+    let extraAddress = '';
+    if(data.addressType === 'R') {
+      if(data.bname !== '') {
+        extraAddress += data.bname;
+      }
+      if(data.buildingName !== '') {
+        extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+    }
+    setAddressCode(data.zonecode);
+    setAddress(fullAddress);
+  });
+  const addrSearchClick = useCallback(() => {
+    open({ onComplete: addrSearchComplete });
+  })
+
   return (
     <PageContainer className='c_main_section'>
-      <section>
-        <div className="fill">
-          <div className="fill_partner_wrap" id="profile_box">
-            <h1 className="fill_box_title">프로필 정보입력</h1>
-            <div className="fill_text fill_name">
-                <h1>닉네임 <span className="star">*</span></h1>
-                <input type="text"
-                    placeholder="최대 15자 입력 가능 (초성 불가)"
-                    id="nick"
-                />
-                <div className="check">
-                    <img src="@/assets/images/register/icon_check.svg" alt="체크" />
-                    <img src="@/assets/images/common/close_w.svg" alt="체크" />
-                </div>
+      <section className='c_section'>
+        <div className="c_inner">
+          <h2 className="c_section_title">광고 신청하기</h2>
+          <div className="fill">
+            <div className="name">
+              <h3>사업자명<i className="c_star"></i></h3>
+              <input type="text" placeholder="사업자명" maxLength="13" />
             </div>
-            <div className="fill_text">
-                <h1>핸드폰번호 <span className="star">*</span></h1>
-                <input type="text" id="contact" placeholder="ex) 010-1234-5678" maxLength="13" />
+            <div className="cno">
+              <h3>사업장 위치<i className="c_star"></i></h3>
+              <input type="text" placeholder="사업장 위치"
+                value={address ?? ''}
+                onClick={()=> {
+                  setAddress('');
+                  addrSearchClick();
+                }}
+                readOnly
+              />
             </div>
-          </div>
-
-          <div className="fill_double">
-              <div className="fill_business" id="business_box">
-                  <h1 className="fill_box_title">사업자 정보 입력</h1>
-                  <div className="fill_text fill_cno">
-                      <h1>사업자 번호<span className="star">*</span></h1>
-                      <input type="text" id="cno" placeholder="123-12-12345" maxLength="12" />
+            <div className="contact">
+              <h3>연락처<i className="c_star"></i></h3>
+              <input type="tel" placeholder="전화번호) 010-1234-5678" maxLength="13" />
+              <input type="email" placeholder="이메일" />
+            </div>
+            {/* <div className="cno">
+              <h3>사업자 번호<i className="c_star"></i></h3>
+              <input type="text" placeholder="사업자번호) 123-12-12345" maxLength="12" />
+            </div> */}
+            
+            <div className="registration">
+              <h3>사업자등록증 인증 <strong>(최대 500MB)</strong></h3>
+              <button className='c_btn'
+                onClick={()=>inputFileEl.current.click()}
+              >
+                파일선택
+              </button>
+              <input type="file" ref={inputFileEl}
+                style={{ display: "none" }}
+                onClick={()=> setFile('')}
+                onChange={(e)=> setFile(e.target.files[0]) }
+              />
+              { // 파일 선택됐을 때 보이기
+                file?.name && (
+                  <div className="file_list">
+                    <p>{ file.name }</p>
+                    <button className="btn_delete" onClick={()=> setFile('')}>
+                      <CloseSvg />
+                    </button>
                   </div>
-
-                  <h1 className="fill_box_title">사업자등록증 인증 <strong>(최대 500MB)</strong></h1>
-                  <div className="fill_file">
-                      <button
-                      // @click="$refs.fileInput.click()"
-                      >파일선택</button>
-                      <input
-                        type="file"
-                        style="display: none"
-                        // @change="onFileSelected"
-                        // @click="
-                        //     () => {
-                        //         this.$refs.fileInput.value = '';
-                        //     }
-                        // "
-                      />
-                      <div 
-                        // v-if="this.file.name" 
-                        className="fill_file_list"
-                      >
-                        <p>{ this.file.name }</p>
-                        <button
-                          type="button"
-                          className="btn_delete"
-                          // @click="
-                          //     () => {
-                          //         this.file = '';
-                          //     }
-                          // "
-                        >
-                          <img src="@/assets/images/common/close_w.svg" />
-                        </button>
-                      </div>
-                  </div>
-              </div>
+                )
+              }
+              
+            </div>
+            <button className='c_btn-primary btn_submit'>신청하기</button>
           </div>
         </div>
       </section>
