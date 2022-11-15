@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay, EffectFade } from 'swiper';
 // img
-import { ReactComponent as  SlideArrow } from 'assets/image/common/icon/icon_slide.svg'
+import { ReactComponent as  SlideArrow } from 'assets/image/common/icon/slide.svg'
 
 const PageContainer = styled.section`
   margin: 0;

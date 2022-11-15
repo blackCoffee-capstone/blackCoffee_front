@@ -112,6 +112,8 @@ body {
 img{ width: 100%; }
 button {
 	background: transparent;
+    border: none;
+    outline: none;
 }
 textarea, input {
 	border: 1px solid var(--border-color-light);
@@ -206,15 +208,14 @@ details[open] summary::after{
     width: var(--inner-width);
     margin: 0 auto;
 }
-.c_section_title {
+.c_title {
     position: relative;
     font-size: var(--font-size-xx-large);
     font-weight: var(--font-w-mid);
     padding-bottom: 0.5rem;
-    margin-bottom: 1.5rem;
     text-align: center;
 }
-.c_section_title::after{
+.c_title::after{
     content: "";
     position: absolute;
     bottom: 0;
@@ -224,9 +225,22 @@ details[open] summary::after{
     height: 2px;
     background-color: var(--primary-color);
 }
-.c_section_subtitle {
+.c_subtitle {
     margin-bottom: 1rem;
     font-size: var(--font-size-large);
+}
+.c_top_banner{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    height: 26rem;
+    background-color: #eee;
+}
+.c_top_banner img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
 }
 /* layout style 끝 */
 
@@ -304,7 +318,6 @@ details[open] summary::after{
     cursor: pointer;
 }
 .c_btn-primary{
-    border: none;
     background: var(--primary-color);
     color: var(--primary-color-contrast);
 }

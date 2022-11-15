@@ -6,9 +6,9 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 // img
 import { ReactComponent as LogoSvg } from "assets/image/common/logo.svg";
-import { ReactComponent as SearchSvg }  from "assets/image/common/icon/icon_search.svg";
-import { ReactComponent as MypageSvg }  from "assets/image/common/icon/icon_mypage.svg";
-import { ReactComponent as MenuSvg }  from "assets/image/common/icon/icon_menu.svg";
+import { ReactComponent as SearchSvg }  from "assets/image/common/icon/search.svg";
+import { ReactComponent as MypageSvg }  from "assets/image/common/icon/mypage.svg";
+import { ReactComponent as MenuSvg }  from "assets/image/common/icon/menu.svg";
 import { ReactComponent as CloseSvg }  from "assets/image/common/icon/close.svg";
 
 const HeaderContainer = styled.header`
@@ -25,10 +25,6 @@ const HeaderContainer = styled.header`
     width: 2rem;
     height: 2rem;
   }
-  button{
-    border: none;
-  }
-
   /* gnb_top 시작 */
   .gnb_top{
     height: var(--header-height);
@@ -189,9 +185,9 @@ function Header() {
       </div>
 
       <nav className={`gnb_menu ${isMenuOpen ? 'open' : ''}`}>
-        <Link to="/trend">최신트렌드</Link>
+        <Link to="/trend">최신 트렌드</Link>
         <Link to="/recommend">맞춤 추천</Link>
-        <Link to="/search">찾아보기</Link>
+        <Link to="/search">여행지 찾기</Link>
         <Link to="/community">나만의 장소</Link>
         <Link to="/mypage"><MypageSvg />마이페이지</Link>
         <Link to="/login">로그인/회원가입</Link>

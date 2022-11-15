@@ -4,10 +4,8 @@ import { useRef, useState, useCallback } from 'react';
 import styled from 'styled-components'
 // 카카오 주소 검색
 import { useDaumPostcodePopup } from 'react-daum-postcode';
-
 // img 
 import { ReactComponent as CloseSvg } from 'assets/image/common/icon/close.svg'
-
 
 const PageContainer = styled.section`
   .fill{
@@ -36,7 +34,6 @@ const PageContainer = styled.section`
           justify-content: center;
           width: 0.9em;
           color: red;
-          border: none;
         }
       }
     }
@@ -51,7 +48,7 @@ function AdApplication(){
   const [ file, setFile ] = useState(''); // 파일 첨부
   const inputFileEl = useRef(); // input file element
   const [address, setAddress] = useState(''); // 주소
-  const [addressCode, setAddressCode] = useState(''); // 주소 코드
+  // const [addressCode, setAddressCode] = useState(''); // 주소 코드
 
   const open = useDaumPostcodePopup();
   const addrSearchComplete  = useCallback((data) => {
@@ -66,7 +63,7 @@ function AdApplication(){
       }
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
-    setAddressCode(data.zonecode);
+    // setAddressCode(data.zonecode);
     setAddress(fullAddress);
   });
   const addrSearchClick = useCallback(() => {
@@ -77,7 +74,7 @@ function AdApplication(){
     <PageContainer className='c_main_section'>
       <section className='c_section'>
         <div className="c_inner">
-          <h2 className="c_section_title">광고 신청하기</h2>
+          <h2 className="c_title">광고 신청하기</h2>
           <div className="fill">
             <div className="name">
               <h3>사업자명<i className="c_star"></i></h3>
@@ -116,7 +113,7 @@ function AdApplication(){
                 onClick={()=> setFile('')}
                 onChange={(e)=> setFile(e.target.files[0]) }
               />
-              { // 파일 선택됐을 때 보이기
+              { // 파일 선택됐을 때 선택된 파일 보이게
                 file?.name && (
                   <div className="file_list">
                     <p>{ file.name }</p>

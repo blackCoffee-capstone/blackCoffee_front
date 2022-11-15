@@ -8,7 +8,7 @@ import 'swiper/css/bundle'; // swiper style 한번에 적용
 import Header from './component/layout/Header'  // 헤더
 import Footer from './component/layout/Footer'  // 푸터
 // component - common
-import Loading from './component/common/Loading'  // 로딩
+import LoadingPage from './component/common/LoadingPage'  // 로딩
 import ErrorBoundary from './component/common/ErrorBoundary'  // 에러
 // page
 import Home from './page/Home/Home' // 홈
@@ -31,7 +31,7 @@ function App() {
       <Router>
         <Header />
         <ErrorBoundary>
-          <Suspense fallback={<Loading />}>
+          <Suspense fallback={<LoadingPage />}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/trend" element={<Trend />} />       
