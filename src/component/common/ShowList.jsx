@@ -100,7 +100,7 @@ const ListContainer = styled.ul`
 `
 
 function ShowList(props){
-  const data = props.data;
+  const data = props.data ?? [];
 
   return (
     <ListContainer>
@@ -127,6 +127,12 @@ function ShowList(props){
             </li>
           )
         })
+      }
+      {
+        data.length==0 && (
+          <p>데이터가 없습니다</p>
+        )
+
       }
     </ListContainer>
   )

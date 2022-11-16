@@ -1,18 +1,167 @@
+// core
+import { useState } from 'react'
 // style
 import styled from 'styled-components'
+// component
+import ShowList from 'component/common/ShowList'
+// img
+import { ReactComponent as  SearchSvg } from 'assets/image/common/icon/search.svg'
+// sample data
+import ListData from 'store/data/ListData.js'
 
 const PageContainer = styled.section`
-  .c_inner{
-
+  .option{
+    margin-bottom: 1rem;
+    .search_bar{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 50rem;
+      height: 6rem;
+      margin: 0 auto;
+      border: 2.5px solid var(--primary-color);
+      border-radius: var(--border-radius-small);
+      overflow: hidden;
+      input{
+        display: block;
+        border: none;
+        height: 100%;
+        width: 100%;
+      }
+      button{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        height: 100%;
+        width: 6rem;
+        background: var(--primary-color);
+        color: var(--primary-color-contrast);
+        svg{
+          width: 50%;
+        }
+      }
+    }
+    .filter{
+      >div{
+        margin: 1rem 0;
+        h4{
+          width: 5rem;
+          margin-bottom: 0.5rem;
+          font-weight: var(--font-w-bold);
+        }
+        >ul{
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 0.5rem 0.8rem;
+          li{
+            border-radius: var(--border-radius-full);
+            background-color: var(--base-color-grey);
+            padding: 0.2em 0.6em;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            &.on{
+              background-color: var(--primary-color);
+              color: var(--primary-color-contrast);
+            }
+            :hover{
+              filter: brightness(0.96);
+            }
+          }
+        }
+      }
+    }
+    .sorting{
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 1rem;
+      vertical-align: middle;
+      li{
+        cursor: pointer;
+        transition: var(--transition-fast);
+        &.on{
+          color: var(--primary-color);
+          font-weight: var(--font-w-bold);
+        }
+        :hover{ /* .on 보다 밑에 선언되야 잘 동작 */
+          color: var(--primary-color-effect);
+        }
+      }
+    }
   }
 `
 
 function Search() {
+  const [ searchText, setSearchText ] = useState();
+  function search(){
+    console.log(searchText)
+  }
+  function onSearchInput(e){
+    const value = e.target.value;
+    if(e.key=='Enter'){
+      search();
+      return;
+    }
+    setSearchText(value);
+  }
+
   return (
     <PageContainer className='c_main_section'>
-      <div className="c_section">
+      <section className="c_section c_top_banner">
+        <h2>여행지 찾기</h2>
+        <img src={require("assets/image/Search/banner.jpg")}
+          style={{ objectPosition: "50% 65%" }}
+          alt="검색 페이지 배너"
+        />
+      </section>
+      <section className='c_section'>
+        <h2 className='c_title'>여행지 검색</h2>
+      </section>
+      <div className="c_section result">
         <div className="c_inner">
-          Search
+          <div className="option">
+            <div className='search_bar'>
+                <input type="text" placeholder='여행지 이름으로 검색하기'
+                  onChange={onSearchInput}
+                />
+                <button className='btn_search'
+                  onClick={search}
+                ><SearchSvg /></button>
+            </div>
+            <div className='filter'>
+              <div className='place'>
+                <h4>장소</h4>
+                <ul>
+                  <li>서울</li>
+                  <li>부산</li>
+                  <li>대전</li>
+                </ul>
+              </div>
+              <div className="theme">
+                <h4>테마</h4>
+                <ul>
+                  <li className='on'>엑티비티</li>
+                  <li>힐링</li>
+                  <li>엑티비티</li>
+                  <li>힐링</li>
+                  <li>엑티비티</li>
+                  <li>힐링</li>
+                  <li>엑티비티</li>
+                  <li>힐링</li>
+                </ul>
+              </div>
+            </div>
+            <ul className='sorting'>
+              <li className='on'>이름순</li>
+              <li>랭킹순</li>
+            </ul>
+          </div>
+          <div className='show'>
+            <ShowList data={ListData}/>
+          </div>
         </div>
       </div>
     </PageContainer>

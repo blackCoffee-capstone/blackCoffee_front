@@ -24,6 +24,7 @@
 	--base-color-light : #fafafa;
     --base-color-mid: #cccccc;
     --base-color-dark: #222222;
+	--base-color-grey : #f0f0f0;
 
     --font-color-default: #222222;
     --font-color-sub: #888;
@@ -237,10 +238,35 @@ details[open] summary::after{
     height: 26rem;
     background-color: #eee;
 }
+.c_top_banner:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #000;
+    opacity: .05;
+}
 .c_top_banner img{
     height: 100%;
     width: 100%;
     object-fit: cover;
+}
+.c_top_banner h2{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-weight: var(--font-w-mid);
+    font-size: 3.4rem;
+    text-align: center;
+}
+@media screen and (max-width: 600px) {
+    .c_top_banner h2{
+        font-size: 3rem;
+    }
 }
 /* layout style 끝 */
 

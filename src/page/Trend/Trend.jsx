@@ -91,9 +91,10 @@ function Trend(){
     <PageContainer className='c_main_section'>
       <section className="c_section c_top_banner">
         <img src={require("assets/image/Trend/banner.jpg")} alt="트렌드 페이지 배너" />
+        <h2>최신 트렌드</h2>
       </section>
       <section className='c_section'>
-        <h2 className='c_title'>최신 트렌드</h2>
+        <h2 className='c_title'>여행지 순위</h2>
       </section>
       <section className='c_section result'>
         <div className="c_inner">
