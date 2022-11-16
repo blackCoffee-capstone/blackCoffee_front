@@ -1,3 +1,3 @@
-import * as topNav from './modules/topNavState'
+import * as messageBundle from './modules/messageBundle'
 
-export { topNav };
+export { messageBundle };

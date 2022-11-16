@@ -1,15 +1,20 @@
 // core
 import { lazy, Suspense } from 'react';
+// recoil
+import { RecoilRoot } from 'recoil';
 // router
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// swiper
+// style
+import './assets/style/reset.css'
+import './assets/style/common.css'
 import 'swiper/css/bundle'; // swiper style 한번에 적용
 // component - layout
 import Header from './component/layout/Header'  // 헤더
 import Footer from './component/layout/Footer'  // 푸터
-// component - common
-import LoadingPage from './component/common/LoadingPage'  // 로딩
-import ErrorBoundary from './component/common/ErrorBoundary'  // 에러
+// component - utility
+import LoadingPage from './component/utility/LoadingPage'  // 로딩
+import ErrorBoundary from './component/utility/ErrorBoundary'  // 에러
+import MessageBundle from './component/utility/MessageBundle'  // 팝업 메세지
 // page
 import Home from './page/Home/Home' // 홈
 import Trend from './page/Trend/Trend'  // 최신트렌드
@@ -30,31 +35,34 @@ import NotFound from './page/NotFound'  // 404 NotFound
 function App() {
   return (
     <div className="App">
-      <Router>
-        <Header />
-        <ErrorBoundary>
-          <Suspense fallback={<LoadingPage />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/trend" element={<Trend />} />       
-              <Route path="/recommend" element={<Recommend />} />       
-              <Route path="/search" element={<Search />} />     
-              <Route path="/community" element={<Community />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/findpass" element={<FindPassword />} />
-              <Route path="/mypage" element={<Mypage />} /> 
-              <Route path="/adapplication" element={<AdApplication />} />
-              <Route path="/customer" element={<Customer />} />
-              <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-              <Route path="/emaildenial" element={<EmailDenial />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </ErrorBoundary>
-        <Footer />
-      </Router>
+      <RecoilRoot>
+        <Router>
+          <MessageBundle />
+          <Header />
+          <ErrorBoundary>
+            <Suspense fallback={<LoadingPage />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/trend" element={<Trend />} />       
+                <Route path="/recommend" element={<Recommend />} />       
+                <Route path="/search" element={<Search />} />     
+                <Route path="/community" element={<Community />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/findpass" element={<FindPassword />} />
+                <Route path="/mypage" element={<Mypage />} /> 
+                <Route path="/adapplication" element={<AdApplication />} />
+                <Route path="/customer" element={<Customer />} />
+                <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+                <Route path="/emaildenial" element={<EmailDenial />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </ErrorBoundary>
+          <Footer />
+        </Router>
+      </RecoilRoot>
     </div>
   );
 }
