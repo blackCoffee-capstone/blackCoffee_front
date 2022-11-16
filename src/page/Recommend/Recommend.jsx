@@ -68,7 +68,7 @@ function Recommend(){
   return(
     <PageContainer className='c_main_section'>
       <section className="c_section c_top_banner">
-        <img src={require("assets/image/recommend/banner.jpg")} alt="추천페이지 배너" />
+        <img src={require("assets/image/Recommend/banner.jpg")} alt="추천페이지 배너" />
         <h2>맞춤 추천</h2>
       </section>
       <section className='c_section'>

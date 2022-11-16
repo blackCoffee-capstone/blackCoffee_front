@@ -7,16 +7,16 @@ const PageContainer = styled.section`
   }
 `
 
-function Signin() {
+function Signup() {
   return (
     <PageContainer className='c_main_section'>
       <div className="c_section">
         <div className="c_inner">
-          Signin
+          Signup
         </div>
       </div>
     </PageContainer>
   );
 }
 
-export default Signin
+export default Signup

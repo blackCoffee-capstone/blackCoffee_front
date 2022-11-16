@@ -344,6 +344,7 @@ details[open] summary::after{
     cursor: pointer;
 }
 .c_btn-primary{
+    border: none;
     background: var(--primary-color);
     color: var(--primary-color-contrast);
 }

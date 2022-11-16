@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 // style
 import styled from 'styled-components'
 // img
-import { ReactComponent as Twitter } from "assets/image/common/sns/twiter.svg";
-import { ReactComponent as Facebook } from "assets/image/common/sns/facebook.svg";
-import { ReactComponent as Youtube } from "assets/image/common/sns/youtube.svg";
-import { ReactComponent as InstagramColor } from "assets/image/common/sns/instagram-color.svg";
+import { ReactComponent as Twitter } from "assets/image/common/ci/twiter.svg";
+import { ReactComponent as Facebook } from "assets/image/common/ci/facebook.svg";
+import { ReactComponent as Youtube } from "assets/image/common/ci/youtube.svg";
+import { ReactComponent as InstagramColor } from "assets/image/common/ci/instagram-color.svg";
 
 const FooterContainer = styled.footer`
   border-top: .1rem solid var(--border-color-light);
@@ -47,7 +47,6 @@ const FooterContainer = styled.footer`
           svg{
             height: 100%;
             width: 100%;
-            transition: var(--transition-fast);
           }
           :nth-of-type(1):hover{
             color: #1DA1F2;

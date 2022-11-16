@@ -23,7 +23,9 @@
 
 ## 사용 라이브러리 및 개발 환경
 > `코어`  
-> React(^18.2.0), react-router-dom(^6.4.1), Recoil(^0.7.5)  
+> React(^18.2.0)
+> react-router-dom(^6.4.1), Recoil(^0.7.5)  
+> recoil-persist(^4.2.0)  
 
 > `서브`  
 > styled-components(^5.3.5), axios(^0.27.2)  
@@ -64,25 +66,3 @@
 
 ## Product Backlog & Sprint
 https://docs.google.com/spreadsheets/d/1VS8c7LPu0KjqmS6thqXz_PvC9CyN5DXcX691Xyhasjk/edit#gid=211076120
-  
-### 할일
-- 전체 틀 구성
-- Header, Footer 모바일 반응형 완성
-- 메인페이지 구성
-  
-### 완료
-- ~~sample~~
-
-<br>
-
-## History
-#### 09.25 ~ 10.01: 리엑트 테스트
-- 2022.09.25. 프로젝트 생성 및 기본 세팅
-- 2022.09.27. 기본 구조 세팅, slack 연동
-#### 10.06 ~ 10.19: UI 디자인
-- 2022.10.19. UI 디자인
-#### 10.20 ~ 11.02: 메인, 검색, 상세 페이지 구현
-- 2022.10.23. Header, Footer 완성
-- 2022.10.24. 주요 페이지 생성, 페이지 로딩 처리 완료, 페이지 로딩 에러 처리 완료
-
-

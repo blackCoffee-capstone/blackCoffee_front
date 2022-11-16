@@ -27,19 +27,19 @@ const PageContainer = styled.section`
         display: block;
         border: none;
         height: 100%;
-        width: 100%;
+        flex-grow: 1;
       }
       button{
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        flex-shrink: 0;
         border: none;
         height: 100%;
-        width: 6rem;
+        width: 5.6rem;
         background: var(--primary-color);
         color: var(--primary-color-contrast);
+        padding: 1.5rem;
         svg{
-          width: 50%;
+          margin-top: -2px;
+          margin-right: -2px;
         }
       }
     }
@@ -106,7 +106,7 @@ function Search() {
     <PageContainer className='c_main_section'>
       <section className="c_section c_top_banner">
         <h2>여행지 찾기</h2>
-        <img src={require("assets/image/Search/banner.jpg")}
+        <img src={ require("assets/image/Search/banner.jpg") }
           style={{ objectPosition: "50% 65%" }}
           alt="검색 페이지 배너"
         />
@@ -119,8 +119,8 @@ function Search() {
           <div className="option">
             <div className='search_bar'>
                 <input type="text" placeholder='여행지 이름으로 검색하기'
-                  onKeyDown={(e) => { (e.key == 'Enter') && search() }}
-                  onChange={(e) => { setSearchText(e.currentTarget.value) }}
+                  onKeyUp={(e) => (e.key == 'Enter') && search() }
+                  onChange={(e) => setSearchText(e.currentTarget.value) }
                 />
                 <button className='btn_search'
                   onClick={search}

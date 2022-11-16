@@ -17,6 +17,8 @@ import Recommend from './page/Recommend/Recommend'  // 맞춤 추천
 import Search from './page/Search/Search' // 찾아보기
 import Community from './page/Community/Community'  // 나만의 장소
 import Login from './page/Account/Login'  // 로그인
+const Signup = lazy(() => import('./page/Account/Signup')); // 회원가입
+const FindPassword = lazy(() => import('./page/Account/FindPassword')); // 비밀번호 찾기
 import Mypage from './page/Mypage/Mypage' // 마이페이지 
 const AdApplication = lazy(() => import('./page/AdApplication/AdApplication'));  // 광고 신청 페이지
 const Customer = lazy(() => import('./page/Customer/Customer'));  // 고객센터
@@ -39,6 +41,8 @@ function App() {
               <Route path="/search" element={<Search />} />     
               <Route path="/community" element={<Community />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/findpass" element={<FindPassword />} />
               <Route path="/mypage" element={<Mypage />} /> 
               <Route path="/adapplication" element={<AdApplication />} />
               <Route path="/customer" element={<Customer />} />
