@@ -96,18 +96,12 @@ const PageContainer = styled.section`
 
 function Search() {
   const [ searchText, setSearchText ] = useState();
-  function search(){
-    console.log(searchText)
-  }
-  function onSearchInput(e){
-    const value = e.target.value;
-    if(e.key=='Enter'){
-      search();
-      return;
-    }
-    setSearchText(value);
-  }
 
+  // 검색 함수
+  function search(){
+    console.log(searchText);
+  }
+  
   return (
     <PageContainer className='c_main_section'>
       <section className="c_section c_top_banner">
@@ -125,7 +119,8 @@ function Search() {
           <div className="option">
             <div className='search_bar'>
                 <input type="text" placeholder='여행지 이름으로 검색하기'
-                  onChange={onSearchInput}
+                  onKeyDown={(e) => { (e.key == 'Enter') && search() }}
+                  onChange={(e) => { setSearchText(e.currentTarget.value) }}
                 />
                 <button className='btn_search'
                   onClick={search}
