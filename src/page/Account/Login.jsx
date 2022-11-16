@@ -1,9 +1,14 @@
 // core
 import { useState } from 'react';
+// recoil
+import { useSetRecoilState } from 'recoil';
+import { messageBundle } from 'store/index'
 // router
 import { Link } from 'react-router-dom'
 // style
 import styled from 'styled-components'
+// component
+import InputPassword from './component/InputPassword'
 
 const PageContainer = styled.section`
   .fillup{
@@ -26,34 +31,27 @@ const PageContainer = styled.section`
           @media screen and ( max-width:600px ){
             margin-bottom: 1rem;
           }
-          p{
+          h4{
             margin-bottom: 1rem;
             color: var(--primary-color);
             font-size: var(--font-tiny);
             font-weight: var(--font-w-mid);
+            @media screen and ( max-width:600px ){
+              margin-bottom: 0.5rem;
+            }
           }
           input{
             height: 4.5rem;
-            border: 1px solid var(--primary-color);
-          }
-          .input_wrap{
-            position: relative;
-            .passShow{
-              z-index: 1;
-              position: absolute;
-              top: 50%;
-              right: 0;
-              transform: translate(-50%, -50%);
-              cursor: pointer;
-              img{
-                display: none;
-                width: 2rem;
-                height: 2rem;
-                &.on{
-                  display: block;
-                }
-              }
+            border: 1px solid var(--border-color-default);
+            &:focus{
+              border-color: var(--primary-color);
             }
+          }
+          .error_message{
+            padding-top: 0.2rem;
+            padding-left: 0.2rem;
+            font-size: var(--font-size-x-small);
+            color: var(--danger-color);
           }
         }
         .find_pass{
@@ -122,24 +120,22 @@ const PageContainer = styled.section`
 `
 
 function Login() {
+  const setAlert = useSetRecoilState(messageBundle.alert);
   const [ email, setEmail ] = useState('');
+  const [ emailError, setEmailError ] = useState('');
   const [ password, setPassword ] = useState('');
+  const [ passwordError, setPasswordError ] = useState('');
 
   // 로그인 로직
   function login(){
-    console.log(email, password)
-  }
-
-  // 비밀번호 보이기 토글
-  function togglePassShow(e) {
-    const target = e.currentTarget;
-    if (target.previousElementSibling.type == "text") {
-      target.previousElementSibling.type = "password";
-    } else {
-      target.previousElementSibling.type = "text";
+    setEmailError('');
+    setPasswordError('');
+    if( !email || !password ){
+      if(!email) setEmailError('이메일을 입력해주세요');
+      if(!password) setPasswordError('비밀번호를 입력해주세요');
+    } else{
+      setAlert('샘플. 로그인');
     }
-    target.children[0].classList.toggle("on");
-    target.children[1].classList.toggle("on");
   }
 
   return (
@@ -152,26 +148,18 @@ function Login() {
           <div className="signin">
             <div className="left">
               <div className="email">
-                <p>이메일</p>
+                <h4>이메일</h4>
                 <input type="email" placeholder="이메일 주소"
                   value={email}
-                  onChange={(e)=> setEmail(e.currentTarget.value) }
+                  onChange={(e)=>setEmail(e.currentTarget.value) }
                 />
+                { emailError && <p className='error_message'>{emailError}</p> }
               </div>
               <div className="password">
-                <p>비밀번호</p>
+                <h4>비밀번호</h4>
                 <div className="input_wrap">
-                  <input type="password" placeholder="비밀번호"
-                    required
-                    value={password}
-                    onChange={(e)=> setPassword(e.currentTarget.value) }
-                  />
-                  <div className="passShow"
-                    onClick={ togglePassShow }
-                  >
-                    <img src={ require("assets/image/common/icon/visibility.svg").default } />
-                    <img className="on" src={ require("assets/image/common/icon/visibility_off.svg").default } />
-                  </div>
+                  <InputPassword value={password} onChange={(e)=>setPassword(e.currentTarget.value)} />
+                  { passwordError && <p className='error_message'>{passwordError}</p> }
                 </div>
               </div>
               <Link to="/findpass" className="find_pass">비밀번호 찾기</Link>
