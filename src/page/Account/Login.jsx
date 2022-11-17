@@ -1,14 +1,14 @@
 // core
-import { useState } from 'react';
+import { useState } from 'react'
 // recoil
-import { useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil'
 import { messageBundle } from 'store/index'
 // router
 import { Link } from 'react-router-dom'
 // style
 import styled from 'styled-components'
 // component
-import InputPassword from './component/InputPassword'
+import { InputBasic, InputPassword } from './component/InputBundle'
 
 const PageContainer = styled.section`
   .fillup{
@@ -38,13 +38,6 @@ const PageContainer = styled.section`
             font-weight: var(--font-w-mid);
             @media screen and ( max-width:600px ){
               margin-bottom: 0.5rem;
-            }
-          }
-          input{
-            height: 4.5rem;
-            border: 1px solid var(--border-color-default);
-            &:focus{
-              border-color: var(--primary-color);
             }
           }
           .error_message{
@@ -149,16 +142,19 @@ function Login() {
             <div className="left">
               <div className="email">
                 <h4>이메일</h4>
-                <input type="email" placeholder="이메일 주소"
+                <InputBasic type="email" placeholder="이메일 주소"
                   value={email}
-                  onChange={(e)=>setEmail(e.currentTarget.value) }
+                  onChange={(e)=> setEmail(e.currentTarget.value) }
                 />
                 { emailError && <p className='error_message'>{emailError}</p> }
               </div>
               <div className="password">
                 <h4>비밀번호</h4>
                 <div className="input_wrap">
-                  <InputPassword value={password} onChange={(e)=>setPassword(e.currentTarget.value)} />
+                  <InputPassword
+                    value={password}
+                    onChange={(e)=>setPassword(e.currentTarget.value)}
+                  />
                   { passwordError && <p className='error_message'>{passwordError}</p> }
                 </div>
               </div>

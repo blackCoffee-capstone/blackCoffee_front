@@ -1,9 +1,10 @@
 // core
 import { lazy, Suspense } from 'react';
 // recoil
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot } from 'recoil'
 // router
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import ScrollToTop from 'component/utility/ScrollToTop'
 // style
 import './assets/style/reset.css'
 import './assets/style/common.css'
@@ -39,6 +40,7 @@ function App() {
         <Router>
           <MessageBundle />
           <Header />
+          <ScrollToTop />
           <ErrorBoundary>
             <Suspense fallback={<LoadingPage />}>
               <Routes>

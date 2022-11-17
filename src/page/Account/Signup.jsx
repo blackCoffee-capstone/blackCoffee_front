@@ -5,8 +5,10 @@ import { useSetRecoilState } from 'recoil';
 import { messageBundle } from 'store/index'
 // style
 import styled from 'styled-components'
+// validate
+import { useForm } from "react-hook-form";
 // component
-import InputPassword from './component/InputPassword'
+import { InputBasic, InputPassword } from './component/InputBundle'
 
 const PageContainer = styled.section`
   .fillup{
@@ -43,6 +45,7 @@ const PageContainer = styled.section`
 
 function Signup() {
   const setAlert = useSetRecoilState(messageBundle.alert);
+
   const [ email, setEmail ] = useState('');
   const [ emailError, setEmailError ] = useState('');
   const [ password, setPassword ] = useState('');
@@ -85,7 +88,7 @@ function Signup() {
         <div className="c_inner">
           <div className="email">
             <h4>이메일</h4>
-            <input type="email" placeholder="이메일 주소"
+            <InputBasic type="email" placeholder="이메일 주소"
               value={email}
               onChange={(e)=> setEmail(e.currentTarget.value) }
             />
@@ -93,12 +96,19 @@ function Signup() {
           </div>
           <div className="password">
             <h4>비밀번호</h4>
-            <InputPassword value={password} onChange={(e)=>setPassword(e.currentTarget.value)} />
+            <InputPassword
+              value={password}
+              onChange={(e)=>setPassword(e.currentTarget.value)}
+            />
             { passwordError && <p className='error_message'>{passwordError}</p> }
           </div>
           <div className="repass">
             <h4>비밀번호 재입력</h4>
-            <InputPassword value={repass} onChange={(e)=>setRepass(e.currentTarget.value)} />
+            <InputPassword
+              value={repass}
+              onChange={(e)=>setRepass(e.currentTarget.value)}
+              placeholder="비밀번호 재입력"
+            />
             { repassError && <p className='error_message'>{repassError}</p> }
           </div>
           <button className='c_btn-primary'
