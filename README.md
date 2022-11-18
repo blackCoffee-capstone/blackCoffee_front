@@ -31,7 +31,6 @@
 > styled-components(^5.3.5), axios(^0.27.2)  
 > react-router-hash-link(^2.4.3) - 앵커 기능  
 > react-daum-postcode(^3.1.1) - 주소검색  
-> react-hook-form(^7.39.4) - 입력 유효성 검사
 
 > `UI 라이브러리`  
 > lottie-react(^2.3.1), swiper(^8.4.4)  

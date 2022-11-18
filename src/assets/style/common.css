@@ -129,7 +129,7 @@ input[type="email"],
 input[type="tel"],
 input[type="number"],
 input[type="password"]{
-	padding: 0.5em 0.5em 0.5em 1em;
+	padding: 0.5em 1em;
     width: 100%;
     border-radius: var(--border-radius-mid);
 }

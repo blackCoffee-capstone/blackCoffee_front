@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 // style
 import styled from 'styled-components'
 // component
-import { InputBasic, InputPassword } from './component/InputBundle'
+import { InputEmail, InputPassword } from './component/InputBundle'
 
 const PageContainer = styled.section`
   .fillup{
@@ -142,7 +142,7 @@ function Login() {
             <div className="left">
               <div className="email">
                 <h4>이메일</h4>
-                <InputBasic type="email" placeholder="이메일 주소"
+                <InputEmail
                   value={email}
                   onChange={(e)=> setEmail(e.currentTarget.value) }
                 />

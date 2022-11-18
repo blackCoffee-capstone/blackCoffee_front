@@ -5,10 +5,8 @@ import { useSetRecoilState } from 'recoil';
 import { messageBundle } from 'store/index'
 // style
 import styled from 'styled-components'
-// validate
-import { useForm } from "react-hook-form";
 // component
-import { InputBasic, InputPassword } from './component/InputBundle'
+import { InputBasic, InputEmail, InputPassword } from './component/InputBundle'
 
 const PageContainer = styled.section`
   .fillup{
@@ -20,13 +18,6 @@ const PageContainer = styled.section`
         margin-bottom: 1rem;
         color: var(--primary-color);
         font-weight: var(--font-w-mid);
-      }
-      input{
-        height: 4.5rem;
-        border: 1px solid var(--border-color-default);
-        &:focus{
-          border-color: var(--primary-color);
-        }
       }
       .error_message{
         padding-top: 0.2rem;
@@ -48,6 +39,8 @@ function Signup() {
 
   const [ email, setEmail ] = useState('');
   const [ emailError, setEmailError ] = useState('');
+  const [ nickname, setNickname ] = useState('');
+  const [ nicknameError, setNicknameError ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ passwordError, setPasswordError ] = useState('');
   const [ repass, setRepass ] = useState('');
@@ -55,6 +48,7 @@ function Signup() {
 
   const resetError = useCallback(()=>{
     setEmailError('');
+    setNicknameError('');
     setPasswordError('');
     setRepassError('');
   })
@@ -68,12 +62,16 @@ function Signup() {
   // 회원가입 로직
   function signup(){
     resetError();
-    if( !email || !password ){
+    if( !email || !password || !nickname ){
       if(!email) setEmailError('이메일을 입력해주세요');
+      if(!nickname) setNicknameError('닉네임을 입력해주세요');
       if(!password) setPasswordError('비밀번호를 입력해주세요');
     } else if( password != repass ){
       setRepassError('비밀번호가 일치하지 않습니다');
     } else{
+      // axios.get('https://jsonplaceholder.typicode.com/posts')
+      // .then(res=> console.log(res));
+
       setAlert('샘플. 회원가입이 완료되었습니다');
       resetAll();
     }
@@ -88,11 +86,19 @@ function Signup() {
         <div className="c_inner">
           <div className="email">
             <h4>이메일</h4>
-            <InputBasic type="email" placeholder="이메일 주소"
+            <InputEmail
               value={email}
               onChange={(e)=> setEmail(e.currentTarget.value) }
             />
             { emailError && <p className='error_message'>{emailError}</p> }
+          </div>
+          <div className="nickname">
+            <h4>닉네임</h4>
+            <InputBasic placeholder="닉네임 입력"
+              value={nickname}
+              onChange={(e)=> setNickname(e.currentTarget.value) }
+            />
+            { nicknameError && <p className='error_message'>{nicknameError}</p> }
           </div>
           <div className="password">
             <h4>비밀번호</h4>
@@ -104,10 +110,9 @@ function Signup() {
           </div>
           <div className="repass">
             <h4>비밀번호 재입력</h4>
-            <InputPassword
+            <InputPassword placeholder="비밀번호 재입력"
               value={repass}
               onChange={(e)=>setRepass(e.currentTarget.value)}
-              placeholder="비밀번호 재입력"
             />
             { repassError && <p className='error_message'>{repassError}</p> }
           </div>

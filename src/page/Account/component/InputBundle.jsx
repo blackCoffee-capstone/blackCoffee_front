@@ -1,7 +1,7 @@
 // core
 import { useCallback } from 'react';
 // style
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 const InputContainer = styled.div`
   position: relative;
@@ -11,6 +11,8 @@ const InputContainer = styled.div`
     &:focus{
       border-color: var(--primary-color);
     }
+    /* password */
+    padding-right: ${(props) => props.type=="password" && "4rem"};
   }
 `
 const PassShow = styled.div`
@@ -29,45 +31,54 @@ const PassShow = styled.div`
     }
   }
 `
-
-function InputBasic({ children, ...props }) {   // 기본 인풋 컴포넌트
+// 기본 입력 컴포넌트
+function InputBasic({ children, ...props }) {
   return(
-    <InputContainer>
+    <InputContainer type={props.type} >
       <input
         type={props.type ?? 'text'}
-        placeholder={props.placeholder ?? '입력해주세요'}
         {...props}
       />
       {children}
     </InputContainer>
   )
 }
+// 이메일 입력 컴포넌트
+function InputEmail(props) {
+  return(
+    <InputBasic
+      type="email"
+      placeholder="이메일 주소"
+      {...props}
+    />
+  )
+}
+// 비밀번호 입력 컴포넌트
+function InputPassword(props) {
+  // 비밀번호 보기 토글
+  const togglePassShow = useCallback((e)=>{
+    const target = e.currentTarget;
+    if (target.previousElementSibling.type == "text") {
+      target.previousElementSibling.type = "password";
+    } else {
+      target.previousElementSibling.type = "text";
+    }
+    target.children[0].classList.toggle("on");
+    target.children[1].classList.toggle("on");
+  })
 
-function InputPassword(props) { // 비밀번호 컴포넌트
-    // 비밀번호 보기 토글 함수
-    const togglePassShow = useCallback((e)=>{
-      const target = e.currentTarget;
-      if (target.previousElementSibling.type == "text") {
-        target.previousElementSibling.type = "password";
-      } else {
-        target.previousElementSibling.type = "text";
-      }
-      target.children[0].classList.toggle("on");
-      target.children[1].classList.toggle("on");
-    })
-  
-    return(
-      <InputBasic type="password" placeholder={props.placeholder ?? '비밀번호'}
-        {...props}
+  return(
+    <InputBasic type="password" placeholder={props.placeholder ?? '비밀번호'}
+      {...props}
+    >
+      <PassShow
+        onClick={ togglePassShow }
       >
-        <PassShow
-          onClick={ togglePassShow }
-        >
-          <img src={ require("assets/image/common/icon/visibility.svg").default } />
-          <img className="on" src={ require("assets/image/common/icon/visibility_off.svg").default } />
-        </PassShow>
-      </InputBasic>
-    )
-  }
+        <img src={ require("assets/image/common/icon/visibility.svg").default } />
+        <img className="on" src={ require("assets/image/common/icon/visibility_off.svg").default } />
+      </PassShow>
+    </InputBasic>
+  )
+}
 
-export { InputBasic, InputPassword }
+export { InputBasic, InputEmail, InputPassword }

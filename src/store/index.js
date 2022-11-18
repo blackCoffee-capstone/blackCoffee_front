@@ -1,3 +1,4 @@
 import * as messageBundle from './modules/messageBundle'
+import * as token from './modules/token'
 
-export { messageBundle };
+export { token, messageBundle };
