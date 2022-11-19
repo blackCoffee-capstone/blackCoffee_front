@@ -1,5 +1,7 @@
 // style
 import styled from 'styled-components'
+// router
+import { useNavigate  } from 'react-router-dom';
 
 const ListContainer = styled.ul`
   width: 100%;
@@ -99,16 +101,19 @@ const ListContainer = styled.ul`
 
 function ShowList(props){
   const data = props.data ?? [];
+  const navigate = useNavigate();
 
   return (
     <ListContainer>
       {
         data.map((el, i) => {
           return(
-            <li key={el.id}>
+            <li key={el.id}
+              onClick={()=>navigate(`/spot/${el.id}`)}
+            >
               <div className='ranking'>{i+1}</div>
               <div className='spot'>
-                <img src={el.image} alt={el.name} />
+                <img src={el.images[0]} alt={el.name} />
                 <div className="textbox">
                   <h3>{el.name}</h3>
                   <p>{el.location}</p>

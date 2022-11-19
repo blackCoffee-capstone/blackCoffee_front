@@ -22,6 +22,7 @@ import Trend from './page/Trend/Trend'  // 최신트렌드
 import Recommend from './page/Recommend/Recommend'  // 맞춤 추천
 import Search from './page/Search/Search' // 찾아보기
 import Community from './page/Community/Community'  // 나만의 장소
+const Spot = lazy(() => import('./page/Spot/Spot')); // 여행지 상세페이지
 import Login from './page/Account/Login'  // 로그인
 const Signup = lazy(() => import('./page/Account/Signup')); // 회원가입
 const FindPassword = lazy(() => import('./page/Account/FindPassword')); // 비밀번호 찾기
@@ -45,10 +46,11 @@ function App() {
             <Suspense fallback={<LoadingPage />}>
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/trend" element={<Trend />} />       
-                <Route path="/recommend" element={<Recommend />} />       
-                <Route path="/search" element={<Search />} />     
+                <Route path="/trend" element={<Trend />} />
+                <Route path="/recommend" element={<Recommend />} /> 
+                <Route path="/search" element={<Search />} />
                 <Route path="/community" element={<Community />} />
+                <Route path="/spot/:spotId" element={<Spot />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/findpass" element={<FindPassword />} />

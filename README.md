@@ -31,6 +31,7 @@
 > styled-components(^5.3.5), axios(^0.27.2)  
 > react-router-hash-link(^2.4.3) - 앵커 기능  
 > react-daum-postcode(^3.1.1) - 주소검색  
+> react-kakao-maps-sdk(^1.1.5) - 카카오 맵
 
 > `UI 라이브러리`  
 > lottie-react(^2.3.1), swiper(^8.4.4)  

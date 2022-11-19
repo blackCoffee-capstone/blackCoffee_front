@@ -244,7 +244,7 @@ function Home() {
           loop
           speed={500}
           autoplay={{
-            delay: 5500,
+            delay: 4000,
             disableOnInteraction: false,
           }}
         >
