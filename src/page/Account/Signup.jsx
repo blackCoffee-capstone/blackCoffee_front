@@ -2,7 +2,7 @@
 import { useState, useCallback } from 'react';
 // redux
 import { useDispatch } from 'react-redux'
-import { alert } from 'store/modules/messageBundle';
+import { alert } from 'store/slice/messageBundle';
 // style
 import styled from 'styled-components'
 // component

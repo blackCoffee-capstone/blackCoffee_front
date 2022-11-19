@@ -3,10 +3,7 @@ export const messageBundleSlice = createSlice({
   name: "messageBundle",
   initialState: { 
     alert: "",
-    confirm: {
-      message: "",
-      callback: null
-    },
+    confirm: "",
     error: "",
   },
   reducers: {
@@ -14,7 +11,6 @@ export const messageBundleSlice = createSlice({
       state.alert = action.payload
     },
     confirm:(state, action) => {
-      console.log(action.payload);
       state.confirm = action.payload
     },
     error:(state, action) => {

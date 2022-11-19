@@ -2,7 +2,7 @@
 import styled from "styled-components"
 // redux
 import { useSelector, useDispatch } from 'react-redux'
-import { alert, error, confirm } from 'store/modules/messageBundle';
+import { alert, error } from 'store/slice/messageBundle';
 
 const BundleCommon = styled.div` // MessageBundle 공통
   z-index: 1000;
@@ -52,8 +52,8 @@ const Alert = styled(BundleCommon)`
 const Confirm = styled(BundleCommon)`
   .btn_continue {
     margin-right: 10px;
-    background-color: var(--base-color-light);
-    color: #000;
+    background-color: var(--secondary-color);
+    color: var(--secondary-color-contrast);
     &:hover {
       filter: brightness(0.93);
     }
@@ -84,7 +84,7 @@ function MessageBundle(){
   return(
     <>
       {
-        (messageBundle.alert || messageBundle.confirm?.message || messageBundle.error) && (
+        (messageBundle.alert || messageBundle.error) && (
           <div className="c_screen_filter" style={{zIndex: 1000}}></div>
         )
       }
@@ -102,28 +102,32 @@ function MessageBundle(){
           </Alert>
         )
       }
-      { // confirm 팝업
-        messageBundle.confirm?.message && (
+      {/* { // confirm 팝업
+        messageBundle.confirm && (
           <Confirm className="confirm">
             <div className="message">
-              <p>{messageBundle.confirm.message}</p>
+              <p>{messageBundle.confirm}</p>
               <button className="btn btn_continue"
                 onClick={()=>{
-                  // messageBundle.confirm.callback();
-                  dispatch(confirm('', null));
+                  messageBundle.confirmCallback();
+                  dispatch(confirm(''));
+                  dispatch(confirmCallback(null));
                 }}
               >
                 확인
               </button>
               <button className="btn btn_close"
-                onClick={()=>dispatch(confirm({message: '', callback: null}))}
+                onClick={()=>{
+                  dispatch(confirm(''));
+                  dispatch(confirmCallback(null));
+                }}
               >
                 취소
               </button>
             </div>
           </Confirm>
         )
-      }
+      } */}
       { // error 팝업
         messageBundle.error && (
           <Error className="error">

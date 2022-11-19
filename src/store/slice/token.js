@@ -8,9 +8,10 @@ export const tokenSlice = createSlice({
   },
   reducers: {
     refresh:(state, action) => {
-      state = action.payload
+      state.accessToken = action.payload
     },
   },
 });
 
+export const { refresh } = tokenSlice.actions;
 export default tokenSlice.reducer;

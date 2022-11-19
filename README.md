@@ -53,7 +53,7 @@
 ### 프로젝트 구조
 * _'src/assests/style'_ 폴더 안의 `reset.js`와 `common.js`는 전체에 적용될 기본 css 스타일 지정.
 * 루트 컴포넌트 `App`에서 주요 컴포넌트 들의 layout 구성
-* `redux` 파일들은 _'src/store_ 폴더에 들어있고, 주요 기능 별로 _'src/store/modules'_안에 `slice`들로 나눈다. 모듈화한 redux slice들은 `store.js`에서 합쳐진다.
+* `redux` 파일들은 _'src/store_ 폴더에 들어있고, 주요 기능 별로 `slice`로 나누어 _'src/store/slice'_안에 둔다. 해당 redux slice들은 `store.js`에서 합쳐진다.
 
 ### z-index 목록
 1. MessageBundle: 1000

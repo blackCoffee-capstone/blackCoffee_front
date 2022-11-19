@@ -2,7 +2,7 @@
 import { useState } from 'react'
 // redux
 import { useDispatch } from 'react-redux'
-import { alert, confirm } from 'store/modules/messageBundle';
+import { alert } from 'store/slice/messageBundle';
 // router
 import { Link } from 'react-router-dom'
 // style
@@ -131,7 +131,7 @@ function Login() {
       if(!email) setEmailError('이메일을 입력해주세요');
       if(!password) setPasswordError('비밀번호를 입력해주세요');
     } else{
-      dispatch(confirm('샘플. 로그인',()=>console.log('hello')));
+      dispatch(alert('샘플. 로그인'));
     }
   }
 
