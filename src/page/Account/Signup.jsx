@@ -1,8 +1,8 @@
 // core
 import { useState, useCallback } from 'react';
-// redux
-import { useDispatch } from 'react-redux'
-import { alert } from 'store/slice/messageBundle';
+// recoil
+import { useSetRecoilState } from 'recoil';
+import { messageBundle } from 'store/index'
 // style
 import styled from 'styled-components'
 // component
@@ -35,7 +35,7 @@ const PageContainer = styled.section`
 `
 
 function Signup() {
-  const dispatch = useDispatch();
+  const setAlert = useSetRecoilState(messageBundle.alert);
 
   const [ email, setEmail ] = useState('');
   const [ emailError, setEmailError ] = useState('');
@@ -72,7 +72,7 @@ function Signup() {
       // axios.get('https://jsonplaceholder.typicode.com/posts')
       // .then(res=> console.log(res));
 
-      dispatch(alert('샘플. 회원가입이 완료되었습니다'));
+      setAlert('샘플. 회원가입이 완료되었습니다');
       resetAll();
     }
   }

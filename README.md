@@ -23,25 +23,23 @@
 
 ## 사용 라이브러리 및 개발 환경
 > `코어`  
-> React(^18.2.0)  
-> react-router-dom(^6.4.1)  
-> redux(^4.2.0), react-redux(^8.0.5), @reduxjs/toolkit(^1.9.0)  
+> React(^18.2.0)
+> react-router-dom(^6.4.1), Recoil(^0.7.5)  
 
 > `서브`  
 > styled-components(^5.3.5)  
 > axios(^0.27.2)  
-> redux-persist(^6.0.0)  
+> recoil-persist(^4.2.0)  
 > react-router-hash-link(^2.4.3) - 앵커 기능  
-> react-daum-postcode(^3.1.1) - 주소 검색  
+> react-daum-postcode(^3.1.1) - 주소검색  
 > react-kakao-maps-sdk(^1.1.5) - 카카오 맵
 
 > `UI 라이브러리`  
-> lottie-react(^2.3.1) - 애니메이션  
-> swiper(^8.4.4) - 슬라이드  
+> lottie-react(^2.3.1), swiper(^8.4.4)  
 
 > `개발 환경`  
-> node -v : v18.12.1  
-> npm -v : 8.19.2  
+> node -v : v16.13.0  
+> npm -v : 8.1.0  
   
 ## 시작하기
 > `npm install`  
@@ -51,9 +49,9 @@
 
 ## 프로젝트 설명
 ### 프로젝트 구조
-* _'src/assests/style'_ 폴더 안의 `reset.js`와 `common.js`는 전체에 적용될 기본 css 스타일 지정.
-* 루트 컴포넌트 `App`에서 주요 컴포넌트 들의 layout 구성
-* `redux` 파일들은 _'src/store_ 폴더에 들어있고, 주요 기능 별로 `slice`로 나누어 _'src/store/slice'_안에 둔다. 해당 redux slice들은 `store.js`에서 합쳐진다.
+* _'src/style'_ 폴더 안의 `reset.js`와 `common.js`는 전체 스타일 적용하는 css 느낌으로 사용중이다.
+* 루트 컴포넌트 `App`에선 주요 컴포넌트 들의 layout만 구성한다.
+* `recoil` 파일들은 _'src/store'_ 폴더에 들어있고, 주요 기능 별로 _'store/modules'_안에 모듈화 해둔다. 모듈화한 파일들은 `index.js`에서 합쳐서 `export` 된다.
 
 ### z-index 목록
 1. MessageBundle: 1000

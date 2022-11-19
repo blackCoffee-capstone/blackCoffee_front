@@ -1,5 +1,8 @@
 // core
 import { lazy, Suspense } from 'react';
+// recoil
+import { RecoilRoot } from 'recoil'
+
 // router
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import ScrollToTop from 'component/utility/ScrollToTop'
@@ -36,35 +39,37 @@ import NotFound from './page/NotFound'  // 404 NotFound
 function App() {
   return (
     <div className="App">
-      <MessageBundle />
-      <Router>
-        <ScrollToTop />
-        <Header />
-        <ErrorBoundary>
-          <Suspense fallback={<LoadingPage />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/trend" element={<Trend />} />
-              <Route path="/recommend" element={<Recommend />} /> 
-              <Route path="/search" element={<Search />} />
-              <Route path="/community" element={<Community />} />
-              <Route path="/spot/:spotId" element={<Spot />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/choosetheme" element={<ChooseTheme />} />
-              <Route path="/findpass" element={<FindPassword />} />
-              <Route path="/mypage" element={<Mypage />} /> 
-              <Route path="/adapplication" element={<AdApplication />} />
-              <Route path="/customer" element={<Customer />} />
-              <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-              <Route path="/emaildenial" element={<EmailDenial />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </ErrorBoundary>
-        <Footer />
-      </Router>
+      <RecoilRoot>
+        <Router>
+          <MessageBundle />
+          <Header />
+          <ScrollToTop />
+          <ErrorBoundary>
+            <Suspense fallback={<LoadingPage />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/trend" element={<Trend />} />
+                <Route path="/recommend" element={<Recommend />} /> 
+                <Route path="/search" element={<Search />} />
+                <Route path="/community" element={<Community />} />
+                <Route path="/spot/:spotId" element={<Spot />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/choosetheme" element={<ChooseTheme />} />
+                <Route path="/findpass" element={<FindPassword />} />
+                <Route path="/mypage" element={<Mypage />} /> 
+                <Route path="/adapplication" element={<AdApplication />} />
+                <Route path="/customer" element={<Customer />} />
+                <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+                <Route path="/emaildenial" element={<EmailDenial />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </ErrorBoundary>
+          <Footer />
+        </Router>
+      </RecoilRoot>
     </div>
   );
 }
