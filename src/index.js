@@ -1,11 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+// recoil
+import { RecoilRoot } from 'recoil'
+// style
+import './assets/style/reset.css'
+import './assets/style/common.css'
+import 'swiper/css/bundle'; // swiper style 한번에 적용
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <RecoilRoot>
+      <App />
+    </RecoilRoot>
   </React.StrictMode>
 );
 
