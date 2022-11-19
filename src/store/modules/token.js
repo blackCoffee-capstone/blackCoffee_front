@@ -1,17 +1,16 @@
-import { atom } from 'recoil'
-import { recoilPersist } from 'recoil-persist'
+import { createSlice } from '@reduxjs/toolkit';
 
-const { persistAtom } = recoilPersist()
+export const tokenSlice = createSlice({
+  name: "token",
+  initialState: { 
+    accessToken: "",
+    refreshToken: ""
+  },
+  reducers: {
+    refresh:(state, action) => {
+      state = action.payload
+    },
+  },
+});
 
-const accessToken = atom({
-  key: 'accessToken',
-  default: '',
-  effects_UNSTABLE: [persistAtom],
-})
-const refreshToken = atom({
-  key: 'refreshToken',
-  default: '',
-  effects_UNSTABLE: [persistAtom],
-})
-
-export { accessToken, refreshToken };
+export default tokenSlice.reducer;

@@ -1,8 +1,8 @@
 // core
 import { useState } from 'react'
-// recoil
-import { useSetRecoilState } from 'recoil'
-import { messageBundle } from 'store/index'
+// redux
+import { useDispatch } from 'react-redux'
+import { alert, confirm } from 'store/modules/messageBundle';
 // router
 import { Link } from 'react-router-dom'
 // style
@@ -12,6 +12,9 @@ import { InputEmail, InputPassword } from './component/InputBundle'
 
 const PageContainer = styled.section`
   .fillup{
+    .c_inner{
+      max-width: 100rem;
+    }
     .signin{
       display: flex;
       flex-direction: row;
@@ -113,7 +116,8 @@ const PageContainer = styled.section`
 `
 
 function Login() {
-  const setAlert = useSetRecoilState(messageBundle.alert);
+  const dispatch = useDispatch();
+  
   const [ email, setEmail ] = useState('');
   const [ emailError, setEmailError ] = useState('');
   const [ password, setPassword ] = useState('');
@@ -127,7 +131,7 @@ function Login() {
       if(!email) setEmailError('이메일을 입력해주세요');
       if(!password) setPasswordError('비밀번호를 입력해주세요');
     } else{
-      setAlert('샘플. 로그인');
+      dispatch(confirm('샘플. 로그인',()=>console.log('hello')));
     }
   }
 

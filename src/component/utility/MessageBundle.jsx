@@ -1,8 +1,8 @@
 // style
 import styled from "styled-components"
-// recoil
-import { useRecoilState } from 'recoil';
-import { messageBundle } from 'store/index'
+// redux
+import { useSelector, useDispatch } from 'react-redux'
+import { alert, error, confirm } from 'store/modules/messageBundle';
 
 const BundleCommon = styled.div` // MessageBundle 공통
   z-index: 1000;
@@ -78,26 +78,23 @@ const Error = styled(BundleCommon)`
 `
 
 function MessageBundle(){
-  const [ alert, setAlert ] = useRecoilState(messageBundle.alert);
-  const [ confirm, setConfirm ] = useRecoilState(messageBundle.confirm);
-  const [ error, setError ] = useRecoilState(messageBundle.error);
+  const messageBundle = useSelector((state) => state.messageBundle);
+  const dispatch = useDispatch();
 
   return(
     <>
       {
-        (alert || confirm.message || error) && (
+        (messageBundle.alert || messageBundle.confirm?.message || messageBundle.error) && (
           <div className="c_screen_filter" style={{zIndex: 1000}}></div>
         )
       }
       { // alert 팝업
-        alert && (
-          <Alert className="alert" 
-            // v-show="alertBundle.alertContent"
-          >
+        messageBundle.alert && (
+          <Alert className="alert">
             <div className="message">
-              <p>{alert}</p>
+              <p>{messageBundle.alert}</p>
               <button className="btn btn_close"
-                onClick={()=>setAlert('')}
+                onClick={()=>dispatch(alert(''))}
               >
                 확인
               </button>
@@ -106,17 +103,20 @@ function MessageBundle(){
         )
       }
       { // confirm 팝업
-        confirm.message && (
+        messageBundle.confirm?.message && (
           <Confirm className="confirm">
             <div className="message">
-              <p>{confirm.message}</p>
+              <p>{messageBundle.confirm.message}</p>
               <button className="btn btn_continue"
-                // @click="alertBundle.confirmContinue"
+                onClick={()=>{
+                  // messageBundle.confirm.callback();
+                  dispatch(confirm('', null));
+                }}
               >
                 확인
               </button>
               <button className="btn btn_close"
-                onClick={()=>setConfirm({message: '', callback: null})}
+                onClick={()=>dispatch(confirm({message: '', callback: null}))}
               >
                 취소
               </button>
@@ -125,12 +125,12 @@ function MessageBundle(){
         )
       }
       { // error 팝업
-        error && (
+        messageBundle.error && (
           <Error className="error">
             <div className="message">
-              <p>{error}</p>
+              <p>{messageBundle.error}</p>
               <button className="btn btn_close"
-                onClick={()=>setError('')}
+                onClick={()=>dispatch(error(''))}
               >
                 확인
               </button>

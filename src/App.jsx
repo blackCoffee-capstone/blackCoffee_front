@@ -1,7 +1,8 @@
 // core
 import { lazy, Suspense } from 'react';
-// recoil
-import { RecoilRoot } from 'recoil'
+// redux
+import store from 'store/store';
+import { Provider } from 'react-redux';
 // router
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import ScrollToTop from 'component/utility/ScrollToTop'
@@ -38,7 +39,7 @@ import NotFound from './page/NotFound'  // 404 NotFound
 function App() {
   return (
     <div className="App">
-      <RecoilRoot>
+      <Provider store={store}>
         <Router>
           <MessageBundle />
           <Header />
@@ -68,7 +69,7 @@ function App() {
           </ErrorBoundary>
           <Footer />
         </Router>
-      </RecoilRoot>
+      </Provider>
     </div>
   );
 }
