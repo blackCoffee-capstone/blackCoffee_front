@@ -235,8 +235,13 @@ details[open] summary::after{
     align-items: center;
     justify-content: center;
     margin: 0;
-    height: 26rem;
+    height: 25rem;
     background-color: #eee;
+}
+@media screen and (max-width: 600px) {
+    .c_top_banner{
+        height: 23rem;
+    }
 }
 .c_top_banner:before {
     content: "";
@@ -246,7 +251,11 @@ details[open] summary::after{
     right: 0;
     bottom: 0;
     background-color: #000;
-    opacity: .05;
+    opacity: .1;
+}
+.c_top_banner picture{
+    height: 100%;
+    width: 100%;
 }
 .c_top_banner img{
     height: 100%;

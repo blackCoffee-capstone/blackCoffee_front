@@ -171,9 +171,9 @@ function Header() {
           </div>
 
           <nav className="nav_menu">
-            <Link to="/search">
-              <SearchSvg />
-            </Link>
+            {/* <Link to="/mypage">
+              <MypageSvg />
+            </Link> */}
             <button className={`menu_btn ${isMenuOpen ? 'open' : ''}`}
               onClick={()=>setIsMenuOpen(!isMenuOpen)} 
             >

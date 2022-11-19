@@ -1,7 +1,7 @@
 // style
 import styled from 'styled-components'
 // router
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const ListContainer = styled.ul`
   width: 100%;
@@ -100,13 +100,13 @@ const ListContainer = styled.ul`
 `
 
 function ShowList(props){
-  const data = props.data ?? [];
+  const spots = props.spots ?? [];
   const navigate = useNavigate();
 
   return (
     <ListContainer>
       {
-        data.map((el, i) => {
+        spots.map((el, i) => {
           return(
             <li key={el.id}
               onClick={()=>navigate(`/spot/${el.id}`)}
@@ -132,10 +132,9 @@ function ShowList(props){
         })
       }
       {
-        data.length==0 && (
+        spots.length==0 && (
           <p>데이터가 없습니다</p>
         )
-
       }
     </ListContainer>
   )

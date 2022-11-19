@@ -201,7 +201,30 @@ function Spot(){
           </div>
           <div className='sns'>
             <h3><InstagramColor />관련 SNS 포스팅</h3>
-            <p>{spotData.detailSnsPost}</p>
+            { // 포스팅 하나일때
+              spotData.detailSnsPost.length==1 &&
+              <div className='posts'>
+                <div className='post'>
+                  <a href={spotData.detailSnsPost[0].photoUrl}>{spotData.detailSnsPost[0].photoUrl}</a>
+                </div>
+              </div>
+            }
+            { // 이미지 여러개면 swiper로
+              spotData.detailSnsPost.length>1 &&
+              <Swiper className='img_swiper'
+                slidesPerView="auto"
+              >
+                {
+                  spotData.detailSnsPost.map((el, i) => {
+                    return(
+                      <SwiperSlide key={i}>
+                        <a href={el.photoUrl}>{el.photoUrl}</a>
+                      </SwiperSlide>
+                    )
+                  })
+                }
+          </Swiper>
+        }
           </div>
         </div>
       </section>

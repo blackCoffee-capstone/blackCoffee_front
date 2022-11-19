@@ -155,7 +155,7 @@ function Search() {
             </ul>
           </div>
           <div className='show'>
-            <ShowList data={ListData}/>
+            <ShowList spots={ListData}/>
           </div>
         </div>
       </div>

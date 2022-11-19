@@ -25,6 +25,7 @@ import Community from './page/Community/Community'  // 나만의 장소
 const Spot = lazy(() => import('./page/Spot/Spot')); // 여행지 상세페이지
 import Login from './page/Account/Login'  // 로그인
 const Signup = lazy(() => import('./page/Account/Signup')); // 회원가입
+const ChooseTheme = lazy(() => import('./page/Account/ChooseTheme')); // 취향 선택
 const FindPassword = lazy(() => import('./page/Account/FindPassword')); // 비밀번호 찾기
 import Mypage from './page/Mypage/Mypage' // 마이페이지 
 const AdApplication = lazy(() => import('./page/AdApplication/AdApplication'));  // 광고 신청 페이지
@@ -53,6 +54,7 @@ function App() {
                 <Route path="/spot/:spotId" element={<Spot />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
+                <Route path="/choosetheme" element={<ChooseTheme />} />
                 <Route path="/findpass" element={<FindPassword />} />
                 <Route path="/mypage" element={<Mypage />} /> 
                 <Route path="/adapplication" element={<AdApplication />} />
