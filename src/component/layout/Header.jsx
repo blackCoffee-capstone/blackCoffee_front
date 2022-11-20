@@ -1,12 +1,15 @@
 // core
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+// recoil
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { token, messageBundle } from 'store/index'
 // router
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 // style
 import styled from 'styled-components'
 // img
 import { ReactComponent as LogoSvg } from "assets/image/common/logo.svg";
-import { ReactComponent as SearchSvg }  from "assets/image/common/icon/search.svg";
+import { ReactComponent as LogoutSvg }  from "assets/image/common/icon/logout.svg";
 import { ReactComponent as MypageSvg }  from "assets/image/common/icon/mypage.svg";
 import { ReactComponent as MenuSvg }  from "assets/image/common/icon/menu.svg";
 import { ReactComponent as CloseSvg }  from "assets/image/common/icon/close.svg";
@@ -126,11 +129,20 @@ const HeaderContainer = styled.header`
     a:hover {
       background-color: var(--effect-color);
     }
+    .logout svg{
+      stroke: none;
+      width: 24px;
+      height: 24px;
+    }
   }
 `
 
 function Header() {
   const location = useLocation(); // for route change detect
+  const navigate = useNavigate();
+  const [ accessToken, setAccessToken ] = useRecoilState(token.accessToken);
+  const setRefreshToken = useSetRecoilState(token.refreshToken);
+  const setAlert = useSetRecoilState(messageBundle.alert);
 
   // 메뉴 열렸는지
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -153,6 +165,13 @@ function Header() {
       setMenuBG(false);
     }
   }
+
+  const logout = useCallback(()=>{
+    navigate('/');
+    setAccessToken('');
+    setRefreshToken('');
+    setAlert('로그아웃 되셨습니다')
+  })
 
   // 라우트 바뀔때
   useEffect(() => {
@@ -190,7 +209,14 @@ function Header() {
         <Link to="/search">여행지 찾기</Link>
         <Link to="/community">나만의 장소</Link>
         <Link to="/mypage"><MypageSvg />마이페이지</Link>
-        <Link to="/login">로그인/회원가입</Link>
+        {
+          !accessToken &&
+          <Link to="/login">로그인/회원가입</Link>
+        }
+        {
+          accessToken &&
+          <a className='logout' onClick={()=>logout()}><LogoutSvg />로그아웃</a>
+        }
       </nav>
     </HeaderContainer>
   );

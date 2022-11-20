@@ -66,7 +66,7 @@ const ListContainer = styled.ul`
       }
     }
     .volume,
-    .updown{
+    .variance{
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
@@ -77,6 +77,13 @@ const ListContainer = styled.ul`
       p{
         font-weight: var(--font-w-bold);
         font-size: var(--font-size-large);
+        &.new{
+          color: red;
+          margin-top: -2px;
+        }
+        &.up{
+          color: orangered;
+        }
       }
     }
     .volume{
@@ -91,13 +98,18 @@ const ListContainer = styled.ul`
         display: none;
       }
       .volume,
-      .updown{
+      .variance{
         flex-direction: row;
+        width: auto;
       }
     }
   }
-  
 `
+
+const sampleImage = [
+  "https://lh5.googleusercontent.com/p/AF1QipPe9z6ajG6Zq1WFp6CuVb3VXdgMNI1sWJeuB0Ni=w408-h306-k-no", "https://images.unsplash.com/photo-1503932860988-56df256a6c5f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+  "https://lh5.googleusercontent.com/p/AF1QipPNxflItffH0d_R7QaGqV5rLkQIfPMn4s_-tPwh=w408-h272-k-no"
+]
 
 function ShowList(props){
   const spots = props.spots ?? [];
@@ -113,20 +125,28 @@ function ShowList(props){
             >
               <div className='ranking'>{i+1}</div>
               <div className='spot'>
-                <img src={el.images[0]} alt={el.name} />
+                <img src={sampleImage[i%3]} alt={el.name} />
                 <div className="textbox">
                   <h3>{el.name}</h3>
-                  <p>{el.location}</p>
+                  <p>{el.location.localName ?? el.location.metroName}</p>
                 </div>
               </div>
-              <div className='volume'>
-                <h4>검색량</h4>
-                <p>{el.volume}</p>
-              </div>
-              <div className='updown'>
-                <h4>변동</h4>
-                <p>{el.updown}</p>
-              </div>
+              {
+                el.volume && 
+                <div className='volume'>
+                  <h4>검색량</h4>
+                  <p>{el.volume}</p>
+                </div>
+              }
+                <div className='variance'>
+                  <h4>변동</h4>
+                  <p className={`${
+                    el.variance===null ? 'new' :
+                    el.variance>0 ? 'up' : ''
+                  }`}>
+                    {el.variance==0 ? '-' : el.variance ?? 'new'}
+                  </p>
+                </div>
             </li>
           )
         })

@@ -46,6 +46,7 @@ function ShowMap(props){
 
   const spots = props.spots ?? [];
   const [ whichInfoShow, setWhichInfoShow ] = useState(-1);
+  console.log(spots)
 
   return (
     <MapContainer>
@@ -75,7 +76,7 @@ function ShowMap(props){
               spots.map((spot, i) => (
                 <MapMarker
                   key={spot.id}
-                  position={{ lat: spot.lat, lng: spot.lng }}
+                  position={{ lat: spot.latitude, lng: spot.longitude }}
                   image={{
                     src: i<20 ? markers[i] : require(`assets/image/common/marker/marker.svg`).default, // 마커이미지
                     size: { width: 30, height: 40 },

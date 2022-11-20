@@ -1,7 +1,7 @@
 // core
 import { useState, useEffect } from 'react';
 // router
-import { useParams, redirect } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 // style
 import styled from 'styled-components'
 // Swiper
@@ -9,8 +9,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, EffectFade } from 'swiper';
 // kakao map
 import { Map, MapMarker } from 'react-kakao-maps-sdk'
-// sample data
-import ListData from 'store/data/ListData.js'
+// api
+import getSpotApi from 'api/getSpotApi'
 // svg
 import Loaction from 'assets/image/common/icon/loaction.svg'
 import { ReactComponent as InstagramColor } from "assets/image/common/ci/instagram-color.svg";
@@ -117,9 +117,15 @@ function Spot(){
   const [ spotData, setSpotData ] = useState([]);
 
   useEffect(()=>{
-    // fetch data 들어갈곳
-    setSpotData(ListData.find((el)=>el.id == spotId) ?? []);
+    getSpotApi(spotId, (data)=>{
+      setSpotData(data);
+    })
   }, [])
+
+  const sampleImage = [
+    'https://lh5.googleusercontent.com/p/AF1QipPe9z6ajG6Zq1WFp6CuVb3VXdgMNI1sWJeuB0Ni=w408-h306-k-no',
+    'https://images.unsplash.com/photo-1503932860988-56df256a6c5f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
+  ]
 
   if(spotData.length==0) {
     return (
@@ -132,23 +138,22 @@ function Spot(){
       </PageContainer>
     )
   }
-
   return(
     <PageContainer className='c_main_section'>
       <section className="c_section place_img">
         { // 이미지 하나만 있을때
-          spotData.images.length==1 &&
+          sampleImage.length==1 &&
           <div className='img_swiper'>
             <div className='swiper-slide'>
-              <img src={spotData.images[0]} alt={`${spotData.name} 이미지 1 배경`} style={{
+              <img src={sampleImage[0]} alt={`${spotData.name} 이미지 1 배경`} style={{
                 filter: "blur(5px)"
               }}/>
-              <img src={spotData.images[0]} alt={`${spotData.name} 이미지 1`} />
+              <img src={sampleImage[0]} alt={`${spotData.name} 이미지 1`} />
             </div>
           </div>
         }
         { // 이미지 여러개면 swiper로
-          spotData.images.length>1 &&
+          sampleImage.length>1 &&
           <Swiper className='img_swiper'
             modules={[ Pagination, EffectFade ]}
             effect={"fade"}
@@ -156,7 +161,7 @@ function Spot(){
             loop
           >
             {
-              spotData.images.map((el, i) => {
+              sampleImage.map((el, i) => {
                 return(
                   <SwiperSlide key={i}>
                     <img src={el} alt={`${spotData.name} 이미지 ${i+1} 배경`} style={{
@@ -175,13 +180,13 @@ function Spot(){
           <h2 className='c_title'>{spotData.name}</h2>
           <div className='loaction'>
             <h3><img src={Loaction} />위치</h3>
-            <p>{spotData.location}</p>
+            <p>{spotData.location?.localName ?? spotData.location?.metroName}</p>
           </div>
           <div className='map'>
             {
               <Map
-                center={{ lat: spotData.lat, lng: spotData.lng }}
-                level={4}
+                center={{ lat: spotData.latitude, lng: spotData.longitude }}
+                level={5}
                 style={{
                   width: "clamp(20rem, 100%, 80rem)",
                   height: "35rem",
@@ -189,12 +194,7 @@ function Spot(){
                   borderRadius: "var(--border-radius-mid)"
                 }}
               >
-                <MapMarker position={{ lat: spotData.lat, lng: spotData.lng }}>
-                  {/* <div style={{
-                    padding: "5px",
-                    textAlign: "center"
-                  }}
-                  >{spotData.name}</div> */}
+                <MapMarker position={{ lat: spotData.latitude, lng: spotData.longitude }}>
                 </MapMarker>
               </Map>
             }
@@ -202,7 +202,7 @@ function Spot(){
           <div className='sns'>
             <h3><InstagramColor />관련 SNS 포스팅</h3>
             { // 포스팅 하나일때
-              spotData.detailSnsPost.length==1 &&
+              spotData.detailSnsPost?.length==1 &&
               <div className='posts'>
                 <div className='post'>
                   <a href={spotData.detailSnsPost[0].photoUrl}>{spotData.detailSnsPost[0].photoUrl}</a>
@@ -210,7 +210,7 @@ function Spot(){
               </div>
             }
             { // 이미지 여러개면 swiper로
-              spotData.detailSnsPost.length>1 &&
+              spotData.detailSnsPost?.length>1 &&
               <Swiper className='img_swiper'
                 slidesPerView="auto"
               >

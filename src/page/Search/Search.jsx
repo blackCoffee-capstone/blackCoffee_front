@@ -2,12 +2,14 @@
 import { useState } from 'react'
 // style
 import styled from 'styled-components'
+// api
+import getSpotListApi from 'api/getSpotListApi'
+import getFilterApi from 'api/getFilterApi'
 // component
 import ShowList from 'component/common/ShowList'
+import Pagination from './Pagination'
 // img
 import { ReactComponent as  SearchSvg } from 'assets/image/common/icon/search.svg'
-// sample data
-import ListData from 'store/data/ListData.js'
 
 const PageContainer = styled.section`
   .option{
@@ -95,11 +97,37 @@ const PageContainer = styled.section`
 `
 
 function Search() {
-  const [ searchText, setSearchText ] = useState();
+  const [ sorter, setSorter ] = useState('Name');
+  const [ themes, setThemes ] = useState([]);
+  const [ locations, setLocations ] = useState([]);
+  const [ page, setPage ] = useState(1);
+  const [ totalPage, setTotalPage ] = useState(1);
+  const [ searchWord, setSearchWord ] = useState();
+  const [ themeId, setThemeId ] = useState();
+  const [ locationId, setLocationId ] = useState();
+  const [ listData, setListData ] = useState([]);
+  useEffect(()=>{
+    getFilterApi((data)=>{
+      setLocations(data.locations);
+      setThemes(data.themes);
+    })
+  }, [])
+  useEffect(()=>{
+    search()
+  }, [page, themeId, locationId, sorter])
 
   // 검색 함수
   function search(){
-    console.log(searchText);
+    getSpotListApi({
+      page: page,
+      sorter: sorter,
+      word: searchWord,
+      themeId: themeId,
+      locationId: locationId,
+      // take: 20
+    }, (data)=>{
+      setListData(data)
+    });
   }
   
   return (
@@ -120,43 +148,62 @@ function Search() {
             <div className='search_bar'>
                 <input type="text" placeholder='여행지 이름으로 검색하기'
                   onKeyUp={(e) => (e.key == 'Enter') && search() }
-                  onChange={(e) => setSearchText(e.currentTarget.value) }
+                  onChange={(e) => setSearchWord(e.currentTarget.value) }
                 />
                 <button className='btn_search'
-                  onClick={search}
+                  onClick={()=>search()}
                 ><SearchSvg /></button>
             </div>
             <div className='filter'>
               <div className='place'>
                 <h4>장소</h4>
                 <ul>
-                  <li>서울</li>
-                  <li>부산</li>
-                  <li>대전</li>
+                  { locations.length>0 &&
+                    locations.map((el, i)=>{
+                      return (
+                        <li key={'place'+i}>{el}</li>
+                      )
+                    })
+                  }
+                  {
+                    locations.length==0 &&
+                    <li>장소 샘플</li>
+                  }
                 </ul>
               </div>
               <div className="theme">
                 <h4>테마</h4>
                 <ul>
-                  <li className='on'>엑티비티</li>
-                  <li>힐링</li>
-                  <li>엑티비티</li>
-                  <li>힐링</li>
-                  <li>엑티비티</li>
-                  <li>힐링</li>
-                  <li>엑티비티</li>
-                  <li>힐링</li>
+                  {
+                    themes.length>0 &&
+                    themes.map((el, i)=>{
+                      return(
+                        <li key={'theme'+i}
+                          // onClick={()=>{setThemeId()}}
+                        >{el}</li>
+                      ) 
+                    })
+                  }
+                  {
+                    themes.length==0 &&
+                    <li>테마 샘플</li>
+                  }
                 </ul>
               </div>
             </div>
             <ul className='sorting'>
-              <li className='on'>이름순</li>
-              <li>랭킹순</li>
+              <li className={sorter=='Name' ? 'on': ''}
+                onClick={()=>{setSorter('Name')}}
+              >이름순</li>
+              <li className={sorter=='Rank' ? 'on': ''}
+                onClick={()=>{setSorter('Rank')}}
+              >랭킹순</li>
             </ul>
           </div>
           <div className='show'>
             <ShowList spots={ListData}/>
           </div>
+          <Pagination page={page} setPage={setPage} totalPage={totalPage} />
         </div>
       </div>
     </PageContainer>

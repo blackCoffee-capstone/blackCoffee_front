@@ -4,8 +4,8 @@ import styled from 'styled-components'
 const SlideSwitchContainer = styled.label`
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  width: 3.5em;
+  height: 2em;
   input {
     display: none;
   }
@@ -18,15 +18,15 @@ const SlideSwitchContainer = styled.label`
     bottom: 0;
     background-color: #ccc;
     transition: var(--transition-default);
-    border-radius: 34px;
+    border-radius: var(--border-radius-full);
   }
   .slider:before {
     position: absolute;
     content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
+    height: 1.4em;
+    width: 1.4em;
+    left: 0.3em;
+    bottom: 0.3em;
     background-color: white;
     transition: var(--transition-default);
     border-radius: 50%;
@@ -38,9 +38,7 @@ const SlideSwitchContainer = styled.label`
     box-shadow: 0 0 1px var(--primary-color);
   }
   input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
+    transform: translateX(calc(3.5em - 1.4em - 0.6em));
   }
 `
 

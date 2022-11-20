@@ -9,8 +9,9 @@ import ShowMap from 'component/common/ShowMap'
 // img
 import { ReactComponent as  Left } from 'assets/image/common/icon/navigation_left.svg'
 import { ReactComponent as  Right } from 'assets/image/common/icon/navigation_right.svg'
-// sample data
-import ListData from 'store/data/ListData.js'
+// api
+import getRankListApi from 'api/getRankListApi'
+import getRankMapApi from 'api/getRankMapApi'
 
 const PageContainer = styled.section`
   .option{
@@ -21,7 +22,7 @@ const PageContainer = styled.section`
       align-items: center;
       gap: 2rem;
       vertical-align: middle;
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
       h3{
         font-weight: var(--font-w-bold);
         font-size: var(--font-size-x-large);
@@ -52,7 +53,18 @@ const PageContainer = styled.section`
 `
 
 function Trend(){
+  const [ listData, setListData ] = useState([]);
+  const [ mapData, setMapData ] = useState([]);
   const [ showMap, setShowMap ] = useState(false);
+  
+  useEffect(()=>{
+    getRankListApi({
+      date: 2022112
+    }, (data)=>setListData(data));
+    getRankMapApi({
+      date: 2022112
+    }, (data)=>setMapData(data));
+  }, [])
 
   return(
     <PageContainer className='c_main_section'>
@@ -80,8 +92,8 @@ function Trend(){
             </div>
           </div>
           <div className='show'>
-            { !showMap && <ShowList spots={ListData}/> }
-            { showMap && <ShowMap spots={ListData}/> }
+            { !showMap && <ShowList spots={listData}/> }
+            { showMap && <ShowMap spots={mapData}/> }
           </div>
         </div>
       </section>
