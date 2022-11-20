@@ -3,6 +3,10 @@ import { useState, useCallback } from 'react';
 // recoil
 import { useSetRecoilState } from 'recoil';
 import { messageBundle } from 'store/index'
+// router
+import { useNavigate } from 'react-router-dom'
+// api
+import signupApi from 'api/signupApi'
 // style
 import styled from 'styled-components'
 // component
@@ -36,9 +40,12 @@ const PageContainer = styled.section`
 
 function Signup() {
   const setAlert = useSetRecoilState(messageBundle.alert);
+  const navigate = useNavigate();
 
   const [ email, setEmail ] = useState('');
   const [ emailError, setEmailError ] = useState('');
+  const [ name, setName ] = useState('');
+  const [ nameError, setNameError ] = useState('');
   const [ nickname, setNickname ] = useState('');
   const [ nicknameError, setNicknameError ] = useState('');
   const [ password, setPassword ] = useState('');
@@ -48,12 +55,15 @@ function Signup() {
 
   const resetError = useCallback(()=>{
     setEmailError('');
+    setNameError('');
     setNicknameError('');
     setPasswordError('');
     setRepassError('');
   })
   const resetAll = useCallback(()=>{
     setEmail('');
+    setName('');
+    setNickname('');
     setPassword('');
     setRepass('');
     resetError();
@@ -62,15 +72,25 @@ function Signup() {
   // 회원가입 로직
   function signup(){
     resetError();
-    if( !email || !password || !nickname ){
+    if( !email || !password || !nickname || !name ){
       if(!email) setEmailError('이메일을 입력해주세요');
       if(!nickname) setNicknameError('닉네임을 입력해주세요');
+      if(!name) setNameError('이름을 입력해주세요');
       if(!password) setPasswordError('비밀번호를 입력해주세요');
     } else if( password != repass ){
       setRepassError('비밀번호가 일치하지 않습니다');
     } else{
-      // axios.get('https://jsonplaceholder.typicode.com/posts')
-      // .then(res=> console.log(res));
+      signupApi({
+          email,
+          password,
+          nickname,
+          name,
+        },
+        ()=>{
+          setAlert('환영합니다.')
+          navigate('/login')
+        }
+      )
 
       setAlert('샘플. 회원가입이 완료되었습니다');
       resetAll();
@@ -99,6 +119,14 @@ function Signup() {
               onChange={(e)=> setNickname(e.currentTarget.value) }
             />
             { nicknameError && <p className='error_message'>{nicknameError}</p> }
+          </div>
+          <div className="name">
+            <h4>이름</h4>
+            <InputBasic placeholder="이름 입력"
+              value={name}
+              onChange={(e)=> setName(e.currentTarget.value) }
+            />
+            { nameError && <p className='error_message'>{nameError}</p> }
           </div>
           <div className="password">
             <h4>비밀번호</h4>

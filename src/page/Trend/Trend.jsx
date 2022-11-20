@@ -1,5 +1,5 @@
 // core
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 // style
 import styled from 'styled-components'
 // component
@@ -56,7 +56,7 @@ function Trend(){
   const [ listData, setListData ] = useState([]);
   const [ mapData, setMapData ] = useState([]);
   const [ showMap, setShowMap ] = useState(false);
-  
+
   useEffect(()=>{
     getRankListApi({
       date: 2022112

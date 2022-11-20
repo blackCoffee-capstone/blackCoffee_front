@@ -24,11 +24,13 @@
 ## 사용 라이브러리 및 개발 환경
 > `코어`  
 > React(^18.2.0)
-> react-router-dom(^6.4.1), Recoil(^0.7.5)  
-> recoil-persist(^4.2.0)  
+> react-router-dom(^6.4.1)  
+> recoil(^0.7.5), recoil-persist(^4.2.0)  
 
 > `서브`  
-> styled-components(^5.3.5), axios(^0.27.2)  
+> styled-components(^5.3.5)  
+> axios(^0.27.2)  
+> @tanstack/react-query(^4.16.1) - 리엑트 쿼리  
 > react-router-hash-link(^2.4.3) - 앵커 기능  
 > react-daum-postcode(^3.1.1) - 주소검색  
 > react-kakao-maps-sdk(^1.1.5) - 카카오 맵
@@ -47,23 +49,19 @@
 <br>
 
 ## 프로젝트 설명
-### 프로젝트 관리
-- 생명주기모델: 점증적모델(Incremental Model) + 진화모델(Evolutionary Model)
-  - 프로토타입을 만들때까진 중심기능부터 점증적으로 구현하고, 이후에 버전을 높혀가며 성능 개선, 버그 수정, 기능 추가를 실시한다.
-- 개발방법론: Agile - Scrum
-  - 스프린트는 2주 간격으로 진행하고, 각 스프린트 별 '스트린트 백로그'와 '번다운차트'를 남길 것.
-- git branch는 Trunk-Based Developoment 사용.
-  - merge전 refactoring 진행할 것.
-  
 ### 프로젝트 구조
 * _'src/style'_ 폴더 안의 `reset.js`와 `common.js`는 전체 스타일 적용하는 css 느낌으로 사용중이다.
 * 루트 컴포넌트 `App`에선 주요 컴포넌트 들의 layout만 구성한다.
 * `recoil` 파일들은 _'src/store'_ 폴더에 들어있고, 주요 기능 별로 _'store/modules'_안에 모듈화 해둔다. 모듈화한 파일들은 `index.js`에서 합쳐서 `export` 된다.
 
 ### z-index 목록
-1. Header: 100
-  
-<br>
+1. MessageBundle: 1000
+1. Header: 200
+1. .c_loading: 100
+1. .c_screen_filter: 99
 
-## Product Backlog & Sprint
+### Product Backlog & Sprint
 https://docs.google.com/spreadsheets/d/1VS8c7LPu0KjqmS6thqXz_PvC9CyN5DXcX691Xyhasjk/edit#gid=211076120
+
+### Memo
+- postman 주소: https://cd613352-2a16-45b7-b17d-5bb22ad68e19.mock.pstmn.io

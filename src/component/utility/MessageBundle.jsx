@@ -52,8 +52,8 @@ const Alert = styled(BundleCommon)`
 const Confirm = styled(BundleCommon)`
   .btn_continue {
     margin-right: 10px;
-    background-color: var(--base-color-light);
-    color: #000;
+    background-color: var(--secondary-color);
+    color: var(--secondary-color-contrast);
     &:hover {
       filter: brightness(0.93);
     }

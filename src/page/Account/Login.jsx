@@ -1,12 +1,14 @@
 // core
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 // recoil
-import { useSetRecoilState } from 'recoil'
-import { messageBundle } from 'store/index'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import { token, messageBundle, user } from 'store/index'
 // router
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 // style
 import styled from 'styled-components'
+// api
+import loginApi from 'api/loginApi'
 // component
 import { InputEmail, InputPassword } from './component/InputBundle'
 
@@ -114,6 +116,19 @@ const PageContainer = styled.section`
 
 function Login() {
   const setAlert = useSetRecoilState(messageBundle.alert);
+  const [ accessToken, setAccessToken ] = useRecoilState(token.accessToken);
+  const setRefreshToken = useSetRecoilState(token.refreshToken);
+  const setUser = useSetRecoilState(user);
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    // 이미 로그인 시 redirect
+    if(accessToken){
+      setAlert('이미 로그인 하셨습니다.')
+      navigate('/')
+    }
+  }, [])
+
   const [ email, setEmail ] = useState('');
   const [ emailError, setEmailError ] = useState('');
   const [ password, setPassword ] = useState('');
@@ -127,7 +142,22 @@ function Login() {
       if(!email) setEmailError('이메일을 입력해주세요');
       if(!password) setPasswordError('비밀번호를 입력해주세요');
     } else{
-      setAlert('샘플. 로그인');
+      loginApi({
+        email: email,
+        password: password,
+      },
+      (data)=>{
+        setUser(data.user);
+        if(!data.user.isNewUser){
+          setAlert('맞춤 서비스를 위해 원하는 여행 테마를 선택해 주세요')
+          navigate('/choosetheme');
+        } else {
+          setAlert('환영합니다')
+          navigate('/');
+        }
+        setAccessToken(data.accessToken);
+        setRefreshToken(data.refreshToken);
+      })
     }
   }
 
