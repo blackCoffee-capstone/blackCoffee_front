@@ -29,6 +29,7 @@ async function postData({
 
   try {
     const res = await sendData();
+    console.log(res)
     callback(res.data);
   } catch (error) {
     console.error('데이터를 보내는데 실패했습니다.');

@@ -1,8 +1,11 @@
 // core
 import { lazy, Suspense } from 'react';
 // router
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import ScrollToTop from 'component/utility/ScrollToTop'
+// recoil
+import { useRecoilValue } from 'recoil';
+import { token } from 'store/index'
 // component - utility
 import ErrorBoundary from './component/utility/ErrorBoundary'  // 에러
 import LoadingPage from './component/utility/LoadingPage'  // 로딩
@@ -30,6 +33,8 @@ const EmailDenial = lazy(() => import('./page/Customer/EmailDenial'));  // 이�
 import NotFound from './page/NotFound'  // 404 NotFound
 
 function App() {
+  const accessToken = useRecoilValue(token.accessToken);
+
   return (
     <div className="App">
       <MessageBundle />
@@ -41,11 +46,15 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/trend" element={<Trend />} />
-              <Route path="/recommend" element={<Recommend />} /> 
+              <Route path="/recommend" element={
+                accessToken ? <Recommend /> : <Navigate to="/login" replace={true} />
+              } />
               <Route path="/search" element={<Search />} />
               <Route path="/community" element={<Community />} />
               <Route path="/spot/:spotId" element={<Spot />} />
-              <Route path="/login" element={<Login />} />
+              <Route path="/login" element={
+                !accessToken ? <Login /> : <Navigate to="/" replace={true} />
+              } />
               <Route path="/signup" element={<Signup />} />
               <Route path="/choosetheme" element={<ChooseTheme />} />
               <Route path="/findpass" element={<FindPassword />} />

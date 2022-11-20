@@ -2,13 +2,13 @@
 import { useState } from 'react'
 // recoil
 import { useSetRecoilState } from 'recoil'
-import { messageBundle } from 'store/index'
+import { token, messageBundle } from 'store/index'
 // router
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 // style
 import styled from 'styled-components'
 // api
-import postData from 'api/postData'
+import loginApi from 'api/loginApi'
 // component
 import { InputEmail, InputPassword } from './component/InputBundle'
 
@@ -116,6 +116,10 @@ const PageContainer = styled.section`
 
 function Login() {
   const setAlert = useSetRecoilState(messageBundle.alert);
+  const setAccessToken = useSetRecoilState(token.accessToken);
+  const setRefreshToken = useSetRecoilState(token.refreshToken);
+  const navigate = useNavigate();
+
   const [ email, setEmail ] = useState('');
   const [ emailError, setEmailError ] = useState('');
   const [ password, setPassword ] = useState('');
@@ -129,16 +133,17 @@ function Login() {
       if(!email) setEmailError('이메일을 입력해주세요');
       if(!password) setPasswordError('비밀번호를 입력해주세요');
     } else{
-      postData({
-        url: 'auth/login',
-        payload: {
+      loginApi({
           email: email,
           password: password,
         },
-        callback: ()=>{
-          setAlert('샘플. 로그인')
+        (data)=>{
+          setAccessToken(data.accessToken);
+          setRefreshToken(data.refreshToken);
+          setAlert('환영합니다.')
+          navigate('/');
         }
-      })
+      )
     }
   }
 
