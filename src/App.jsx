@@ -3,13 +3,13 @@ import { lazy, Suspense } from 'react';
 // router
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import ScrollToTop from 'component/utility/ScrollToTop'
+// component - utility
+import ErrorBoundary from './component/utility/ErrorBoundary'  // 에러
+import LoadingPage from './component/utility/LoadingPage'  // 로딩
+import MessageBundle from './component/utility/MessageBundle'  // 팝업 메세지
 // component - layout
 import Header from './component/layout/Header'  // 헤더
 import Footer from './component/layout/Footer'  // 푸터
-// component - utility
-import LoadingPage from './component/utility/LoadingPage'  // 로딩
-import ErrorBoundary from './component/utility/ErrorBoundary'  // 에러
-import MessageBundle from './component/utility/MessageBundle'  // 팝업 메세지
 // page
 import Home from './page/Home/Home' // 홈
 import Trend from './page/Trend/Trend'  // 최신트렌드

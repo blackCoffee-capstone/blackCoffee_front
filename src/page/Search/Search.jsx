@@ -1,13 +1,13 @@
 // core
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 // style
 import styled from 'styled-components'
 // component
 import ShowList from 'component/common/ShowList'
 // img
 import { ReactComponent as  SearchSvg } from 'assets/image/common/icon/search.svg'
-// sample data
-import ListData from 'store/data/ListData.js'
+// api
+import fetchData from 'api/fetchData'
 
 const PageContainer = styled.section`
   .option{
@@ -96,6 +96,13 @@ const PageContainer = styled.section`
 
 function Search() {
   const [ searchText, setSearchText ] = useState();
+  const [ listData, setListData ] = useState([]);
+  useEffect(()=>{
+    fetchData({
+      url: 'https://cd613352-2a16-45b7-b17d-5bb22ad68e19.mock.pstmn.io/sample',
+      callback: setListData
+    })
+  }, [])
 
   // 검색 함수
   function search(){
@@ -155,7 +162,7 @@ function Search() {
             </ul>
           </div>
           <div className='show'>
-            <ShowList spots={ListData}/>
+            <ShowList spots={listData}/>
           </div>
         </div>
       </div>

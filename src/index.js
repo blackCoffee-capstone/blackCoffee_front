@@ -1,18 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-// recoil
-import { RecoilRoot } from 'recoil'
 // style
 import './assets/style/reset.css'
 import './assets/style/common.css'
 import 'swiper/css/bundle'; // swiper style 한번에 적용
+// recoil
+import { RecoilRoot } from 'recoil'
+// react-query
+import { QueryClient, QueryClientProvider} from '@tanstack/react-query'
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 0,
+			suspense: true,
+      // useErrorBoundary: true,
+    },
+    // mutations: {
+    //   useErrorBoundary: true,
+    // },
+  },
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <RecoilRoot>
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </RecoilRoot>
   </React.StrictMode>
 );

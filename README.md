@@ -24,12 +24,13 @@
 ## 사용 라이브러리 및 개발 환경
 > `코어`  
 > React(^18.2.0)
-> react-router-dom(^6.4.1), Recoil(^0.7.5)  
+> react-router-dom(^6.4.1)  
+> recoil(^0.7.5), recoil-persist(^4.2.0)  
 
 > `서브`  
 > styled-components(^5.3.5)  
 > axios(^0.27.2)  
-> recoil-persist(^4.2.0)  
+> @tanstack/react-query(^4.16.1) - 리엑트 쿼리  
 > react-router-hash-link(^2.4.3) - 앵커 기능  
 > react-daum-postcode(^3.1.1) - 주소검색  
 > react-kakao-maps-sdk(^1.1.5) - 카카오 맵
@@ -58,8 +59,9 @@
 1. Header: 200
 1. .c_loading: 100
 1. .c_screen_filter: 99
-  
-<br>
 
-## Product Backlog & Sprint
+### Product Backlog & Sprint
 https://docs.google.com/spreadsheets/d/1VS8c7LPu0KjqmS6thqXz_PvC9CyN5DXcX691Xyhasjk/edit#gid=211076120
+
+### Memo
+- postman 주소: https://cd613352-2a16-45b7-b17d-5bb22ad68e19.mock.pstmn.io

@@ -1,13 +1,13 @@
 // core
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 // style
 import styled from 'styled-components'
 // component
 import SlideSwitch from 'component/common/SlideSwitch'
 import ShowList from 'component/common/ShowList'
 import ShowMap from 'component/common/ShowMap'
-// sample data
-import ListData from 'store/data/ListData.js'
+// api
+import fetchData from 'api/fetchData'
 
 const PageContainer = styled.section`
   .option{
@@ -23,6 +23,13 @@ const PageContainer = styled.section`
 
 function Recommend(){
   const [ showMap, setShowMap ] = useState(false);
+  const [ listData, setListData ] = useState([]);
+  useEffect(()=>{
+    fetchData({
+      url: 'https://cd613352-2a16-45b7-b17d-5bb22ad68e19.mock.pstmn.io/sample',
+      callback: setListData
+    })
+  }, [])
   
   return(
     <PageContainer className='c_main_section'>
@@ -45,8 +52,8 @@ function Recommend(){
             </div>
           </div>
           <div className='show'>
-            { !showMap && <ShowList spots={ListData}/> }
-            { showMap && <ShowMap spots={ListData}/> }
+            { !showMap && <ShowList spots={listData}/> }
+            { showMap && <ShowMap spots={listData}/> }
           </div>
         </div>
       </section>

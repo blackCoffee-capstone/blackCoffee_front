@@ -7,6 +7,8 @@ import { messageBundle } from 'store/index'
 import { Link } from 'react-router-dom'
 // style
 import styled from 'styled-components'
+// api
+import postData from 'api/postData'
 // component
 import { InputEmail, InputPassword } from './component/InputBundle'
 
@@ -127,7 +129,16 @@ function Login() {
       if(!email) setEmailError('이메일을 입력해주세요');
       if(!password) setPasswordError('비밀번호를 입력해주세요');
     } else{
-      setAlert('샘플. 로그인');
+      postData({
+        url: 'auth/login',
+        payload: {
+          email: email,
+          password: password,
+        },
+        callback: ()=>{
+          setAlert('샘플. 로그인')
+        }
+      })
     }
   }
 
