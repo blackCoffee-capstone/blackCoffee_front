@@ -46,19 +46,22 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/trend" element={<Trend />} />
-              <Route path="/recommend" element={
+              {/* <Route path="/recommend" element={
                 accessToken ? <Recommend /> : <Navigate to="/login" replace={true} />
-              } />
+              } /> */}
               <Route path="/search" element={<Search />} />
               <Route path="/community" element={<Community />} />
               <Route path="/spot/:spotId" element={<Spot />} />
-              <Route path="/login" element={
+              <Route path="/login" element={<Login />} />
+              {/* <Route path="/login" element={
                 !accessToken ? <Login /> : <Navigate to="/" replace={true} />
-              } />
+              } /> */}
               <Route path="/signup" element={<Signup />} />
               <Route path="/choosetheme" element={<ChooseTheme />} />
               <Route path="/findpass" element={<FindPassword />} />
-              <Route path="/mypage" element={<Mypage />} /> 
+              <Route path="/mypage" element={
+                accessToken ? <Mypage /> : <Navigate to="/login" replace={true} />
+              } />
               <Route path="/adapplication" element={<AdApplication />} />
               <Route path="/customer" element={<Customer />} />
               <Route path="/privacypolicy" element={<PrivacyPolicy />} />
