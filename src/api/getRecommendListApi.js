@@ -1,14 +1,14 @@
 // axios
 import auth from 'axios'
 
-function getSpotApi(id, callback=()=>{}) {
-  auth.get(`spots/${id}`)
-  .then(res=>{
-    callback(res.data)
-  })
-  .catch(error=>{
-    console.log('spots/:id', error);
-  })
+function getRecommendListApi(callback=()=>{}) {
+  // auth.get(`recommend/${id}`)
+  // .then(res=>{
+  //   callback(res.data)
+  // })
+  // .catch(error=>{
+  //   console.log('recommend', error);
+  // })
 }
 
-export default getSpotApi
+export default getRecommendListApi

@@ -46,9 +46,9 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/trend" element={<Trend />} />
-              {/* <Route path="/recommend" element={
+              <Route path="/recommend" element={
                 accessToken ? <Recommend /> : <Navigate to="/login" replace={true} />
-              } /> */}
+              } />
               <Route path="/search" element={<Search />} />
               <Route path="/community" element={<Community />} />
               <Route path="/spot/:spotId" element={<Spot />} />

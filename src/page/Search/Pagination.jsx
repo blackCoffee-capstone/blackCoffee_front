@@ -1,5 +1,6 @@
-// style
+// core
 import { useMemo } from 'react';
+// style
 import styled from 'styled-components'
 
 const PaginationContainer = styled.div`
@@ -58,7 +59,7 @@ function Pagination({ page, setPage, totalPage }){
   }
   // pagination 범위
   const rage = useMemo(()=>{
-    const min = maxShowPage*Math.floor( (page<=1 ? page: page-1) /maxShowPage) +1;
+    const min = maxShowPage*Math.floor((page<=1?page:page-1)/maxShowPage) + 1;
     const max = Math.min(min+9, totalPage)
     return {
       min: min,
