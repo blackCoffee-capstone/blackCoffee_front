@@ -57,7 +57,9 @@ function App() {
                 !accessToken ? <Login /> : <Navigate to="/" replace={true} />
               } /> */}
               <Route path="/signup" element={<Signup />} />
-              <Route path="/choosetheme" element={<ChooseTheme />} />
+              <Route path="/choosetheme" element={
+                accessToken ? <ChooseTheme /> : <Navigate to="/login" replace={true} />
+              } />
               <Route path="/findpass" element={<FindPassword />} />
               <Route path="/mypage" element={
                 accessToken ? <Mypage /> : <Navigate to="/login" replace={true} />

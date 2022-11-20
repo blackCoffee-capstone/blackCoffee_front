@@ -2,6 +2,8 @@
 import styled from 'styled-components'
 // router
 import { useNavigate } from 'react-router-dom';
+// img
+import NoPhoto from 'assets/image/common/no_photo.png'
 
 const ListContainer = styled.ul`
   width: 100%;
@@ -125,7 +127,7 @@ function ShowList(props){
             >
               <div className='ranking'>{i+1}</div>
               <div className='spot'>
-                <img src={sampleImage[i%3]} alt={el.name} />
+                <img src={el.image ?? NoPhoto} alt={el.name} />
                 <div className="textbox">
                   <h3>{el.name}</h3>
                   <p>{el.location.localName ?? el.location.metroName}</p>
@@ -138,15 +140,21 @@ function ShowList(props){
                   <p>{el.volume}</p>
                 </div>
               }
+              { el.variance !== undefined &&
                 <div className='variance'>
                   <h4>변동</h4>
                   <p className={`${
                     el.variance===null ? 'new' :
                     el.variance>0 ? 'up' : ''
                   }`}>
-                    {el.variance==0 ? '-' : el.variance ?? 'new'}
+                    { 
+                      el.variance==0 ? '-' : 
+                      el.variance ? (el.variance<0?"":"+") + el.variance
+                      : 'new'
+                    }
                   </p>
                 </div>
+              }
             </li>
           )
         })

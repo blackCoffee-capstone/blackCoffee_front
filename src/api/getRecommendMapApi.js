@@ -5,7 +5,7 @@ function getRecommendListApi(
   accessToken,
   callback=()=>{}
 ) {
-  defaultAxios.get(`recommendations/list`, {
+  defaultAxios.get(`recommendations/map`, {
     headers:{
       authorization: `Bearer ${accessToken}`,
     },

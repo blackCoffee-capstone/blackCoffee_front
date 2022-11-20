@@ -4,11 +4,8 @@ import defaultAxios from './defaultAxios'
 function getUserApi(
   accessToken,
   callback=()=>{},
-  params={}
 ) {
-  defaultAxios.post('users', {
-    params: params
-  }, {
+  defaultAxios.get('users', {
     headers:{
       authorization: `Bearer ${accessToken}`,
     },

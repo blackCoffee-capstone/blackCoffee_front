@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 // recoil
 import { useRecoilState, useSetRecoilState } from 'recoil'
-import { token, messageBundle, user } from 'store/index'
+import { token, messageBundle, userState } from 'store/index'
 // router
 import { Link, useNavigate } from 'react-router-dom'
 // style
@@ -118,7 +118,7 @@ function Login() {
   const setAlert = useSetRecoilState(messageBundle.alert);
   const [ accessToken, setAccessToken ] = useRecoilState(token.accessToken);
   const setRefreshToken = useSetRecoilState(token.refreshToken);
-  const setUser = useSetRecoilState(user);
+  const setUser = useSetRecoilState(userState);
   const navigate = useNavigate();
 
   useEffect(()=>{
@@ -148,7 +148,7 @@ function Login() {
       },
       (data)=>{
         setUser(data.user);
-        if(!data.user.isNewUser){
+        if(data.user.isNewUser){
           setAlert('맞춤 서비스를 위해 원하는 여행 테마를 선택해 주세요')
           navigate('/choosetheme');
         } else {

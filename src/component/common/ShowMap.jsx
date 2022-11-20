@@ -46,7 +46,6 @@ function ShowMap(props){
 
   const spots = props.spots ?? [];
   const [ whichInfoShow, setWhichInfoShow ] = useState(-1);
-  console.log(spots)
 
   return (
     <MapContainer>

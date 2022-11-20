@@ -1,5 +1,5 @@
 import * as token from './modules/token'
 import * as messageBundle from './modules/messageBundle'
-import { user } from './modules/user'
+import { userState } from './modules/user'
 
-export { token, messageBundle, user };
+export { token, messageBundle, userState };

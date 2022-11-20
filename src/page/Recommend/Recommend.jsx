@@ -2,12 +2,19 @@
 import { useState, useEffect } from 'react'
 // style
 import styled from 'styled-components'
+// recoil
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { token, userState, messageBundle } from 'store/index'
+// router
+import { useNavigate } from 'react-router-dom';
+// api
+import getUserApi from 'api/getUserApi'
+import getRecommendListApi from 'api/getRecommendListApi'
+import getRecommendMapApi from 'api/getRecommendMapApi'
 // component
 import SlideSwitch from 'component/common/SlideSwitch'
 import ShowList from 'component/common/ShowList'
 import ShowMap from 'component/common/ShowMap'
-// api
-import fetchData from 'api/fetchData'
 
 const PageContainer = styled.section`
   .option{
@@ -22,12 +29,31 @@ const PageContainer = styled.section`
 `
 
 function Recommend(){
+  const [ accessToken, setAccessToken ] = useRecoilState(token.accessToken)
+  const [ user, setUser ] = useRecoilState(userState)
+  const setAlert = useSetRecoilState(messageBundle.alert)
+
   const [ showMap, setShowMap ] = useState(false);
   const [ listData, setListData ] = useState([]);
+  const [ mapData, setMapData ] = useState([]);
+
+  const navigate = useNavigate();
+
   useEffect(()=>{
-    fetchData({
-      url: 'https://cd613352-2a16-45b7-b17d-5bb22ad68e19.mock.pstmn.io/sample',
-      callback: setListData
+    console.log('fetch')
+    getUserApi(accessToken, (data)=>{
+      setUser(data);
+      if(data.isNewUser){
+        setAlert('맞춤 서비스를 위해 원하는 여행 테마를 선택해 주세요')
+        navigate('/choosetheme');
+      } else {
+        getRecommendListApi(accessToken, (data)=>{
+          setListData(data);
+        })
+        getRecommendMapApi(accessToken, (data)=>{
+          setMapData(data);
+        })
+      }
     })
   }, [])
   
@@ -53,7 +79,7 @@ function Recommend(){
           </div>
           <div className='show'>
             { !showMap && <ShowList spots={listData}/> }
-            { showMap && <ShowMap spots={listData}/> }
+            { showMap && <ShowMap spots={mapData}/> }
           </div>
         </div>
       </section>

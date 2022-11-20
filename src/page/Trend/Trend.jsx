@@ -56,15 +56,47 @@ function Trend(){
   const [ listData, setListData ] = useState([]);
   const [ mapData, setMapData ] = useState([]);
   const [ showMap, setShowMap ] = useState(false);
+  const [ year, setYear ] = useState(2022);
+  const [ month, setMonth ] = useState(new Date().getMonth() + 1);
+  const [ week, setWeek ] = useState(getCurrentWeek());
+
+  function getCurrentWeek(){
+    const currentDate = new Date();
+    const cudate = currentDate.getDate();
+    const start = new Date(currentDate.setDate(1));
+    const day = start.getDay();
+    const week = parseInt(`${(day - 1 + cudate) / 7 + 1}`);
+    return week;
+  }
 
   useEffect(()=>{
     getRankListApi({
-      date: 2022112
+      date: parseInt(`${year}${month}${week}`)
     }, (data)=>setListData(data));
     getRankMapApi({
-      date: 2022112
+      date: parseInt(`${year}${month}${week}`)
     }, (data)=>setMapData(data));
-  }, [])
+  }, [year, month, week])
+
+  function next(){
+    const currentDate = new Date();
+    // 가장 최근 주차일 경우 막음
+    if(year >= currentDate.getFullYear() && month >= currentDate.getMonth() + 1 && week >= getCurrentWeek() ){
+      return;
+    }
+    // 나중에 고쳐야함!
+    if(week <= getCurrentWeek()){
+      setWeek(week+1);
+    }
+  }
+  function prev(){
+    const currentDate = new Date();
+    // 나중에 고쳐야함!
+    if(week <= 1){
+      return;
+    }
+    setWeek(week-1);
+  }
 
   return(
     <PageContainer className='c_main_section'>
@@ -79,9 +111,13 @@ function Trend(){
         <div className="c_inner">
           <div className="option">
             <div className='period'>
-              <button><Left /> 이전</button>
-              <h3>2022년 11월 3째주</h3>
-              <button>다음 <Right /></button>
+              <button
+                onClick={()=> prev()}
+              ><Left /> 이전</button>
+              <h3>{`${year}년 ${month}월 ${week}째주`}</h3>
+              <button
+                onClick={()=> next()}
+              >다음 <Right /></button>
             </div>
             <div className="show_map">
               지도로 보기

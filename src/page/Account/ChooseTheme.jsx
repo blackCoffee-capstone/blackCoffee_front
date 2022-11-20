@@ -83,7 +83,7 @@ const PageContainer = styled.section`
 
 function ChooseTheme() {
   const [ accessToken, setAccessToken ] = useRecoilState(token.accessToken)
-  const [ setAlert ] = useSetRecoilState(messageBundle.alert)
+  const setAlert = useSetRecoilState(messageBundle.alert)
   const [ themes, setThemes ] = useState([])
   const [ chosenTheme, setChosenTheme ] = useState([])
   const navigate = useNavigate()
@@ -95,7 +95,13 @@ function ChooseTheme() {
   }, [])
 
   function submitTaste(){
-    postTasteApi(accessToken, chosenTheme, ()=>{
+    if(chosenTheme.length < 5) {
+      setAlert('최소 5개 선택해주세요');
+      return;
+    }
+    postTasteApi(accessToken, {
+      tasteThemes: chosenTheme
+    }, ()=>{
       setAlert('테마 선택을 완료했습니다');
       navigate('/');
     });
