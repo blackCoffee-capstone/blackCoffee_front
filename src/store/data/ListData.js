@@ -1,86 +1,138 @@
 export default [
   {
-    "id": "202211040457",
-    "name": "제주동백수목원",
-    "location": "제주특별자치도 서귀포시 남원읍 위미리 929 제주특별자치도",
-    "lat": "33.27495783680221",
-    "lng": "126.67798727201932",
-    "images": [ "https://lh5.googleusercontent.com/p/AF1QipPe9z6ajG6Zq1WFp6CuVb3VXdgMNI1sWJeuB0Ni=w408-h306-k-no", "https://images.unsplash.com/photo-1503932860988-56df256a6c5f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" ],
-    "volume": "2,000",
-    "updown": "+1",
-    "snsPostLikeNumber": 1,
-    "detailSnsPost": [
-      {
-        "id": 1,
-        "date": "2022-01-31t15:00:00.00Z",
-        "photoUrl": "https://www.instagram.com/p/CjPBBxiBPjC/",
-        "theme": {
-          "id": 1,
-          "name": "산"
-        }
-      },
-      {
-        "id": 1,
-        "date": "2022-01-31t15:00:00.00Z",
-        "photoUrl": "https://www.instagram.com/p/CjPBBxiBPjC/",
-        "theme": {
-          "id": 1,
-          "name": "산"
-        }
-      }
-    ]
+    id: 10,
+    name: "정선 민둥산 정상 해발 1,119미터",
+    rank: 2,
+    latitude: 37.27176409,
+    longitude: 128.7738335,
+    location: { id: 51, metroName: "강원도", localName: "정선군" },
   },
   {
-    "id": "202211040458",
-    "name": "안동 하회마을",
-    "location": "경상북도 안동시 풍천면 전서로 186",
-    "lat": "36.5390800547223",
-    "lng": "128.51807717400527",
-    "images": [ "https://images.unsplash.com/photo-1503932860988-56df256a6c5f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" ],
-    "volume": "1,200",
-    "updown": "-1",
-    "snsPostLikeNumber": 1,
-    "detailSnsPost": [
-      {
-        "id": 1,
-        "date": "2022-01-31t15:00:00.00Z",
-        "photoUrl": "https://www.instagram.com/p/CjPBBxiBPjC/",
-        "theme": {
-          "id": 1,
-          "name": "산"
-        }
-      },
-      {
-        "id": 1,
-        "date": "2022-01-31t15:00:00.00Z",
-        "photoUrl": "https://www.instagram.com/p/CjPBBxiBPjC/",
-        "theme": {
-          "id": 1,
-          "name": "산"
-        }
-      }
-    ]
+    id: 11,
+    name: "월아산",
+    rank: 3,
+    latitude: 35.19114732,
+    longitude: 128.194633,
+    location: { id: 99, metroName: "경상도", localName: "진주시" },
   },
   {
-    "id": "202211190501",
-    "name": "부용대",
-    "location": "경상북도 안동시 풍천면 광덕솔밭길 72",
-    "lat": "36.5445265",
-    "lng": "128.518010",
-    "images": [ "https://lh5.googleusercontent.com/p/AF1QipPNxflItffH0d_R7QaGqV5rLkQIfPMn4s_-tPwh=w408-h272-k-no" ],
-    "volume": "1,000",
-    "updown": "-",
-    "snsPostLikeNumber": 1,
-    "detailSnsPost": [
-      {
-        "id": 1,
-        "date": "2022-01-31t15:00:00.00Z",
-        "photoUrl": "https://www.instagram.com/p/CjPBBxiBPjC/",
-        "theme": {
-          "id": 1,
-          "name": "산"
-        }
-      }
-    ]
-  }
-]
+    id: 12,
+    name: "최고의 뒷산 승학산",
+    rank: 4,
+    latitude: 35.1013333,
+    longitude: 129.0021803,
+    location: { id: 3, metroName: "부산", localName: null },
+  },
+  {
+    id: 13,
+    name: "황매산 (Hwangmae-san/黃梅山)",
+    rank: 5,
+    latitude: 35.49477894,
+    longitude: 127.9776764,
+    location: { id: 124, metroName: "경상도", localName: "합천군" },
+  },
+  {
+    id: 14,
+    name: "북한산 정상 백운대",
+    rank: 6,
+    latitude: 37.6607695,
+    longitude: 127.0058067,
+    location: { id: 1, metroName: "서울", localName: null },
+  },
+  {
+    id: 15,
+    name: "모알보알",
+    rank: 7,
+    latitude: 33.55965697,
+    longitude: 126.7278439,
+    location: { id: 9, metroName: "제주", localName: null },
+  },
+  {
+    id: 16,
+    name: "명성산 (鳴聲山)",
+    rank: 8,
+    latitude: 38.06898764,
+    longitude: 127.3354747,
+    location: { id: 34, metroName: "경기도", localName: "포천시" },
+  },
+  {
+    id: 17,
+    name: "숲너울",
+    rank: 9,
+    latitude: 36.645994,
+    longitude: 127.0129477,
+    location: { id: 9, metroName: "제주", localName: null },
+  },
+  {
+    id: 18,
+    name: "한라산",
+    rank: 10,
+    latitude: 33.40030388,
+    longitude: 126.5399738,
+    location: { id: 1, metroName: "서울", localName: null },
+  },
+  {
+    id: 19,
+    name: "올림픽공원 들꽃마루",
+    rank: 11,
+    latitude: 37.51292483,
+    longitude: 127.1266249,
+    location: { id: 102, metroName: "경상도", localName: "군위군" },
+  },
+  {
+    id: 20,
+    name: "화산산성 전망대",
+    rank: 12,
+    latitude: 36.10409295,
+    longitude: 128.7770566,
+    location: { id: 1, metroName: "서울", localName: null },
+  },
+  {
+    id: 21,
+    name: "Gyeonghuigung",
+    rank: 13,
+    latitude: 37.57082435,
+    longitude: 126.9686428,
+    location: { id: 1, metroName: "서울", localName: null },
+  },
+  {
+    id: 22,
+    name: "Changdeokgung",
+    rank: 14,
+    latitude: 37.57948904,
+    longitude: 126.991117,
+    location: { id: 1, metroName: "서울", localName: null },
+  },
+  {
+    id: 23,
+    name: "일산 호수 공원 - Ilsan Lake Park",
+    rank: 16,
+    latitude: 37.65880397,
+    longitude: 126.7667538,
+    location: { id: 9, metroName: "제주", localName: null },
+  },
+  {
+    id: 24,
+    name: "이호테우해변",
+    rank: 17,
+    latitude: 33.49743289,
+    longitude: 126.4519797,
+    location: { id: 124, metroName: "경상도", localName: "합천군" },
+  },
+  {
+    id: 25,
+    name: "황매산 모산재",
+    rank: 18,
+    latitude: 35.474538,
+    longitude: 127.994018,
+    location: { id: 49, metroName: "강원도", localName: "영월군" },
+  },
+  {
+    id: 26,
+    name: "수라리재",
+    rank: 19,
+    latitude: 37.172902,
+    longitude: 128.641744,
+    location: { id: 50, metroName: "강원도", localName: "평창군" },
+  },
+];

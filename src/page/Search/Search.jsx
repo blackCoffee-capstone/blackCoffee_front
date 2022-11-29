@@ -7,12 +7,11 @@ import getSpotListApi from 'api/getSpotListApi'
 import getFilterApi from 'api/getFilterApi'
 // component
 import ShowList from 'component/common/ShowList'
-import Pagination from './Pagination'
+import Pagination from 'component/common/Pagination'
 // img
 import { ReactComponent as  SearchSvg } from 'assets/image/common/icon/search.svg'
 import { ReactComponent as FilterSvg }  from "assets/image/common/icon/filter.svg";
 import { ReactComponent as ExpandSvg }  from "assets/image/common/icon/expand_more.svg";
-
 
 const PageContainer = styled.section`
   .option{
@@ -145,8 +144,8 @@ const PageContainer = styled.section`
 `
 
 function Search() {
+  const [ showFilter, setShowFilter ] = useState(false);
   const [ listData, setListData ] = useState([]);
-  const [ showFilter, setShowFilter ] = useState(true);
 
   const [ sorter, setSorter ] = useState('Name');
   const [ themes, setThemes ] = useState([]);
@@ -167,7 +166,6 @@ function Search() {
   useEffect(()=>{
     reset();
     getFilterApi((data)=>{
-      console.log('필터', data)
       setLocations(data.locations);
       setThemes(data.themes);
     })
@@ -244,7 +242,7 @@ function Search() {
                 onClick={()=>{setShowFilter(!showFilter)}}
               >
                 <FilterSvg />
-                필터 { showFilter ? '접기' : '펼치기'} 
+                필터
                 <ExpandSvg style={{
                   transition: "var(--transition-default)",
                   transform: `rotate(${showFilter ? '180deg' : '0'})`
@@ -317,8 +315,8 @@ function Search() {
           </div>
           <div className='show'>
             <ShowList spots={listData}/>
+            <Pagination page={page} setPage={setPage} totalPage={totalPage} />
           </div>
-          <Pagination page={page} setPage={setPage} totalPage={totalPage} />
         </div>
       </div>
     </PageContainer>

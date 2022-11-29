@@ -13,7 +13,7 @@ const ListContainer = styled.ul`
     justify-content: space-between;
     border-bottom: 1px solid var(--border-color-light);
     text-align: center;
-    height: 11rem;
+    height: 10rem;
     padding: 0.5rem 0;
     overflow: hidden;
     cursor: pointer;
@@ -46,8 +46,8 @@ const ListContainer = styled.ul`
       width: 100%;
       flex-grow: 1;
       img{
-        width: 13rem;
-        height: 9rem;
+        width: 10rem;
+        height: 8rem;
         object-fit: cover;
         border-radius: var(--border-radius-mid);
         background-color: var(--loading-color);
@@ -67,8 +67,7 @@ const ListContainer = styled.ul`
         }
       }
     }
-    .volume,
-    .variance{
+    .volume{
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
@@ -78,16 +77,9 @@ const ListContainer = styled.ul`
       white-space: nowrap;
       p{
         font-weight: var(--font-w-bold);
-        font-size: var(--font-size-large);
-        &.new{
-          color: red;
-          margin-top: -2px;
-        }
-        &.up{
-          color: orangered;
-        }
       }
     }
+    .nickname,
     .volume{
       width: 12rem;
     }
@@ -99,8 +91,8 @@ const ListContainer = styled.ul`
       .ranking{
         display: none;
       }
-      .volume,
-      .variance{
+      .nickname,
+      .volume{
         flex-direction: row;
         width: auto;
       }
@@ -113,7 +105,7 @@ const sampleImage = [
   "https://lh5.googleusercontent.com/p/AF1QipPNxflItffH0d_R7QaGqV5rLkQIfPMn4s_-tPwh=w408-h272-k-no"
 ]
 
-function ShowList(props){
+function CommunityList(props){
   const spots = props.spots ?? [];
   const navigate = useNavigate();
 
@@ -125,35 +117,26 @@ function ShowList(props){
             <li key={el.id}
               onClick={()=>navigate(`/spot/${el.id}`)}
             >
-              <div className='ranking'>{i+1}</div>
+              <div className='ranking'>{el.num}</div>
               <div className='spot'>
                 <img src={el.image ?? sampleImage[i % 3]} alt={el.name} />
                 {/* <img src={el.image ?? NoPhoto} alt={el.name} /> */}
                 <div className="textbox">
                   <h3>{el.name}</h3>
-                  <p>{el.location.localName ?? el.location.metroName}</p>
                 </div>
               </div>
               {
-                el.volume && 
-                <div className='volume'>
-                  <h4>검색량</h4>
-                  <p>{el.volume}</p>
+                el.nickname && 
+                <div className='nickname'>
+                  <h4>닉네임</h4>
+                  <p>{el.nickname}</p>
                 </div>
               }
-              { el.variance !== undefined &&
-                <div className='variance'>
-                  <h4>변동</h4>
-                  <p className={`${
-                    el.variance===null ? 'new' :
-                    el.variance>0 ? 'up' : ''
-                  }`}>
-                    { 
-                      el.variance==0 ? '-' : 
-                      el.variance ? (el.variance<0?"":"+") + el.variance
-                      : 'new'
-                    }
-                  </p>
+              {
+                el.volume && 
+                <div className='volume'>
+                  <h4>조회수</h4>
+                  <p>{el.volume}</p>
                 </div>
               }
             </li>
@@ -169,4 +152,4 @@ function ShowList(props){
   )
 }
 
-export default ShowList;
+export default CommunityList;

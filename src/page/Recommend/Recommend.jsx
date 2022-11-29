@@ -40,7 +40,6 @@ function Recommend(){
   const navigate = useNavigate();
 
   useEffect(()=>{
-    console.log('fetch')
     getUserApi(accessToken, (data)=>{
       setUser(data);
       if(data.isNewUser){
