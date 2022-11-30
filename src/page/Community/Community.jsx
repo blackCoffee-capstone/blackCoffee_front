@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 // style
 import styled from 'styled-components'
 // api
-import getFilterApi from 'api/getFilterApi'
+import useFetch from 'api/useFetch'
 // component
 import CommunityList from './component/CommunityList'
 import Pagination from 'component/common/Pagination'
@@ -148,13 +148,16 @@ function Myplace() {
   const [ listData, setListData ] = useState([]);
 
   const [ sorter, setSorter ] = useState('New');
-  const [ themes, setThemes ] = useState([]);
-  const [ locations, setLocations ] = useState([]);
   const [ page, setPage ] = useState(1);
   const [ totalPage, setTotalPage ] = useState(1);
   const [ searchWord, setSearchWord ] = useState('');
   const [ themeId, setThemeId ] = useState([]);
   const [ locationId, setLocationId ] = useState([]);
+
+  const {
+    data: filterData, 
+    isLoading: isFilterLoading
+  } = useFetch({ url: 'filters', key: ['filter'] });
 
   function reset(){
     setSearchWord('');
@@ -165,10 +168,6 @@ function Myplace() {
 
   useEffect(()=>{
     reset();
-    getFilterApi((data)=>{
-      setLocations(data.locations);
-      setThemes(data.themes);
-    })
     setListData(CommunityListData) // sampleData 넣음
   }, [])
 
@@ -247,8 +246,8 @@ function Myplace() {
                 <div className='place'>
                   <h4>장소</h4>
                   <ul className='level1'>
-                    { locations.length>0 &&
-                      locations.map((metro)=>{
+                    { filterData.locations.length>0 &&
+                      filterData.locations.map((metro)=>{
                         return (
                           <div key={metro.id}>
                             <p>{metro.metroName}</p>
@@ -281,8 +280,8 @@ function Myplace() {
                   <h4>테마</h4>
                   <ul>
                     {
-                      themes.length>0 &&
-                      themes.map((el)=>{
+                      filterData.themes.length>0 &&
+                      filterData.themes.map((el)=>{
                         return(
                           <li key={'theme'+el.id}
                             onClick={(e)=>{onThemeClick(e, el.id)}}

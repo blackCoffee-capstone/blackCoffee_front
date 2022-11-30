@@ -69,7 +69,7 @@ function ShowMap(props){
         >
           <MarkerClusterer
             averageCenter={true}
-            minLevel={11}
+            minLevel={12}
           >
             {
               spots.map((spot, i) => (

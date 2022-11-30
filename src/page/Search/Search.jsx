@@ -3,8 +3,7 @@ import { useState, useEffect } from 'react'
 // style
 import styled from 'styled-components'
 // api
-import getSpotListApi from 'api/getSpotListApi'
-import getFilterApi from 'api/getFilterApi'
+import useFetch from 'api/useFetch'
 // component
 import ShowList from 'component/common/ShowList'
 import Pagination from 'component/common/Pagination'
@@ -145,47 +144,48 @@ const PageContainer = styled.section`
 
 function Search() {
   const [ showFilter, setShowFilter ] = useState(false);
-  const [ listData, setListData ] = useState([]);
 
   const [ sorter, setSorter ] = useState('Name');
-  const [ themes, setThemes ] = useState([]);
-  const [ locations, setLocations ] = useState([]);
   const [ page, setPage ] = useState(1);
-  const [ totalPage, setTotalPage ] = useState(1);
   const [ searchWord, setSearchWord ] = useState('');
   const [ themeId, setThemeId ] = useState([]);
   const [ locationId, setLocationId ] = useState([]);
+
+  const {
+    data: filterData, 
+    isLoading: isFilterLoading
+  } = useFetch({ url: 'filters', key: ['filter'] });
+  const {
+    data: listData, 
+    isLoading: isListLoading,
+    refetch: refetchList
+  } = useFetch({
+    url: 'spots',
+    key: ['spotlist', page, sorter],
+    params: {
+      page: page,
+      sorter: sorter,
+      word: searchWord,
+      // themeIds: themeId.join(","),
+      // locationIds: locationId.join(","),
+    }
+  });
   
   function reset(){
+    setPage(1)
     setSearchWord('')
     setThemeId([])
     setLocationId([])
     setSorter('Name')
   }
-
   useEffect(()=>{
     reset();
-    getFilterApi((data)=>{
-      setLocations(data.locations);
-      setThemes(data.themes);
-    })
   }, [])
-  useEffect(()=>{
-    searching()
-  }, [page, sorter])
 
   // 검색 함수
   function searching(){
-    getSpotListApi({
-      page: page,
-      sorter: sorter,
-      word: searchWord,
-      themeId: themeId[0],
-      locationId: locationId[0],
-    }, (data)=>{
-      setTotalPage(data.totalPage);
-      setListData(data.spots);
-    });
+    setPage(1);
+    refetchList();
   }
 
   function onLocationClick(e, id){
@@ -252,8 +252,9 @@ function Search() {
                 <div className='place'>
                   <h4>장소</h4>
                   <ul className='level1'>
-                    { locations.length>0 &&
-                      locations.map((metro)=>{
+                    {
+                      filterData.locations.length>0 &&
+                      filterData.locations.map((metro)=>{
                         return (
                           <div key={metro.id}>
                             <p>{metro.metroName}</p>
@@ -286,8 +287,8 @@ function Search() {
                   <h4>테마</h4>
                   <ul>
                     {
-                      themes.length>0 &&
-                      themes.map((el)=>{
+                      filterData.themes.length>0 &&
+                      filterData.themes.map((el)=>{
                         return(
                           <li key={'theme'+el.id}
                             onClick={(e)=>{onThemeClick(e, el.id)}}
@@ -314,8 +315,8 @@ function Search() {
             </ul>
           </div>
           <div className='show'>
-            <ShowList spots={listData}/>
-            <Pagination page={page} setPage={setPage} totalPage={totalPage} />
+            <ShowList spots={listData.spots}/>
+            <Pagination page={page} setPage={setPage} totalPage={listData.totalPage} />
           </div>
         </div>
       </div>

@@ -10,7 +10,7 @@ import { Pagination, EffectFade } from 'swiper';
 // kakao map
 import { Map, MapMarker } from 'react-kakao-maps-sdk'
 // api
-import getSpotApi from 'api/getSpotApi'
+import useFetch from 'api/useFetch'
 // svg
 import Loaction from 'assets/image/common/icon/loaction.svg'
 import { ReactComponent as InstagramColor } from "assets/image/common/ci/instagram-color.svg";
@@ -114,13 +114,11 @@ const PageContainer = styled.section`
 
 function Spot(){
   const { spotId } = useParams();
-  const [ spotData, setSpotData ] = useState([]);
 
-  useEffect(()=>{
-    getSpotApi(spotId, (data)=>{
-      setSpotData(data);
-    })
-  }, [])
+  const {
+    data: spotData, 
+    isLoading: isFilterLoading
+  } = useFetch({ url: `spots${spotId}`, key: ['spot', spotId] });
 
   const sampleImage = [
     'https://lh5.googleusercontent.com/p/AF1QipPe9z6ajG6Zq1WFp6CuVb3VXdgMNI1sWJeuB0Ni=w408-h306-k-no',

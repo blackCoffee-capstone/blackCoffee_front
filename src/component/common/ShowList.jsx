@@ -127,11 +127,11 @@ function ShowList(props){
             >
               <div className='ranking'>{i+1}</div>
               <div className='spot'>
-                <img src={el.image ?? sampleImage[i % 3]} alt={el.name} />
+                <img src={el.photoUrl ?? sampleImage[i % 3]} alt={el.name} />
                 {/* <img src={el.image ?? NoPhoto} alt={el.name} /> */}
                 <div className="textbox">
                   <h3>{el.name}</h3>
-                  <p>{el.location.localName ?? el.location.metroName}</p>
+                  <p>{el.address}</p>
                 </div>
               </div>
               {

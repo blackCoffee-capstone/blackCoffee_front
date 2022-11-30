@@ -17,6 +17,7 @@ const PaginationContainer = styled.div`
       height: 1.5em;
       cursor: pointer;
       transition: var(--transition-fast);
+      user-select: none;
       &:hover{
         background-color: var(--effect-color);
         color: var(--primary-color);
@@ -65,7 +66,7 @@ function Pagination({ page, setPage, totalPage }){
       min: min,
       max: max
     }
-  }, [page])
+  }, [page, totalPage])
 
   const pageNumRendering = ()=>{
     const result = [];
