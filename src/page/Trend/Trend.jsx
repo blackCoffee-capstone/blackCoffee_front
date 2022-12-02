@@ -10,8 +10,7 @@ import ShowMap from 'component/common/ShowMap'
 import { ReactComponent as  Left } from 'assets/image/common/icon/navigation_left.svg'
 import { ReactComponent as  Right } from 'assets/image/common/icon/navigation_right.svg'
 // api
-import getRankListApi from 'api/getRankListApi'
-import getRankMapApi from 'api/getRankMapApi'
+import useFetch from 'api/useFetch'
 
 const PageContainer = styled.section`
   .option{
@@ -53,49 +52,51 @@ const PageContainer = styled.section`
 `
 
 function Trend(){
-  const [ listData, setListData ] = useState([]);
-  const [ mapData, setMapData ] = useState([]);
   const [ showMap, setShowMap ] = useState(false);
-  const [ year, setYear ] = useState(2022);
-  const [ month, setMonth ] = useState(new Date().getMonth() + 1);
-  const [ week, setWeek ] = useState(getCurrentWeek());
+  const [ currentWeek, setCurrentWeek ] = useState(getCurrentWeek());
 
   function getCurrentWeek(){
     const currentDate = new Date();
-    const cudate = currentDate.getDate();
-    const start = new Date(currentDate.setDate(1));
-    const day = start.getDay();
-    const week = parseInt(`${(day - 1 + cudate) / 7 + 1}`);
-    return week;
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const date = currentDate.getDate();
+
+    const firstDate = new Date(year, month, 1);
+    const lastDate = new Date(year, month + 1, 0);
+    const firstDayOfWeek = firstDate.getDay() ? firstDate.getDay() : 7;
+    const lastDayOfWeek = lastDate.getDay();
+    const lastDay = lastDate.getDate();
+
+    const firstWeekCheck = firstDayOfWeek === 5 || firstDayOfWeek === 6 || firstDayOfWeek === 7 ? true : false;
+    const lastWeekCheck = lastDayOfWeek === 1 || lastDayOfWeek === 2 || lastDayOfWeek === 3 ? true : false;
+
+    const lastWeekNo = Math.ceil((firstDayOfWeek - 1 + lastDay) / 7);
+
+    let weekNo = Math.ceil((firstDayOfWeek - 1 + date) / 7);
+    if (weekNo === 1 && firstWeekCheck) weekNo = -1;
+    else if (weekNo === lastWeekNo && lastWeekCheck) weekNo = -2;
+    else if (firstWeekCheck) weekNo = weekNo - 1;
+    return `${year}${(month+1).toString().padStart(2, 0)}${weekNo}`;
   }
 
-  useEffect(()=>{
-    getRankListApi({
-      date: parseInt(`${year}${month}${week}`)
-    }, (data)=>setListData(data));
-    getRankMapApi({
-      date: parseInt(`${year}${month}${week}`)
-    }, (data)=>setMapData(data));
-  }, [year, month, week])
+  const { data: listData, isLoading: isListLoading } = useFetch({
+    url: 'ranks/list',
+    params: { date: currentWeek },
+    key: ['rank', 'list', currentWeek]
+  })
+  const { data: mapData, isLoading: isMapLoading } = useFetch({
+    url: 'ranks/map',
+    params: { date: currentWeek },
+    key: ['rank', 'map', currentWeek]
+  })
+
+  console.log(getCurrentWeek())
 
   function next(){
-    const currentDate = new Date();
-    // 가장 최근 주차일 경우 막음
-    if(year >= currentDate.getFullYear() && month >= currentDate.getMonth() + 1 && week >= getCurrentWeek() ){
-      return;
-    }
-    // 나중에 고쳐야함!
-    if(week <= getCurrentWeek()){
-      setWeek(week+1);
-    }
+    console.log('next');
   }
   function prev(){
-    const currentDate = new Date();
-    // 나중에 고쳐야함!
-    if(week <= 1){
-      return;
-    }
-    setWeek(week-1);
+    console.log('prev');
   }
 
   return(
@@ -114,7 +115,7 @@ function Trend(){
               <button
                 onClick={()=> prev()}
               ><Left /> 이전</button>
-              <h3>{`${year}년 ${month}월 ${week}째주`}</h3>
+              <h3>{`째주`}</h3>
               <button
                 onClick={()=> next()}
               >다음 <Right /></button>

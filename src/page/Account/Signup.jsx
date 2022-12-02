@@ -1,12 +1,12 @@
 // core
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 // recoil
 import { useSetRecoilState } from 'recoil';
 import { messageBundle } from 'store/index'
 // router
 import { useNavigate } from 'react-router-dom'
 // api
-import signupApi from 'api/signupApi'
+import usePost from 'api/usePost'
 // style
 import styled from 'styled-components'
 // component
@@ -29,8 +29,22 @@ const PageContainer = styled.section`
         font-size: var(--font-size-x-small);
         color: var(--danger-color);
       }
+      &.verifyCode>div,
+      &.email>div{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        >:first-child{
+          flex-grow: 1;
+        }
+        button{
+          height: 4.5rem;
+          flex-shrink: 0;
+        }
+      }
     }
-    button{
+    .btn-submit{
       height: 4.5rem;
       width: 100%;
       margin-top: 1rem;
@@ -44,6 +58,11 @@ function Signup() {
 
   const [ email, setEmail ] = useState('');
   const [ emailError, setEmailError ] = useState('');
+  const [ emailCheck, setEmailCheck ] = useState(false);  // 이메일 인증 여부
+  const [ isEmailChecking, setIsEmailChecking ] = useState(false);  // 이메일 체크 중인지
+  const [ emailCheckCount, setEmailCheckCount ] = useState(0);  // 인증코드 유효시간
+  const [ verifyCode, setVerifyCode ] = useState('');  // 인증코드
+  const [ verifyCodeError, setVerifyCodeError ] = useState('');  // 인증코드 에러
   const [ name, setName ] = useState('');
   const [ nameError, setNameError ] = useState('');
   const [ nickname, setNickname ] = useState('');
@@ -52,6 +71,20 @@ function Signup() {
   const [ passwordError, setPasswordError ] = useState('');
   const [ repass, setRepass ] = useState('');
   const [ repassError, setRepassError ] = useState('');
+
+  useEffect(()=>{
+    const timeID = setInterval(() => {
+      if(emailCheckCount<=0 || emailCheckCount==false){
+        clearInterval(timeID)
+        setIsEmailChecking(false);
+        setEmailCheckCount(0);
+      } else {
+        setEmailCheckCount(emailCheckCount-1);
+      }
+      console.log('똑딱똑딱');
+    }, 1000);
+    return ()=>clearInterval(timeID);
+  }, [isEmailChecking, emailCheckCount])
 
   const resetError = useCallback(()=>{
     setEmailError('');
@@ -69,6 +102,10 @@ function Signup() {
     resetError();
   })
 
+  const { mutate: signupApi } = usePost({ url: 'auth/signup' });
+  const { mutate: emailVerify } = usePost({ url: 'auth-codes/signup' });
+  const { mutate: codeVerify } = usePost({ url: 'auth-codes/signup/verify' });
+
   // 회원가입 로직
   function signup(){
     resetError();
@@ -81,20 +118,62 @@ function Signup() {
       setRepassError('비밀번호가 일치하지 않습니다');
     } else{
       signupApi({
-          email,
-          password,
-          nickname,
-          name,
+        email,
+        password,
+        nickname,
+        name,
+      }, {
+        onSuccess: (data)=>{
+          ()=>{
+            setAlert('회원가입이 완료되었습니다.');
+            navigate('/login')
+          }
         },
-        ()=>{
-          setAlert('환영합니다.')
-          navigate('/login')
+        onError: ()=>{
+          setAlert('회원가입에 실패했습니다.')
         }
-      )
-
-      setAlert('샘플. 회원가입이 완료되었습니다');
-      resetAll();
+      });
     }
+  }
+  function checkEmail(){
+    if(!email) {
+      setEmailError('이메일을 입력해주세요.');
+      return;
+    }
+    setEmailError('');
+    emailVerify(
+      { email: email },
+      {
+        onSuccess: ()=>{
+          setIsEmailChecking(true);
+          setEmailCheckCount(180);
+        },
+        onError: ()=>{
+          setAlert('이메일 코드를 보내는데 실패했습니다.')
+        }
+      }
+    )
+  }
+  function checkCode(){
+    if(!verifyCode) {
+      setVerifyCodeError('코드를 입력해주세요.');
+      return;
+    }
+    setVerifyCodeError('')
+    codeVerify(
+      { email: email, code: verifyCode },
+      {
+        onSuccess: ()=>{
+          setIsEmailChecking(false);
+          setEmailCheckCount(0);
+          setEmailCheck(true);
+          setAlert('이메일 인증에 성공하였습니다.')
+        },
+        onError: ()=>{
+          setVerifyCodeError('인증 실패')
+        }
+      }
+    )
   }
 
   return (
@@ -106,12 +185,36 @@ function Signup() {
         <div className="c_inner">
           <div className="email">
             <h4>이메일</h4>
-            <InputEmail
-              value={email}
-              onChange={(e)=> setEmail(e.currentTarget.value) }
-            />
+            <div>
+              <InputEmail
+                value={email}
+                onChange={(e)=> setEmail(e.currentTarget.value) }
+                readOnly={emailCheck}
+              />
+              <button className='c_btn'
+                onClick={()=> {
+                  if(emailCheck) { setEmailCheck(false) }
+                  if(!emailCheck) { checkEmail() }
+                }}
+              >{emailCheck ? '다시입력': '인증하기' }</button>
+            </div>
             { emailError && <p className='error_message'>{emailError}</p> }
           </div>
+          { emailCheckCount>0 && isEmailChecking &&
+            <div className="verifyCode">
+              <div>
+                <InputBasic placeholder="인증코드 입력"
+                  value={verifyCode}
+                  onChange={(e)=> setVerifyCode(e.currentTarget.value) }
+                />
+                <p>{`${Math.floor(emailCheckCount/60)}:${(emailCheckCount%60).toString().padStart(2, 0)}`}</p>
+                <button className='c_btn'
+                  onClick={()=> { checkCode() }}
+                >코드확인</button>
+                { verifyCodeError && <p className='error_message'>{verifyCodeError}</p> }
+              </div>
+            </div>
+          }
           <div className="nickname">
             <h4>닉네임</h4>
             <InputBasic placeholder="닉네임 입력"
@@ -144,7 +247,7 @@ function Signup() {
             />
             { repassError && <p className='error_message'>{repassError}</p> }
           </div>
-          <button className='c_btn-primary'
+          <button className='c_btn-primary btn-submit'
             onClick={ signup }
           >회원가입</button>
         </div>

@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSetRecoilState } from 'recoil'
 import { messageBundle } from 'store/index'
 
-async function useFetch({ url, key, params={}}) {
+function useFetch({ url, key, params={}}) {
   const setAlert = useSetRecoilState(messageBundle.alert);
 
   const { data, isError, isLoading, error, refetch } = useQuery(
@@ -30,14 +30,6 @@ async function useFetch({ url, key, params={}}) {
     console.log('error 발생', error);
   }
 
-  // const { mutate } = useMutation(
-  //   (board_id) => api.delete(`/api/board/${board_id}`),
-  //   {
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries("board_list");
-  //     },
-  //   }
-  // );
   return { data: data.data, isLoading, refetch };
 }
 

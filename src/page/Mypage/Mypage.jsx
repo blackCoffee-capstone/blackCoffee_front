@@ -1,5 +1,7 @@
 // style
 import styled from 'styled-components'
+// api
+import useAuthFetch from 'api/useAuthFetch'
 
 const PageContainer = styled.section`
   .c_inner{
@@ -8,6 +10,8 @@ const PageContainer = styled.section`
 `
 
 function Mypage() {
+  const { data: userData, isLoading: isUserLoading } = useAuthFetch({ url: 'users', key: ['user'] });
+
   return (
     <PageContainer className='c_main_section'>
       <div className="c_section">

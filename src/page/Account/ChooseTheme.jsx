@@ -8,7 +8,7 @@ import { token, messageBundle } from 'store/index'
 // router
 import { useNavigate } from 'react-router-dom';
 // api
-import getTasteApi from 'api/getTasteApi'
+import useAuthFetch from 'api/useAuthFetch'
 import postTasteApi from 'api/postTasteApi'
 // img
 import NoPhoto from 'assets/image/common/no_photo.png'
@@ -84,15 +84,12 @@ const PageContainer = styled.section`
 function ChooseTheme() {
   const [ accessToken, setAccessToken ] = useRecoilState(token.accessToken)
   const setAlert = useSetRecoilState(messageBundle.alert)
-  const [ themes, setThemes ] = useState([])
   const [ chosenTheme, setChosenTheme ] = useState([])
   const navigate = useNavigate()
 
-  useEffect(()=>{
-    getTasteApi(accessToken, (data)=>{
-      setThemes(data)
-    })
-  }, [])
+  const { data: themeData, isLoading: isThemeLoading } = useAuthFetch({ 
+    url: 'taste-themes', key: ['taste'] 
+  })
 
   function submitTaste(){
     if(chosenTheme.length < 5) {
@@ -128,7 +125,7 @@ function ChooseTheme() {
         <div className="c_inner">
           <div className='options'>
             {
-              themes.map((theme)=>{
+              themeData.map((theme)=>{
                 return(
                   <div className={'option_box'}
                     key={theme.id}

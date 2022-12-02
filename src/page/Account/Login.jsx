@@ -1,5 +1,5 @@
 // core
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 // recoil
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { token, messageBundle, userState } from 'store/index'
@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom'
 // style
 import styled from 'styled-components'
 // api
-import loginApi from 'api/loginApi'
+import usePost from 'api/usePost'
 // component
 import { InputEmail, InputPassword } from './component/InputBundle'
 
@@ -116,23 +116,17 @@ const PageContainer = styled.section`
 
 function Login() {
   const setAlert = useSetRecoilState(messageBundle.alert);
-  const [ accessToken, setAccessToken ] = useRecoilState(token.accessToken);
+  const setAccessToken = useSetRecoilState(token.accessToken);
   const setRefreshToken = useSetRecoilState(token.refreshToken);
   const setUser = useSetRecoilState(userState);
   const navigate = useNavigate();
-
-  useEffect(()=>{
-    // 이미 로그인 시 redirect
-    if(accessToken){
-      setAlert('이미 로그인 하셨습니다.')
-      navigate('/')
-    }
-  }, [])
 
   const [ email, setEmail ] = useState('');
   const [ emailError, setEmailError ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ passwordError, setPasswordError ] = useState('');
+
+  const { mutate: loginApi } = usePost({ url: 'auth/login' });
 
   // 로그인 로직
   function login(){
@@ -143,21 +137,27 @@ function Login() {
       if(!password) setPasswordError('비밀번호를 입력해주세요');
     } else{
       loginApi({
-        email: email,
-        password: password,
-      },
-      (data)=>{
-        setUser(data.user);
-        if(data.user.isNewUser){
-          setAlert('맞춤 서비스를 위해 원하는 여행 테마를 선택해 주세요')
-          navigate('/choosetheme');
-        } else {
-          setAlert('환영합니다')
-          navigate('/');
+          email: email,
+          password: password,
+        }, {
+        onSuccess: (data)=>{
+          if(data.data.user.isNewUser){
+            setAlert('맞춤 서비스를 위해 원하는 여행 테마를 선택해 주세요')
+            navigate('/choosetheme');
+          } else {
+            navigate('/');
+            setAlert('환영합니다')
+          }
+          setTimeout(() => {
+            setUser(data.data.user);
+            setAccessToken(data.data.accessToken);
+            setRefreshToken(data.data.refreshToken);
+          }, 0);
+        },
+        onError: ()=>{
+          setAlert('올바른 아이디 혹은 비밀번호를 입력해주세요')
         }
-        setAccessToken(data.accessToken);
-        setRefreshToken(data.refreshToken);
-      })
+      });
     }
   }
 

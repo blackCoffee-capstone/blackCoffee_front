@@ -1,7 +1,5 @@
 // core
 import React from 'react'
-// router
-import { useLocation } from 'react-router-dom';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -20,7 +18,6 @@ class ErrorBoundary extends React.Component {
   // }
 
   render() {
-
     if (this.state.hasError) {
       // 폴백 UI를 커스텀하여 렌더링할 수 있습니다.
       return (
@@ -31,6 +28,11 @@ class ErrorBoundary extends React.Component {
                 페이지를 불러오는데 실패했습니다 :(
                 <br />
                 새로고침 해주세요
+                <br />
+                <button className='c_btn-primary'
+                  style={{ marginTop: '1rem' }}
+                  onClick={()=>{window.location.href='/'}}
+                >홈으로</button>
               </h2>
             </div>
           </div>

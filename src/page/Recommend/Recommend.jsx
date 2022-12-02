@@ -8,9 +8,7 @@ import { token, userState, messageBundle } from 'store/index'
 // router
 import { useNavigate } from 'react-router-dom';
 // api
-import getUserApi from 'api/getUserApi'
-import getRecommendListApi from 'api/getRecommendListApi'
-import getRecommendMapApi from 'api/getRecommendMapApi'
+import useAuthFetch from 'api/useAuthFetch'
 // component
 import SlideSwitch from 'component/common/SlideSwitch'
 import ShowList from 'component/common/ShowList'
@@ -29,32 +27,26 @@ const PageContainer = styled.section`
 `
 
 function Recommend(){
-  const [ accessToken, setAccessToken ] = useRecoilState(token.accessToken)
-  const [ user, setUser ] = useRecoilState(userState)
-  const setAlert = useSetRecoilState(messageBundle.alert)
+  // const [ accessToken, setAccessToken ] = useRecoilState(token.accessToken)
+  // const [ user, setUser ] = useRecoilState(userState)
+  // const setAlert = useSetRecoilState(messageBundle.alert)
 
   const [ showMap, setShowMap ] = useState(false);
-  const [ listData, setListData ] = useState([]);
-  const [ mapData, setMapData ] = useState([]);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  
+  const { data: listData, isLoading: isListLoading } = useAuthFetch({ url: 'recommendations/list', key: ['recommend-list'] });
+  const { data: mapData, isLoading: isMapLoading } = useAuthFetch({ url: 'recommendations/map',  key: ['recommend-map']  });
 
-  useEffect(()=>{
-    getUserApi(accessToken, (data)=>{
-      setUser(data);
-      if(data.isNewUser){
-        setAlert('맞춤 서비스를 위해 원하는 여행 테마를 선택해 주세요')
-        navigate('/choosetheme');
-      } else {
-        getRecommendListApi(accessToken, (data)=>{
-          setListData(data);
-        })
-        getRecommendMapApi(accessToken, (data)=>{
-          setMapData(data);
-        })
-      }
-    })
-  }, [])
+  // useEffect(()=>{
+  //   getUserApi(accessToken, (data)=>{
+  //     setUser(data);
+  //     if(data.isNewUser){
+  //       setAlert('맞춤 서비스를 위해 원하는 여행 테마를 선택해 주세요')
+  //       navigate('/choosetheme');
+  //     }
+  //   })
+  // }, [])
   
   return(
     <PageContainer className='c_main_section'>

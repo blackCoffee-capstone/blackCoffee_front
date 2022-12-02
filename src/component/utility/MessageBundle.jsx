@@ -1,3 +1,5 @@
+// core
+import { useEffect } from "react";
 // style
 import styled from "styled-components"
 // recoil
@@ -81,6 +83,17 @@ function MessageBundle(){
   const [ alert, setAlert ] = useRecoilState(messageBundle.alert);
   const [ confirm, setConfirm ] = useRecoilState(messageBundle.confirm);
   const [ error, setError ] = useRecoilState(messageBundle.error);
+
+  // 알림창은 2.6초뒤에 꺼지도록
+  useEffect(()=>{
+    let timeID;
+    if(alert != ''){
+      timeID = setTimeout(() => {
+        setAlert('');
+      }, 2600);
+    }
+    return ()=>clearTimeout(timeID)
+  }, [alert])
 
   return(
     <>
