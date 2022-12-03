@@ -103,10 +103,8 @@ function ChooseTheme() {
     }, 
     {
       onSuccess: (data)=>{
-        ()=>{
-          setAlert('테마 선택을 완료했습니다');
-          navigate('/');
-        }
+        setAlert('테마 선택을 완료했습니다');
+        navigate('/');
       },
       onError: (error)=>{
         if(error.response.data.message == "User's taste is already exist"){
