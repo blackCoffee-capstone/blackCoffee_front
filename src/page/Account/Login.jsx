@@ -1,5 +1,5 @@
 // core
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 // recoil
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { token, messageBundle, userState } from 'store/index'
@@ -116,7 +116,7 @@ const PageContainer = styled.section`
 
 function Login() {
   const setAlert = useSetRecoilState(messageBundle.alert);
-  const setAccessToken = useSetRecoilState(token.accessToken);
+  const [ accessToken, setAccessToken ] = useRecoilState(token.accessToken);
   const setRefreshToken = useSetRecoilState(token.refreshToken);
   const setUser = useSetRecoilState(userState);
   const navigate = useNavigate();
@@ -125,6 +125,13 @@ function Login() {
   const [ emailError, setEmailError ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ passwordError, setPasswordError ] = useState('');
+
+  useEffect(()=>{
+    if(accessToken){
+      setAlert('이미 로그인 하셨습니다.')
+      navigate('/')
+    }
+  }, [])
 
   const { mutate: loginApi } = usePost({ url: 'auth/login' });
 

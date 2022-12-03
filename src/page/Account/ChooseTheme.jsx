@@ -9,7 +9,7 @@ import { token, messageBundle } from 'store/index'
 import { useNavigate } from 'react-router-dom';
 // api
 import useAuthFetch from 'api/useAuthFetch'
-import postTasteApi from 'api/postTasteApi'
+import useAuthPost from 'api/useAuthPost'
 // img
 import NoPhoto from 'assets/image/common/no_photo.png'
 
@@ -87,20 +87,42 @@ function ChooseTheme() {
   const [ chosenTheme, setChosenTheme ] = useState([])
   const navigate = useNavigate()
 
+  useEffect(()=>{
+    if(!accessToken){
+      setAlert('로그인이 필요합니다.')
+      navigate('/login')
+    }
+  }, [])
+
   const { data: themeData, isLoading: isThemeLoading } = useAuthFetch({ 
-    url: 'taste-themes', key: ['taste'] 
+    url: 'taste-themes', key: ['taste'], enabled: !!accessToken
   })
+
+  const { mutate: postTasteApi } = useAuthPost({ url: 'users/taste-themes' })
 
   function submitTaste(){
     if(chosenTheme.length < 5) {
       setAlert('최소 5개 선택해주세요');
       return;
     }
-    postTasteApi(accessToken, {
+    postTasteApi({
       tasteThemes: chosenTheme
-    }, ()=>{
-      setAlert('테마 선택을 완료했습니다');
-      navigate('/');
+    }, 
+    {
+      onSuccess: (data)=>{
+        ()=>{
+          setAlert('테마 선택을 완료했습니다');
+          navigate('/');
+        }
+      },
+      onError: (error)=>{
+        if(error.response.data.message == "User's taste is already exist"){
+          setAlert('이미 취향선택을 완료하셨습니다');
+          navigate('/');
+        } else {
+          setAlert(error.response.data.message);
+        }
+      }
     });
   }
 
@@ -124,7 +146,7 @@ function ChooseTheme() {
       <section className="c_section choose">
         <div className="c_inner">
           <div className='options'>
-            {
+            { !!themeData &&
               themeData.map((theme)=>{
                 return(
                   <div className={'option_box'}

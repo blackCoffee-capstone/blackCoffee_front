@@ -53,9 +53,7 @@ function App() {
                 <Route path="/search" element={<Search />} />
                 <Route path="/community" element={<Community />} />
                 <Route path="/spot/:spotId" element={<Spot />} />
-                <Route path="/login" element={
-                  <LoginRouterGuard><Login /></LoginRouterGuard>
-                } />
+                <Route path="/login" element={ <Login /> } />
                 <Route path="/signup" element={
                   <LoginRouterGuard><Signup /></LoginRouterGuard>
                 } />

@@ -29,7 +29,6 @@ const FilterContainer = styled.div`
     background-color: var(--base-color-light);
     border-radius: var(--border-radius-mid);
     padding: 1.5rem;
-    
     &.hide{
       height: 0;
       padding: 0;

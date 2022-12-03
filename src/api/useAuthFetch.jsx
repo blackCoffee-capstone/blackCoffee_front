@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { messageBundle, token } from 'store/index'
 
-function useAuthFetch({ url, key, params={}}) {
+function useAuthFetch({ url, key, params={}, ...props }) {
   const setAlert = useSetRecoilState(messageBundle.alert);
   const [ accessToken, setAccessToken ] = useRecoilState(token.accessToken);
 
@@ -29,7 +29,8 @@ function useAuthFetch({ url, key, params={}}) {
       onError: e => { // 실패시 호출 (400 같은 error 말고 api 호출이 실패)
         console.log(e.message);
         setAlert('데이터 호출 중 문제가 발생하였습니다.')
-      }
+      },
+      ...props
     }
   );
   if(isError){

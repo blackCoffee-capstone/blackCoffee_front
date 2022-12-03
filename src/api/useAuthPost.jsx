@@ -8,7 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRecoilState } from 'recoil'
 import { token } from 'store/index'
 
-function useAuthPost({ url }) {
+function useAuthPost({ url, ...props }) {
   const [ accessToken, setAccessToken ] = useRecoilState(token.accessToken);
 
   return useMutation(
@@ -23,7 +23,8 @@ function useAuthPost({ url }) {
       },
       onError: e => {
         console.log(e.message);
-      }
+      },
+      ...props
     }
   );
 }
