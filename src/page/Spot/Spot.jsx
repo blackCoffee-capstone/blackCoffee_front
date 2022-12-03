@@ -7,12 +7,17 @@ import styled from 'styled-components'
 // Swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, EffectFade } from 'swiper';
+// utils
+import { numberFormat } from 'utils/formatting/numberFormat'
 // kakao map
 import { Map, MapMarker } from 'react-kakao-maps-sdk'
 // api
 import useFetch from 'api/useFetch'
-// svg
+// img
 import Loaction from 'assets/image/common/icon/loaction.svg'
+import NoPhoto from 'assets/image/common/no_photo.png'
+import WishOn from 'assets/image/common/icon/wish_on.svg'
+import Nearby from 'assets/image/common/icon/nearby.png'
 import { ReactComponent as InstagramColor } from "assets/image/common/ci/instagram-color.svg";
 
 const PageContainer = styled.section`
@@ -72,9 +77,10 @@ const PageContainer = styled.section`
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-direction: column;
         gap: 0.5rem 1rem;
         font-size: var(--font-size-large);
-        margin-bottom: 1rem;
+        margin-bottom: var(--space-small);
         h3{
           display: flex;
           align-items: center;
@@ -84,6 +90,8 @@ const PageContainer = styled.section`
       }
       .loaction{
         flex-wrap: wrap;
+        flex-direction: row;
+        margin-bottom: 1rem;
         @media screen and (max-width: 600px) {
           font-size: var(--font-size-mid);
         }
@@ -96,15 +104,78 @@ const PageContainer = styled.section`
         }
       }
       .map{
-        margin-bottom: var(--space-small);
       }
       .sns{
-        flex-direction: column;
         h3{
           svg{
             width: 1.5em;
             height: 1.5em;
             margin-right: 1rem;
+          }
+        }
+        .posts{
+          padding: 1rem 0;
+          .post{
+            max-width: 35rem;
+            padding: 1rem;
+            border: 1px solid var(--border-color-light);
+            box-shadow: var(--box-shadow01);
+            border-radius: var(--border-radius-mid);
+            a{
+              display: block;
+              .post_photo{
+                width: 100%;
+                height: 25rem;
+                object-fit: cover;
+  
+                @media screen and (max-width: 600px){
+                  height: 21rem;
+                }
+              }
+              p{
+                margin-top: 0.5rem;
+                &.content_top{
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  span{
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                  }
+                  .date{
+                    color: var(--font-color-sub);
+                  }
+                  img{
+                    width: 2rem;
+                    height: 2rem;
+                  }
+                }
+                &.content{
+                  font-size: var(--font-size-small);
+                }
+              }
+            }
+          }
+        }
+      }
+      .nearby{
+        h3{
+          img{
+            width: 2em;
+            height: 2em;
+            margin-right: 1rem;
+          }
+        }
+        .facility{
+          width: 100%;
+          padding: 1rem 0;
+          .facility_box{
+            width: 20rem;
+            height: 20rem;
+            padding: 1rem;
+            border-radius: var(--border-radius-mid);
+            background-color: var(--base-color-light);
           }
         }
       }
@@ -199,35 +270,46 @@ function Spot(){
           </div>
           <div className='sns'>
             <h3><InstagramColor />관련 SNS 포스팅</h3>
-            
-            { // 포스팅 하나일때
-              spotData.detailSnsPost?.length==1 &&
-              <div className='posts'>
-                <div className='post'>
-                  <a href={spotData.detailSnsPost[0].photoUrl}>
-                    <p>date: {spotData.detailSnsPost[0].date?.slice(0,10)}</p>
-                    <p>{spotData.detailSnsPost[0].content}</p>
-                    <img src={spotData.detailSnsPost[0].photoUrl} alt="" />
-                  </a>
-                </div>
-              </div>
-            }
-            { // 이미지 여러개면 swiper로
-              spotData.detailSnsPost?.length>1 &&
-              <Swiper className='img_swiper'
-                slidesPerView="auto"
-              >
-                {
-                  spotData.detailSnsPost.map((el, i) => {
-                    return(
-                      <SwiperSlide key={i}>
-                        <a href={el.photoUrl}>{el.photoUrl}</a>
-                      </SwiperSlide>
-                    )
-                  })
-                }
-          </Swiper>
-        }
+            <Swiper className='posts'
+              slidesPerView={"auto"}
+              spaceBetween={spotData.detailSnsPost?.length==1 ? 0 : 10}
+            >
+              { spotData.detailSnsPost?.length>=1 &&
+                spotData.detailSnsPost?.map((el, i) => {
+                  return(
+                    <SwiperSlide key={el.snsPostUrl} className='post'>
+                      <a href={el.snsPostUrl} target="_blank" rel="noopener noreferrer">
+                        <img className='post_photo' src={el.photoUrl} alt="" style={{
+                          background: `url(${NoPhoto}) no-repeat center center / 100%`
+                        }} />
+                        <p className='content_top'>
+                          <span className='date'>{el.date?.slice(0,10)}</span> <span><img src={WishOn} /> {numberFormat(el.likeNumber)}</span>
+                        </p>
+                        <p className='content'>{el.content}</p>
+                      </a>
+                    </SwiperSlide>
+                  )
+                })
+              }
+            </Swiper>
+          </div>
+          <div className="nearby">
+            <h3><img src={Nearby} />근처 시설</h3>
+            <Swiper className='facility'
+              slidesPerView={"auto"}
+              spaceBetween={10}
+            >
+              { 
+                spotData.neaybyFacility?.map((el, i) => {
+                  return(
+                    <SwiperSlide key={i} className='facility_box'>
+                      <h4>{el.name}</h4>
+                      <p>{el.address}</p>
+                    </SwiperSlide>
+                  )
+                })
+              }
+            </Swiper>
           </div>
         </div>
       </section>

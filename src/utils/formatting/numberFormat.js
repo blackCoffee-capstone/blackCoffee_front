@@ -4,4 +4,4 @@ export function numberFormat(num = 0) {
     num = num.replace(/[^0-9]/g, ''); // 숫자이외 제거
   }
   return new Intl.NumberFormat().format(num);
-};
+}
