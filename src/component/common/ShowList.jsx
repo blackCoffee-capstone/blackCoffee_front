@@ -4,10 +4,12 @@ import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom';
 // img
 import NoPhoto from 'assets/image/common/no_photo.png'
+import Wish from 'assets/image/common/icon/wish.svg'
+import WishOn from 'assets/image/common/icon/wish_on.svg'
 
 const ListContainer = styled.ul`
   width: 100%;
-  li{
+  >li{
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -52,6 +54,7 @@ const ListContainer = styled.ul`
         border-radius: var(--border-radius-mid);
         background-color: var(--loading-color);
         transition: var(--transition-default);
+        border: none;
       }
       .textbox{
         text-align: start;
@@ -91,6 +94,15 @@ const ListContainer = styled.ul`
     .volume{
       width: 12rem;
     }
+    .wishes{
+      width: 2.5rem;
+      height: 2.5rem;
+      padding: 0;
+      img{
+        height: 100%;
+        width: 100%;
+      }
+    }
     @media screen and (max-width: 768px) {
       &{
         flex-wrap: wrap;
@@ -104,31 +116,34 @@ const ListContainer = styled.ul`
         flex-direction: row;
         width: auto;
       }
+      .wishes{
+        width: 2rem;
+        height: 2rem;
+      }
     }
+  }
+  >p{
+    text-align: center;
   }
 `
 
-const sampleImage = [
-  "https://lh5.googleusercontent.com/p/AF1QipPe9z6ajG6Zq1WFp6CuVb3VXdgMNI1sWJeuB0Ni=w408-h306-k-no", "https://images.unsplash.com/photo-1503932860988-56df256a6c5f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-  "https://lh5.googleusercontent.com/p/AF1QipPNxflItffH0d_R7QaGqV5rLkQIfPMn4s_-tPwh=w408-h272-k-no"
-]
-
 function ShowList(props){
-  const spots = props.spots ?? [];
+  const spots = props?.spots ?? [];
   const navigate = useNavigate();
 
   return (
     <ListContainer>
-      {
-        spots.map((el, i) => {
+      { spots?.length>0 &&
+        spots?.map((el, i) => {
           return(
             <li key={el.id}
               onClick={()=>navigate(`/spot/${el.id}`)}
             >
               <div className='ranking'>{i+1}</div>
               <div className='spot'>
-                <img src={el.photoUrl ?? sampleImage[i % 3]} alt={el.name} />
-                {/* <img src={el.image ?? NoPhoto} alt={el.name} /> */}
+                <img src={el.photoUrl ?? NoPhoto} style={{
+                  background: `url(${NoPhoto}) no-repeat center center / 100%`
+                }} />
                 <div className="textbox">
                   <h3>{el.name}</h3>
                   <p>{el.address}</p>
@@ -154,6 +169,14 @@ function ShowList(props){
                       : 'new'
                     }
                   </p>
+                </div>
+              }
+              { el.wishes !== undefined &&
+                <div className='wishes'>
+                  { 
+                    el.wishes==0 ? <img src={Wish} /> 
+                    : <img src={WishOn} />
+                  }
                 </div>
               }
             </li>

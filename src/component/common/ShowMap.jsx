@@ -44,17 +44,17 @@ const MapContainer = styled.section`
 function ShowMap(props){
   const navigate = useNavigate();
 
-  const spots = props.spots ?? [];
+  const spots = props?.spots ?? [];
   const [ whichInfoShow, setWhichInfoShow ] = useState(-1);
 
   return (
     <MapContainer>
       {
-        spots.length==0 &&
+        spots?.length==0 &&
         <p>데이터가 없습니다</p>
       }
       {
-        spots.length>=1 &&
+        spots?.length>=1 &&
         <Map
           center={{ lat: 35.8, lng: 127.6358 }}
           level={13}
@@ -72,7 +72,7 @@ function ShowMap(props){
             minLevel={12}
           >
             {
-              spots.map((spot, i) => (
+              spots?.map((spot, i) => (
                 <MapMarker
                   key={spot.id}
                   position={{ lat: spot.latitude, lng: spot.longitude }}

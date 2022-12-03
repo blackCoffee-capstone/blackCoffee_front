@@ -178,7 +178,7 @@ function Spot(){
           <h2 className='c_title'>{spotData.name}</h2>
           <div className='loaction'>
             <h3><img src={Loaction} />위치</h3>
-            <p>{spotData.location?.localName ?? spotData.location?.metroName}</p>
+            <p>{spotData.address}</p>
           </div>
           <div className='map'>
             {
@@ -199,11 +199,16 @@ function Spot(){
           </div>
           <div className='sns'>
             <h3><InstagramColor />관련 SNS 포스팅</h3>
+            
             { // 포스팅 하나일때
               spotData.detailSnsPost?.length==1 &&
               <div className='posts'>
                 <div className='post'>
-                  <a href={spotData.detailSnsPost[0].photoUrl}>{spotData.detailSnsPost[0].photoUrl}</a>
+                  <a href={spotData.detailSnsPost[0].photoUrl}>
+                    <p>date: {spotData.detailSnsPost[0].date?.slice(0,10)}</p>
+                    <p>{spotData.detailSnsPost[0].content}</p>
+                    <img src={spotData.detailSnsPost[0].photoUrl} alt="" />
+                  </a>
                 </div>
               </div>
             }

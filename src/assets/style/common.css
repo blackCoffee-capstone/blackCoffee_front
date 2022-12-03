@@ -116,6 +116,10 @@ button {
     border: none;
     outline: none;
 }
+button:disabled{
+    color: var(--disabled-color) !important;
+    cursor: default;
+}
 textarea, input {
 	border: 1px solid var(--border-color-light);
     background: none;

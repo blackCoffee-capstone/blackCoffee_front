@@ -90,13 +90,11 @@ function Trend(){
     key: ['rank', 'map', currentWeek]
   })
 
-  console.log(getCurrentWeek())
-
-  function next(){
-    console.log('next');
+  function next(next){
+    setCurrentWeek(String(next));
   }
-  function prev(){
-    console.log('prev');
+  function prev(prev){
+    setCurrentWeek(String(prev))
   }
 
   return(
@@ -113,11 +111,13 @@ function Trend(){
           <div className="option">
             <div className='period'>
               <button
-                onClick={()=> prev()}
+                disabled={!listData.prev && !mapData.prev}
+                onClick={()=> prev(listData.prev)}
               ><Left /> 이전</button>
-              <h3>{`째주`}</h3>
+              <h3>{`${currentWeek.slice(0,4)}년 ${currentWeek.slice(4,6)}월 ${currentWeek.slice(-1,)}째주`}</h3>
               <button
-                onClick={()=> next()}
+                disabled={!listData.next && !mapData.next}
+                onClick={()=> next(listData.next)}
               >다음 <Right /></button>
             </div>
             <div className="show_map">
@@ -129,8 +129,8 @@ function Trend(){
             </div>
           </div>
           <div className='show'>
-            { !showMap && <ShowList spots={listData}/> }
-            { showMap && <ShowMap spots={mapData}/> }
+            { !showMap && <ShowList spots={listData.ranking}/> }
+            { showMap && <ShowMap spots={mapData.ranking}/> }
           </div>
         </div>
       </section>

@@ -6,6 +6,8 @@ import ScrollToTop from 'component/utility/router/ScrollToTop'
 import AuthRouterGuard from 'component/utility/router/AuthRouterGuard'
 import LoginRouterGuard from 'component/utility/router/LoginRouterGuard'
 // import RouterGuard from 'component/utility/router/RouterGuard'
+// axios
+import { AuthAxiosInterceptor } from './api/authAxios'
 // component - utility
 import ErrorBoundary from './component/utility/ErrorBoundary'  // 에러
 import LoadingPage from './component/utility/LoadingPage'  // 로딩
@@ -35,45 +37,47 @@ import NotFound from './page/NotFound'  // 404 NotFound
 function App() {
   return (
     <div className="App">
-      <MessageBundle />
-      <Router>
-        <Header />
-        <ScrollToTop />
-        <ErrorBoundary>
-          <Suspense fallback={<LoadingPage />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/trend" element={<Trend />} />
-              <Route path="/recommend" element={
-                <AuthRouterGuard><Recommend /></AuthRouterGuard>
-              } />
-              <Route path="/search" element={<Search />} />
-              <Route path="/community" element={<Community />} />
-              <Route path="/spot/:spotId" element={<Spot />} />
-              <Route path="/login" element={
-                <LoginRouterGuard><Login /></LoginRouterGuard>
-              } />
-              <Route path="/signup" element={
-                <LoginRouterGuard><Signup /></LoginRouterGuard>
-              } />
-              <Route path="/choosetheme" element={
-                <AuthRouterGuard><ChooseTheme /></AuthRouterGuard>
-              } />
-              <Route path="/findpass" element={<FindPassword />} />
-              <Route path="/mypage" element={
-                <AuthRouterGuard><Mypage /></AuthRouterGuard>
-              } />
-              <Route path="/adapplication" element={<AdApplication />} />
-              <Route path="/customer" element={<Customer />} />
-              <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-              <Route path="/emaildenial" element={<EmailDenial />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </ErrorBoundary>
-        <Footer />
-      </Router>
+      <AuthAxiosInterceptor>
+        <MessageBundle />
+        <Router>
+          <Header />
+          <ScrollToTop />
+          <ErrorBoundary>
+            <Suspense fallback={<LoadingPage />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/trend" element={<Trend />} />
+                <Route path="/recommend" element={
+                  <AuthRouterGuard><Recommend /></AuthRouterGuard>
+                } />
+                <Route path="/search" element={<Search />} />
+                <Route path="/community" element={<Community />} />
+                <Route path="/spot/:spotId" element={<Spot />} />
+                <Route path="/login" element={
+                  <LoginRouterGuard><Login /></LoginRouterGuard>
+                } />
+                <Route path="/signup" element={
+                  <LoginRouterGuard><Signup /></LoginRouterGuard>
+                } />
+                <Route path="/choosetheme" element={
+                  <AuthRouterGuard><ChooseTheme /></AuthRouterGuard>
+                } />
+                <Route path="/findpass" element={<FindPassword />} />
+                <Route path="/mypage" element={
+                  <AuthRouterGuard><Mypage /></AuthRouterGuard>
+                } />
+                <Route path="/adapplication" element={<AdApplication />} />
+                <Route path="/customer" element={<Customer />} />
+                <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+                <Route path="/emaildenial" element={<EmailDenial />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </ErrorBoundary>
+          <Footer />
+        </Router>
+      </AuthAxiosInterceptor>
     </div>
   );
 }
