@@ -148,6 +148,9 @@ function Login() {
           password: password,
         }, {
         onSuccess: (data)=>{
+          setUser(data.data.user);
+          setAccessToken(data.data.accessToken);
+          setRefreshToken(data.data.refreshToken);
           if(data.data.user.isNewUser){
             setAlert('맞춤 서비스를 위해 원하는 여행 테마를 선택해 주세요')
             navigate('/choosetheme');
@@ -155,11 +158,6 @@ function Login() {
             navigate('/');
             setAlert('환영합니다')
           }
-          setTimeout(() => {
-            setUser(data.data.user);
-            setAccessToken(data.data.accessToken);
-            setRefreshToken(data.data.refreshToken);
-          }, 0);
         },
         onError: ()=>{
           setAlert('올바른 아이디 혹은 비밀번호를 입력해주세요')

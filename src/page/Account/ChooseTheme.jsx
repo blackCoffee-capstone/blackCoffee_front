@@ -87,13 +87,6 @@ function ChooseTheme() {
   const [ chosenTheme, setChosenTheme ] = useState([])
   const navigate = useNavigate()
 
-  useEffect(()=>{
-    if(!accessToken){
-      setAlert('로그인이 필요합니다.')
-      navigate('/login')
-    }
-  }, [])
-
   const { data: themeData, isLoading: isThemeLoading } = useAuthFetch({ 
     url: 'taste-themes', key: ['taste'], enabled: !!accessToken
   })
