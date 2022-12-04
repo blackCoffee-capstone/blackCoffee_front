@@ -37,7 +37,7 @@ function useAuthFetch({ url, key, params={}, ...props }) {
     console.log('error 발생', error);
   }
   
-  return { data: data.data, isLoading, refetch };
+  return { data: data?.data, isLoading, refetch };
 }
 
 export default useAuthFetch

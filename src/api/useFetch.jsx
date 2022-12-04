@@ -30,7 +30,7 @@ function useFetch({ url, key, params={}}) {
     console.log('error 발생', error);
   }
 
-  return { data: data.data, isLoading, refetch };
+  return { data: data?.data, isLoading, refetch };
 }
 
 export default useFetch

@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 // recoil
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { token, userState, messageBundle } from 'store/index'
+import { userState, messageBundle } from 'store/index'
 // router
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 // api
 import useAuthFetch from 'api/useAuthFetch'
 // component
@@ -27,26 +27,27 @@ const PageContainer = styled.section`
 `
 
 function Recommend(){
-  // const [ accessToken, setAccessToken ] = useRecoilState(token.accessToken)
-  // const [ user, setUser ] = useRecoilState(userState)
-  // const setAlert = useSetRecoilState(messageBundle.alert)
+  const setAlert = useSetRecoilState(messageBundle.alert)
+  const navigate = useNavigate();
+  const { data: userData } = useAuthFetch({ 
+    url: 'users', key: ['user']
+  });
+  const { data: listData, isLoading: isListLoading } = useAuthFetch({ 
+    url: 'recommendations/list', key: ['recommend-list'],
+    enabled: !userData.isNewUser  // 유저가 취향 선택 완료한 경우만
+  });
+  const { data: mapData, isLoading: isMapLoading } = useAuthFetch({
+    url: 'recommendations/map',  key: ['recommend-map'],
+    enabled: !userData.isNewUser  // 유저가 취향 선택 완료한 경우만
+  });
+  useEffect(()=>{ // 취향 선택 안했을 때 취향선택으로 던짐
+    if(userData.isNewUser){
+      setAlert('서비스 이용전 취향 선택을 먼저 해주세요');
+      navigate('/chooseTheme');
+    }
+  }, [userData])
 
   const [ showMap, setShowMap ] = useState(false);
-
-  // const navigate = useNavigate();
-  
-  const { data: listData, isLoading: isListLoading } = useAuthFetch({ url: 'recommendations/list', key: ['recommend-list'] });
-  const { data: mapData, isLoading: isMapLoading } = useAuthFetch({ url: 'recommendations/map',  key: ['recommend-map']  });
-
-  // useEffect(()=>{
-  //   getUserApi(accessToken, (data)=>{
-  //     setUser(data);
-  //     if(data.isNewUser){
-  //       setAlert('맞춤 서비스를 위해 원하는 여행 테마를 선택해 주세요')
-  //       navigate('/choosetheme');
-  //     }
-  //   })
-  // }, [])
   
   return(
     <PageContainer className='c_main_section'>

@@ -87,9 +87,9 @@ function Footer() {
         <div className="c_inner">
           <div className="info_detail">
             <ul className="company_info">
-              <li>blackCoffee</li>
+              <li>blackCoffee팀</li>
               <li>팀장: 임종용</li>
-              <li>경기도 수원시 영통구 월드컵로 206</li>
+              <li>경기도 수원시 영통구 월드컵로 206(아주대)</li>
               <li>e-mail: bellmir@ajou.ac.kr</li>
               {/* <li>사업자 등록번호 123-12-12345</li> */}
             </ul>
