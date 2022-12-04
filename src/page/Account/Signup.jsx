@@ -7,6 +7,9 @@ import { messageBundle } from 'store/index'
 import { useNavigate } from 'react-router-dom'
 // api
 import usePost from 'api/usePost'
+// utils
+import { emailCheck } from 'utils/checking/emailCheck';
+import { pwCheck } from 'utils/checking/pwCheck';
 // style
 import styled from 'styled-components'
 // component
@@ -29,6 +32,7 @@ const PageContainer = styled.section`
         font-size: var(--font-size-x-small);
         color: var(--danger-color);
       }
+      .verifyCode .error_message{}
       &.verifyCode>div,
       &.email>div{
         display: flex;
@@ -38,9 +42,21 @@ const PageContainer = styled.section`
         >:first-child{
           flex-grow: 1;
         }
+        input.checked{
+          background-color: var(--base-color-light);
+          border-color:var(--border-color-light);
+          color: var(--font-color-sub);
+          cursor: default;
+        }
         button{
           height: 4.5rem;
           flex-shrink: 0;
+          border-color:var(--primary-color);
+          color: var(--primary-color);
+          &.checked{
+            background-color: var(--base-color-light);
+            border-color:var(--border-color-light);
+          }
         }
       }
     }
@@ -58,7 +74,7 @@ function Signup() {
 
   const [ email, setEmail ] = useState('');
   const [ emailError, setEmailError ] = useState('');
-  const [ emailCheck, setEmailCheck ] = useState(false);  // 이메일 인증 여부
+  const [ emailChecked, setEmailCheck ] = useState(false);  // 이메일 인증 여부
   const [ isEmailChecking, setIsEmailChecking ] = useState(false);  // 이메일 체크 중인지
   const [ emailCheckCount, setEmailCheckCount ] = useState(0);  // 인증코드 유효시간
   const [ verifyCode, setVerifyCode ] = useState('');  // 인증코드
@@ -72,88 +88,127 @@ function Signup() {
   const [ repass, setRepass ] = useState('');
   const [ repassError, setRepassError ] = useState('');
 
-  useEffect(()=>{
-    const timeID = setInterval(() => {
-      if(emailCheckCount<=0 || emailCheckCount==false){
-        clearInterval(timeID)
-        setIsEmailChecking(false);
-        setEmailCheckCount(0);
-      } else {
-        setEmailCheckCount(emailCheckCount-1);
-      }
-      console.log('똑딱똑딱');
-    }, 1000);
-    return ()=>clearInterval(timeID);
-  }, [isEmailChecking, emailCheckCount])
-
-  const resetError = useCallback(()=>{
-    setEmailError('');
-    setNameError('');
-    setNicknameError('');
-    setPasswordError('');
-    setRepassError('');
-  })
-  const resetAll = useCallback(()=>{
-    setEmail('');
-    setName('');
-    setNickname('');
-    setPassword('');
-    setRepass('');
-    resetError();
-  })
-
   const { mutate: signupApi } = usePost({ url: 'auth/signup' });
   const { mutate: emailVerify } = usePost({ url: 'auth-codes/signup' });
   const { mutate: codeVerify } = usePost({ url: 'auth-codes/signup/verify' });
 
+  const resetError = useCallback(()=>{
+    setEmailError('');
+    setNameError('');
+    setVerifyCodeError('');
+    setNicknameError('');
+    setPasswordError('');
+    setRepassError('');
+  })
+  // const resetAll = useCallback(()=>{
+  //   setEmail('');
+  //   setName('');
+  //   setNickname('');
+  //   setPassword('');
+  //   setRepass('');
+  //   resetError();
+  // })
+
+  
+  useEffect(()=>{ // 이메일 인증 시간 업데이트
+    let timeID;
+    if(isEmailChecking){
+      timeID= setInterval(() => {
+        if(emailCheckCount<=0 || isEmailChecking==false){
+          clearInterval(timeID)
+          setIsEmailChecking(false)
+          setEmailCheckCount(0)
+        } else {
+          setEmailCheckCount(emailCheckCount-1)
+        }
+      }, 1000);
+    }
+    return ()=>clearInterval(timeID);
+  }, [isEmailChecking, emailCheckCount])
+  
+  useEffect(()=>{ // 비밀번호 형식 확인
+    if(password && !pwCheck(password)){
+      setPasswordError('8~15자, 숫자, 영어, 특수문자가 각 1개 이상')
+    } else{
+      setPasswordError('')
+    }
+  }, [password])
+  useEffect(()=>{ // 이메일 형식 확인
+    if(email && !emailCheck(email)){
+      setEmailError('이메일 형식으로 입력해주세요')
+    } else {
+      setEmailError('')
+    }
+  }, [email])
+
   // 회원가입 로직
   function signup(){
     resetError();
-    if( !email || !password || !nickname || !name ){
+    if( !email || !emailChecked || !nickname || !name || !password ){
       if(!email) setEmailError('이메일을 입력해주세요');
+      if(!emailChecked) setEmailError('이메일을 인증해주세요');
       if(!nickname) setNicknameError('닉네임을 입력해주세요');
       if(!name) setNameError('이름을 입력해주세요');
       if(!password) setPasswordError('비밀번호를 입력해주세요');
+      return;
     } else if( password != repass ){
       setRepassError('비밀번호가 일치하지 않습니다');
+    } else if(!pwCheck(password) || !emailCheck(email)){
+      setEmailError('이메일 형식으로 입력해주세요')
+      setPasswordError('8~15자, 숫자, 영어, 특수문자가 각 1개 이상')
+      setAlert('이메일과 비밀번호 형식을 다시 확인해주세요');
+      return;
     } else{
       signupApi({
         email,
-        password,
         nickname,
+        password,
         name,
       }, {
-        onSuccess: (data)=>{
-          ()=>{
-            setAlert('회원가입이 완료되었습니다.');
-            navigate('/login')
-          }
+        onSuccess: ()=>{
+          setAlert('회원가입이 완료되었습니다.');
+          navigate('/login')
         },
-        onError: ()=>{
+        onError: (error)=>{
+          if(error.response.data.message=='Email is already exist'){
+            setAlert('이미 가입된 회원입니다.')
+          }
           setAlert('회원가입에 실패했습니다.')
         }
       });
     }
   }
+  // 이메일 인증하기
   function checkEmail(){
     if(!email) {
       setEmailError('이메일을 입력해주세요.');
       return;
     }
+    if(isEmailChecking) return;
     setEmailError('');
     emailVerify(
       { email: email },
       {
         onSuccess: ()=>{
-          setIsEmailChecking(true);
-          setEmailCheckCount(180);
+          setIsEmailChecking(true)
+          setEmailCheckCount(180)
         },
-        onError: ()=>{
-          setAlert('이메일 코드를 보내는데 실패했습니다.')
+        onError: (error)=>{
+          if(error.response.data.message=='Email is already verified'){
+            setAlert('이미 인증된 이메일입니다.')
+            setIsEmailChecking(false)
+            setEmailCheck(true)
+          } else if(error.response.data.message=='Email is already exist'){
+            setAlert('이미 가입된 회원입니다.')
+            navigate('/login')
+          } else {
+            setAlert('이메일 코드를 보내는데 실패했습니다.')
+          }
         }
       }
     )
   }
+  // 코드 확인하기
   function checkCode(){
     if(!verifyCode) {
       setVerifyCodeError('코드를 입력해주세요.');
@@ -189,14 +244,15 @@ function Signup() {
               <InputEmail
                 value={email}
                 onChange={(e)=> setEmail(e.currentTarget.value) }
-                readOnly={emailCheck}
+                readOnly={emailChecked || isEmailChecking}
+                className={`${emailChecked || isEmailChecking ? 'checked' : ''}`}
               />
-              <button className='c_btn'
+              <button className={`c_btn ${emailChecked || isEmailChecking ? 'checked' : ''}`}
+                disabled={emailChecked || isEmailChecking}
                 onClick={()=> {
-                  if(emailCheck) { setEmailCheck(false) }
-                  if(!emailCheck) { checkEmail() }
+                  if(!emailChecked) { checkEmail() }
                 }}
-              >{emailCheck ? '다시입력': '인증하기' }</button>
+              >인증하기</button>
             </div>
             { emailError && <p className='error_message'>{emailError}</p> }
           </div>
@@ -211,8 +267,8 @@ function Signup() {
                 <button className='c_btn'
                   onClick={()=> { checkCode() }}
                 >코드확인</button>
-                { verifyCodeError && <p className='error_message'>{verifyCodeError}</p> }
               </div>
+              { verifyCodeError && <p className='error_message'>{verifyCodeError}</p> }
             </div>
           }
           <div className="nickname">
