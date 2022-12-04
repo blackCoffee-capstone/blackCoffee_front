@@ -115,8 +115,8 @@ const PageContainer = styled.section`
 `
 
 function Login() {
-  const setAlert = useSetRecoilState(messageBundle.alert);
   const [ accessToken, setAccessToken ] = useRecoilState(token.accessToken);
+  const setAlert = useSetRecoilState(messageBundle.alert);
   const setRefreshToken = useSetRecoilState(token.refreshToken);
   const setUser = useSetRecoilState(userState);
   const navigate = useNavigate();
@@ -203,7 +203,9 @@ function Login() {
               <button
                 type="button"
                 className="c_btn-google"
-                onClick={() => location.href='https://manager.meta-buysell.com/google/signin'}
+                onClick={() => {
+                  location.href='javascript:void(0)'; setAlert('구현중입니다.');
+                }}
               >
                 <img src={ require("assets/image/common/ci/facebook_color.png")} alt="facebook" />
                 <p>Facebook으로 로그인</p>
@@ -211,7 +213,8 @@ function Login() {
               <button
                 type="button"
                 className="c_btn-kakao"
-                onClick={() => location.href='https://manager.meta-buysell.com/kakao/signin'}
+                onClick={() => { location.href='javascript:void(0)'; setAlert('구현중입니다.'); }}
+                // onClick={() => location.href='https://manager.meta-buysell.com/kakao/signin'}
               >
                 <img src={ require("assets/image/common/ci/kakao.svg").default }  alt="kakao" />
                 <p>카카오로 로그인</p>
