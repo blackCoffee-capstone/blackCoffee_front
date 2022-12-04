@@ -14,100 +14,103 @@ import { InputEmail, InputPassword } from './component/InputBundle'
 
 const PageContainer = styled.section`
   .fillup{
-    .signin{
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      gap: var(--space-small) 5%;
-      @media screen and ( max-width:600px ){
-        flex-direction: column;
-      }
-      .left{
-        width: 100%;
-        padding: 2rem 0;
+    .c_inner{
+      max-width: 1000px;
+      .signin{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: var(--space-small) 5%;
         @media screen and ( max-width:600px ){
-          padding-bottom: 0;
+          flex-direction: column;
         }
-        >div{
-          margin-bottom: 2rem;
+        .left{
+          width: 100%;
+          padding: 2rem 0;
           @media screen and ( max-width:600px ){
-            margin-bottom: 1rem;
+            padding-bottom: 0;
           }
-          h4{
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-            font-size: var(--font-tiny);
-            font-weight: var(--font-w-mid);
+          >div{
+            margin-bottom: 2rem;
             @media screen and ( max-width:600px ){
-              margin-bottom: 0.5rem;
+              margin-bottom: 1rem;
+            }
+            h4{
+              margin-bottom: 1rem;
+              color: var(--primary-color);
+              font-size: var(--font-tiny);
+              font-weight: var(--font-w-mid);
+              @media screen and ( max-width:600px ){
+                margin-bottom: 0.5rem;
+              }
+            }
+            .error_message{
+              padding-top: 0.2rem;
+              padding-left: 0.2rem;
+              font-size: var(--font-size-x-small);
+              color: var(--danger-color);
             }
           }
-          .error_message{
-            padding-top: 0.2rem;
-            padding-left: 0.2rem;
-            font-size: var(--font-size-x-small);
-            color: var(--danger-color);
+          .find_pass{
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--font-color-sub);
+            transition: var(--transition-fast);
+            &:hover{
+              color: var(--font-color-default);
+            }
+            @media screen and ( max-width:600px ){
+              margin-bottom: 1rem;
+            }
+          }
+          button{
+            height: 4.5rem;
+            width: 100%;
           }
         }
-        .find_pass{
-          display: inline-block;
-          margin-bottom: 2rem;
-          color: var(--font-color-sub);
+        .line {
+          width: 1px;
+          min-height: 100%;
+          background-color: var(--border-color-light);
+          @media screen and ( max-width:600px ){
+            width: 100%;
+            min-height: 1px;
+          }
+        }
+        .right{
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 2rem;
+          button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            height: 5rem;
+            border: 1px solid var(--border-color-light);
+            &:hover{
+              background-color: var(--base-color-light);
+            }
+            img {
+              width: 2.5rem;
+              height: 2.5rem;
+              margin-right: Var(--margin-inner-short);
+            }
+          }
+        }
+      }
+      .signup{
+        text-align: center;
+        margin-top: var(--space-small);
+        a{
+          color: var(--primary-color);
           transition: var(--transition-fast);
           &:hover{
-            color: var(--font-color-default);
+            color: var(--primary-color-effect);
+            text-decoration: underline;
           }
-          @media screen and ( max-width:600px ){
-            margin-bottom: 1rem;
-          }
-        }
-        button{
-          height: 4.5rem;
-          width: 100%;
-        }
-      }
-      .line {
-        width: 1px;
-        min-height: 100%;
-        background-color: var(--border-color-light);
-        @media screen and ( max-width:600px ){
-          width: 100%;
-          min-height: 1px;
-        }
-      }
-      .right{
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 2rem;
-        button {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 1rem;
-          height: 5rem;
-          border: 1px solid var(--border-color-light);
-          &:hover{
-            background-color: var(--base-color-light);
-          }
-          img {
-            width: 2.5rem;
-            height: 2.5rem;
-            margin-right: Var(--margin-inner-short);
-          }
-        }
-      }
-    }
-    .signup{
-      text-align: center;
-      margin-top: var(--space-small);
-      a{
-        color: var(--primary-color);
-        transition: var(--transition-fast);
-        &:hover{
-          color: var(--primary-color-effect);
-          text-decoration: underline;
         }
       }
     }
@@ -213,7 +216,13 @@ function Login() {
               <button
                 type="button"
                 className="c_btn-kakao"
-                onClick={() => { location.href='javascript:void(0)'; setAlert('구현중입니다.'); }}
+                onClick={() => {
+                  window.Kakao.Auth.authorize({
+                    redirectUri: 'http://jigeumyeogi.com/social/kakao',
+                  });
+                  location.href='javascript:void(0)';
+                  setAlert('구현중입니다.');
+                }}
                 // onClick={() => location.href='https://manager.meta-buysell.com/kakao/signin'}
               >
                 <img src={ require("assets/image/common/ci/kakao.svg").default }  alt="kakao" />

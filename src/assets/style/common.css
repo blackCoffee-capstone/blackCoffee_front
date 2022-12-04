@@ -67,6 +67,7 @@
     /* box-shadow */
     --box-shadow01: rgba(51, 51, 51, 0.1) 0px 4px 12px 0px ;    /* 좀 연하고 짧음 */
     --box-shadow02: rgba(51, 51, 51, 0.16) 0px 0px 12px 0px;    /* 비교적 진함 */
+    --box-shadow03: rgba(51, 51, 51, 0.17) 1px 1px 7px 0px;     /* 비교적 진하고 좁음 */
 
     /* transition */
     --transition-faster: 0.05s;
@@ -231,8 +232,8 @@ details[open] summary::after{
     background-color: var(--primary-color);
 }
 .c_subtitle {
-    margin-bottom: 1rem;
-    font-size: var(--font-size-large);
+    font-size: var(--font-size-x-large);
+    font-weight: var(--font-w-mid);
 }
 .c_top_banner{
     display: flex;

@@ -1,5 +1,5 @@
 // core
-import { useEffect, useState, useCallback } from "react";
+import { useEffect } from "react";
 // axios
 import axios from "axios";
 // recoil
@@ -15,14 +15,16 @@ auth.defaults.headers.common['Access-Control-Allow-Headers'] = '*';
 auth.defaults.headers.common['Access-Control-Allow-Credentials'] = 'true';
 
 // 토큰 만료 후 요청 저장 작업
-let isTokenRefreshing = false;
 let refreshSubscribers = [];
-const onTokenRefreshed = (accessToken) => {
-  refreshSubscribers.map((callback) => callback(accessToken));
-};
-const addRefreshSubscriber = (callback) => {
+let isTokenRefreshing = false;
+let errorCount = 0;
+function onTokenRefreshed(token) {
+  refreshSubscribers.map(callback => callback(token));
+  refreshSubscribers = [];
+}
+function addRefreshSubscriber(callback) {
   refreshSubscribers.push(callback);
-};
+}
 
 // auth interceptor custom hook
 function AuthAxiosInterceptor({children}){
@@ -34,8 +36,6 @@ function AuthAxiosInterceptor({children}){
   useEffect(() => {
     // const requestIntercept = auth.interceptors.request.use(
     //   config => {
-    //     // auth.defaults.headers.common['Authorization'] = accessToken ? `Bearer ${accessToken}` : '';
-    //     config.headers['Authorization'] = accessToken ? `Bearer ${accessToken}` : '';
     //     return config;
     //   },
     //   error => {
@@ -43,37 +43,60 @@ function AuthAxiosInterceptor({children}){
     //   }
     // );
     const responseIntercept = auth.interceptors.response.use(
-      response => response, 
-      async (error) => {
-        const { config: originalRequest, response: { status } } = error;
-        if(status === 401){
+      (res) => {
+        errorCount = 0;
+        return res
+      },
+      (error) => {
+        const { config: originalRequest, response } = error;
+        if(response.status === 401){
+          console.log('401후',error)
           refreshSubscribers = [];
-          if (!isTokenRefreshing) {
-            isTokenRefreshing = true;
-            if(!refreshToken) {
-              setAlert('토큰이 만료되었습니다. 다시 로그인 해 주세요');
-              setAccessToken('');
-              return;
+          errorCount++;
+          try{
+            if(originalRequest.url=='auth/token-refresh' || response.data?.message=='token expired') throw 'refreshToken 만료';
+            if(!refreshToken) throw 'refreshToken 만료';
+            if(errorCount>5) throw '에러 5번 넘음'  // 무한루프 방지
+
+            if(!isTokenRefreshing) {
+              isTokenRefreshing = true;
+              // token refresh 요청
+              auth.post(`auth/token-refresh`, {
+                refreshToken: refreshToken
+              }).then(res=>{
+                const newAccessToken = res.data.accessToken;
+                // 새로운 토큰 저장
+                isTokenRefreshing = false;
+                setAccessToken(newAccessToken);
+                // 새로운 토큰으로 지연되었던 요청 진행
+                onTokenRefreshed(newAccessToken);
+              }).catch(error=>{
+                console.log(error)
+                console.log('auth/token-refresh에러');
+                throw 'auth/token-refresh에러'
+              })
             }
-            // token refresh 요청
-            const { data } = await auth.post(`auth/token-refresh`, {
-              refreshToken: refreshToken
+            // token 재발급 동안의 요청은 refreshSubscribers에 저장
+            return new Promise((resolve, reject) => {
+              addRefreshSubscriber((token) => {
+                originalRequest.headers.authorization = "Bearer " + token;
+                resolve(axios(originalRequest));
+              });
             });
-            // 새로운 토큰 저장
-            setAccessToken(data.accessToken);
+          } catch(error) {
+            console.log('전체 catch')
+            if(error=='refreshToken 만료'){
+              setAlert('토큰이 만료되었습니다. 다시 로그인해주세요');
+              setRefreshToken('')
+              setAccessToken('')
+              setTimeout(() => {
+                window.location.href='/login';
+              }, 1200);
+            }
             isTokenRefreshing = false;
-            // auth.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
-            // 새로운 토큰으로 지연되었던 요청 진행
-            onTokenRefreshed(data.accessToken);
+            refreshSubscribers = [];
+            return Promise.reject(error);
           }
-          // token 재발급 동안의 요청은 refreshSubscribers에 저장
-          const retryOriginalRequest = new Promise((resolve) => {
-            addRefreshSubscriber((accessToken) => {
-              originalRequest.headers.Authorization = "Bearer " + accessToken;
-              resolve(auth(originalRequest));
-            });
-          });
-          return retryOriginalRequest;
         }
         return Promise.reject(error);
       }
@@ -82,7 +105,7 @@ function AuthAxiosInterceptor({children}){
       // auth.interceptors.response.eject(requestIntercept);
       auth.interceptors.response.eject(responseIntercept);
     }
-  }, [refreshToken, isTokenRefreshing])
+  }, [refreshToken])
 
   return children
 }

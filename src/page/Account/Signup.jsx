@@ -141,43 +141,6 @@ function Signup() {
     }
   }, [email])
 
-  // 회원가입 로직
-  function signup(){
-    resetError();
-    if( !email || !emailChecked || !nickname || !name || !password ){
-      if(!email) setEmailError('이메일을 입력해주세요');
-      if(!emailChecked) setEmailError('이메일을 인증해주세요');
-      if(!nickname) setNicknameError('닉네임을 입력해주세요');
-      if(!name) setNameError('이름을 입력해주세요');
-      if(!password) setPasswordError('비밀번호를 입력해주세요');
-      return;
-    } else if( password != repass ){
-      setRepassError('비밀번호가 일치하지 않습니다');
-    } else if(!pwCheck(password) || !emailCheck(email)){
-      setEmailError('이메일 형식으로 입력해주세요')
-      setPasswordError('8~15자, 숫자, 영어, 특수문자가 각 1개 이상')
-      setAlert('이메일과 비밀번호 형식을 다시 확인해주세요');
-      return;
-    } else{
-      signupApi({
-        email,
-        nickname,
-        password,
-        name,
-      }, {
-        onSuccess: ()=>{
-          setAlert('회원가입이 완료되었습니다.');
-          navigate('/login')
-        },
-        onError: (error)=>{
-          if(error.response.data.message=='Email is already exist'){
-            setAlert('이미 가입된 회원입니다.')
-          }
-          setAlert('회원가입에 실패했습니다.')
-        }
-      });
-    }
-  }
   // 이메일 인증하기
   function checkEmail(){
     if(!email) {
@@ -222,13 +185,50 @@ function Signup() {
           setIsEmailChecking(false);
           setEmailCheckCount(0);
           setEmailCheck(true);
-          setAlert('이메일 인증에 성공하였습니다.')
+          setAlert('이메일 인증 완료')
         },
         onError: ()=>{
           setVerifyCodeError('인증 실패')
         }
       }
     )
+  }
+  // 회원가입 로직
+  function signup(){
+    resetError();
+    if( !email || !emailChecked || !nickname || !name || !password ){
+      if(!email) setEmailError('이메일을 입력해주세요');
+      if(!emailChecked) setEmailError('이메일을 인증해주세요');
+      if(!nickname) setNicknameError('닉네임을 입력해주세요');
+      if(!name) setNameError('이름을 입력해주세요');
+      if(!password) setPasswordError('비밀번호를 입력해주세요');
+      return;
+    } else if( password != repass ){
+      setRepassError('비밀번호가 일치하지 않습니다');
+    } else if(!pwCheck(password) || !emailCheck(email)){
+      setEmailError('이메일 형식으로 입력해주세요')
+      setPasswordError('8~15자, 숫자, 영어, 특수문자가 각 1개 이상')
+      setAlert('이메일과 비밀번호 형식을 다시 확인해주세요');
+      return;
+    } else{
+      signupApi({
+        email,
+        nickname,
+        password,
+        name,
+      }, {
+        onSuccess: ()=>{
+          setAlert('회원가입이 완료되었습니다.');
+          navigate('/login')
+        },
+        onError: (error)=>{
+          if(error.response.data.message=='Email is already exist'){
+            setAlert('이미 가입된 회원입니다.')
+          }
+          setAlert('회원가입에 실패했습니다.')
+        }
+      });
+    }
   }
 
   return (
