@@ -10,7 +10,7 @@ import styled from 'styled-components'
 // api
 import usePost from 'api/usePost'
 // component
-import { InputEmail, InputPassword } from './component/InputBundle'
+import { InputEmail, InputPassword } from 'component/common/InputBundle'
 
 const PageContainer = styled.section`
   .fillup{
@@ -43,12 +43,6 @@ const PageContainer = styled.section`
               @media screen and ( max-width:600px ){
                 margin-bottom: 0.5rem;
               }
-            }
-            .error_message{
-              padding-top: 0.2rem;
-              padding-left: 0.2rem;
-              font-size: var(--font-size-x-small);
-              color: var(--danger-color);
             }
           }
           .find_pass{
@@ -136,10 +130,12 @@ function Login() {
     }
   }, [])
 
-  const { mutate: loginApi } = usePost({ url: 'auth/login' });
+  const { mutate: loginApi, isLoading: isLoginLoading } = usePost({ url: 'auth/login' });
 
   // 로그인 로직
   function login(){
+    if(isLoginLoading) return;  // 이미 로그인 중이면 중단
+
     setEmailError('');
     setPasswordError('');
     if( !email || !password ){
@@ -184,7 +180,7 @@ function Login() {
                   value={email}
                   onChange={(e)=> setEmail(e.currentTarget.value) }
                 />
-                { emailError && <p className='error_message'>{emailError}</p> }
+                { emailError && <p className='c_error_message'>{emailError}</p> }
               </div>
               <div className="password">
                 <h4>비밀번호</h4>
@@ -192,8 +188,11 @@ function Login() {
                   <InputPassword
                     value={password}
                     onChange={(e)=>setPassword(e.currentTarget.value)}
+                    onKeyPress={(e)=>{
+                      if (e.key === 'Enter' && password) { login() }
+                    }}
                   />
-                  { passwordError && <p className='error_message'>{passwordError}</p> }
+                  { passwordError && <p className='c_error_message'>{passwordError}</p> }
                 </div>
               </div>
               <Link to="/findpass" className="find_pass">비밀번호 찾기</Link>

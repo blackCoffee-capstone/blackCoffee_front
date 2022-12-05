@@ -13,7 +13,7 @@ import { pwCheck } from 'utils/checking/pwCheck';
 // style
 import styled from 'styled-components'
 // component
-import { InputBasic, InputEmail, InputPassword } from './component/InputBundle'
+import { InputBasic, InputEmail, InputPassword } from 'component/common/InputBundle'
 
 const PageContainer = styled.section`
   .fillup{
@@ -26,13 +26,6 @@ const PageContainer = styled.section`
         color: var(--primary-color);
         font-weight: var(--font-w-mid);
       }
-      .error_message{
-        padding-top: 0.2rem;
-        padding-left: 0.2rem;
-        font-size: var(--font-size-x-small);
-        color: var(--danger-color);
-      }
-      .verifyCode .error_message{}
       &.verifyCode>div,
       &.email>div{
         display: flex;
@@ -88,9 +81,9 @@ function Signup() {
   const [ repass, setRepass ] = useState('');
   const [ repassError, setRepassError ] = useState('');
 
-  const { mutate: signupApi } = usePost({ url: 'auth/signup' });
-  const { mutate: emailVerify } = usePost({ url: 'auth-codes/signup' });
-  const { mutate: codeVerify } = usePost({ url: 'auth-codes/signup/verify' });
+  const { mutate: signupApi, isLoading: isFindPassLoading } = usePost({ url: 'auth/signup' });
+  const { mutate: emailVerify, isLoading: isEmailVerifyLoading } = usePost({ url: 'auth-codes/signup' });
+  const { mutate: codeVerify, isLoading: isCodeVerifyLoading } = usePost({ url: 'auth-codes/signup/verify' });
 
   const resetError = useCallback(()=>{
     setEmailError('');
@@ -143,6 +136,7 @@ function Signup() {
 
   // 이메일 인증하기
   function checkEmail(){
+    if(isEmailVerifyLoading) return; // 이미 인증 중이면 중단
     if(!email) {
       setEmailError('이메일을 입력해주세요.');
       return;
@@ -173,6 +167,8 @@ function Signup() {
   }
   // 코드 확인하기
   function checkCode(){
+    if(isCodeVerifyLoading) return; // 이미 코드 확인 중이면 중단
+
     if(!verifyCode) {
       setVerifyCodeError('코드를 입력해주세요.');
       return;
@@ -195,6 +191,7 @@ function Signup() {
   }
   // 회원가입 로직
   function signup(){
+    if(isFindPassLoading) return; // 이미 회원가입중이면 중단
     resetError();
     if( !email || !emailChecked || !nickname || !name || !password ){
       if(!email) setEmailError('이메일을 입력해주세요');
@@ -254,7 +251,7 @@ function Signup() {
                 }}
               >인증하기</button>
             </div>
-            { emailError && <p className='error_message'>{emailError}</p> }
+            { emailError && <p className='c_error_message'>{emailError}</p> }
           </div>
           { emailCheckCount>0 && isEmailChecking &&
             <div className="verifyCode">
@@ -268,7 +265,7 @@ function Signup() {
                   onClick={()=> { checkCode() }}
                 >코드확인</button>
               </div>
-              { verifyCodeError && <p className='error_message'>{verifyCodeError}</p> }
+              { verifyCodeError && <p className='c_error_message'>{verifyCodeError}</p> }
             </div>
           }
           <div className="nickname">
@@ -277,7 +274,7 @@ function Signup() {
               value={nickname}
               onChange={(e)=> setNickname(e.currentTarget.value) }
             />
-            { nicknameError && <p className='error_message'>{nicknameError}</p> }
+            { nicknameError && <p className='c_error_message'>{nicknameError}</p> }
           </div>
           <div className="name">
             <h4>이름</h4>
@@ -285,7 +282,7 @@ function Signup() {
               value={name}
               onChange={(e)=> setName(e.currentTarget.value) }
             />
-            { nameError && <p className='error_message'>{nameError}</p> }
+            { nameError && <p className='c_error_message'>{nameError}</p> }
           </div>
           <div className="password">
             <h4>비밀번호</h4>
@@ -293,7 +290,7 @@ function Signup() {
               value={password}
               onChange={(e)=>setPassword(e.currentTarget.value)}
             />
-            { passwordError && <p className='error_message'>{passwordError}</p> }
+            { passwordError && <p className='c_error_message'>{passwordError}</p> }
           </div>
           <div className="repass">
             <h4>비밀번호 재입력</h4>
@@ -301,7 +298,7 @@ function Signup() {
               value={repass}
               onChange={(e)=>setRepass(e.currentTarget.value)}
             />
-            { repassError && <p className='error_message'>{repassError}</p> }
+            { repassError && <p className='c_error_message'>{repassError}</p> }
           </div>
           <button className='c_btn-primary btn-submit'
             onClick={ signup }

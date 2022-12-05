@@ -50,7 +50,6 @@ function AuthAxiosInterceptor({children}){
       (error) => {
         const { config: originalRequest, response } = error;
         if(response.status === 401){
-          console.log('401후',error)
           refreshSubscribers = [];
           errorCount++;
           try{
@@ -71,8 +70,6 @@ function AuthAxiosInterceptor({children}){
                 // 새로운 토큰으로 지연되었던 요청 진행
                 onTokenRefreshed(newAccessToken);
               }).catch(error=>{
-                console.log(error)
-                console.log('auth/token-refresh에러');
                 throw 'auth/token-refresh에러'
               })
             }
@@ -84,7 +81,6 @@ function AuthAxiosInterceptor({children}){
               });
             });
           } catch(error) {
-            console.log('전체 catch')
             if(error=='refreshToken 만료'){
               setAlert('토큰이 만료되었습니다. 다시 로그인해주세요');
               setRefreshToken('')

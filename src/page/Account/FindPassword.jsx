@@ -12,7 +12,7 @@ import { emailCheck } from 'utils/checking/emailCheck';
 // style
 import styled from 'styled-components'
 // component
-import { InputBasic, InputEmail, InputPassword } from './component/InputBundle'
+import { InputBasic, InputEmail } from 'component/common/InputBundle'
 
 const PageContainer = styled.section`
   .fillup{
@@ -25,13 +25,6 @@ const PageContainer = styled.section`
         color: var(--primary-color);
         font-weight: var(--font-w-mid);
       }
-      .error_message{
-        padding-top: 0.2rem;
-        padding-left: 0.2rem;
-        font-size: var(--font-size-x-small);
-        color: var(--danger-color);
-      }
-      .verifyCode .error_message{}
       &.verifyCode>div,
       &.email>div{
         display: flex;
@@ -83,9 +76,9 @@ function FindPassword() {
   const [ verifyCode, setVerifyCode ] = useState('');  // 인증코드
   const [ verifyCodeError, setVerifyCodeError ] = useState('');  // 인증코드 에러
 
-  const { mutate: changePassApi } = usePost({ url: 'auth/find-pw' });
-  const { mutate: emailVerify } = usePost({ url: 'auth-codes/find-pw' });
-  const { mutate: codeVerify } = usePost({ url: 'auth-codes/find-pw/verify' });
+  const { mutate: findPassApi, isLoading: isFindPassLoading } = usePost({ url: 'auth/find-pw' });
+  const { mutate: emailVerify, isLoading: isEmailVerifyLoading } = usePost({ url: 'auth-codes/find-pw' });
+  const { mutate: codeVerify, isLoading: isCodeverifyLoading } = usePost({ url: 'auth-codes/find-pw/verify' });
 
   const resetError = useCallback(()=>{
     setEmailError('');
@@ -117,7 +110,9 @@ function FindPassword() {
   }, [email])
 
   // 비밀번호 변경하기
-  function changePass(){
+  function findPass(){
+    if(isFindPassLoading) return; // 이미 비밀번호 변경중이면 중단
+    
     resetError();
     if( !email || !emailChecked){
       if(!email) setEmailError('이메일을 입력해주세요');
@@ -127,7 +122,7 @@ function FindPassword() {
       setEmailError('이메일 형식으로 입력해주세요')
       return;
     } else{
-      changePassApi({
+      findPassApi({
         email,
       }, {
         onSuccess: ()=>{
@@ -142,6 +137,7 @@ function FindPassword() {
   }
   // 이메일 인증하기
   function checkEmail(){
+    if(isEmailVerifyLoading) return;  // 이미 인증 진행중이면 중단
     if(!email) {
       setEmailError('이메일을 입력해주세요.');
       return;
@@ -163,6 +159,7 @@ function FindPassword() {
   }
   // 코드 확인하기
   function checkCode(){
+    if(isCodeverifyLoading) return;  // 이미 코드 확인 진행중이면 중단
     if(!verifyCode) {
       setVerifyCodeError('코드를 입력해주세요.');
       return;
@@ -207,7 +204,7 @@ function FindPassword() {
                 }}
               >인증하기</button>
             </div>
-            { emailError && <p className='error_message'>{emailError}</p> }
+            { emailError && <p className='c_error_message'>{emailError}</p> }
           </div>
           { emailCheckCount>0 && isEmailChecking &&
             <div className="verifyCode">
@@ -221,12 +218,12 @@ function FindPassword() {
                   onClick={()=> { checkCode() }}
                 >코드확인</button>
               </div>
-              { verifyCodeError && <p className='error_message'>{verifyCodeError}</p> }
+              { verifyCodeError && <p className='c_error_message'>{verifyCodeError}</p> }
             </div>
           }
           <button className={`c_btn${emailChecked ? '-primary' : ''} btn-submit`}
             disabled={!emailChecked}
-            onClick={ changePass }
+            onClick={ findPass }
           >비밀번호 재발급</button>
         </div>
       </section>

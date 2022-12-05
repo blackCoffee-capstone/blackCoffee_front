@@ -12,7 +12,7 @@ import { numberFormat } from 'utils/formatting/numberFormat'
 // kakao map
 import { Map, MapMarker } from 'react-kakao-maps-sdk'
 // api
-import useFetch from 'api/useFetch'
+import useAuthFetch from 'api/useAuthFetch'
 // img
 import Loaction from 'assets/image/common/icon/loaction.svg'
 import NoPhoto from 'assets/image/common/no_photo.png'
@@ -189,7 +189,7 @@ function Spot(){
   const {
     data: spotData, 
     isLoading: isFilterLoading
-  } = useFetch({ url: `spots/${spotId}`, key: ['spot', spotId] });
+  } = useAuthFetch({ url: `spots/${spotId}`, key: ['spot', spotId] });
 
   const sampleImage = [
     'https://lh5.googleusercontent.com/p/AF1QipPe9z6ajG6Zq1WFp6CuVb3VXdgMNI1sWJeuB0Ni=w408-h306-k-no',

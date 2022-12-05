@@ -35,6 +35,7 @@ const BundleCommon = styled.div` // MessageBundle 공통
       color: #fff;
       font-size: 1.6rem;
       cursor: pointer;
+      transition: var(--transition-fast)
     }
     /* @media screen and ( max-width: 768px ) {
       font-size: var(--font-size-large);
@@ -54,18 +55,17 @@ const Alert = styled(BundleCommon)`
 const Confirm = styled(BundleCommon)`
   .btn_continue {
     margin-right: 10px;
-    background-color: var(--secondary-color);
-    color: var(--secondary-color-contrast);
-    &:hover {
-      filter: brightness(0.93);
-    }
-  }
-  .btn_close {
     background-color: var(--primary-color);
     color: var(--primary-color-contrast);
     &:hover {
-      /* filter: brightness(0.93); */
       background-color: var(--primary-color-effect);
+    }
+  }
+  .btn_close {
+    background-color: var(--danger-color);
+    color: #fff;
+    &:hover {
+      background-color: #f52929;
     }
   }
 `
@@ -124,7 +124,10 @@ function MessageBundle(){
             <div className="message">
               <p>{confirm.message}</p>
               <button className="btn btn_continue"
-                // @click="alertBundle.confirmContinue"
+                onClick={()=>{
+                  confirm.callback();
+                  setConfirm({message: '', callback: null});
+                }}
               >
                 확인
               </button>
