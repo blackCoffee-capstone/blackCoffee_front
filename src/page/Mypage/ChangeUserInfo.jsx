@@ -54,7 +54,7 @@ function ChangeUserInfo({ setShowChangeUserInfo, userData, userRefetch }) {
   }, [name])
   useEffect(()=>{
     if(nickname && !nicknameCheck(nickname)){
-      setNicknameError('영어 4자 혹은 한글 2자 이상')
+      setNicknameError('영어 4자 혹은 한글 2자 이상, 총 18자 이하')
     } else {
       setNicknameError('');
     }

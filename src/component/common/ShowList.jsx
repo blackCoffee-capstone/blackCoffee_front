@@ -139,7 +139,9 @@ function ShowList(props){
             <li key={el.id}
               onClick={()=>navigate(`/spot/${el.id}`)}
             >
-              <div className='ranking'>{i+1}</div>
+              <div className='ranking'>
+                { el.rank ?? i+1 }
+              </div>
               <div className='spot'>
                 <img src={el.photoUrl ?? NoPhoto} style={{
                   background: `url(${NoPhoto}) no-repeat center center / 100%`

@@ -69,9 +69,6 @@ const PageContainer = styled.section`
           &.now_here{
             color: var(--primary-color);
           }
-          &.kakao{
-            color: #ffe812;
-          }
           &.facebook{
             color: #4267B2;
           }

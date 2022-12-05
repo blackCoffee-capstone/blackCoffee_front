@@ -1,8 +1,8 @@
 export function nicknameCheck(nickname) {
   if (typeof nickname != 'string') return false;
   const regex_nick = /^[가-힣a-zA-Z0-9~!?@#$%^&*+=()[\]/'",.<>:;_-]+$/
-  // 4byte 이상, 15자 이하
-  if (getByte(nickname) >= 4 && nickname.length <= 15 && regex_nick.test(nickname)) {
+  // 4byte 이상, 18자 이하
+  if (getByte(nickname) >= 4 && nickname.length <= 18 && regex_nick.test(nickname)) {
     return true;
   } else {
     return false;
