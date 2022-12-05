@@ -17,10 +17,11 @@ function SocialKakao() {
   const setAccessToken = useSetRecoilState(token.accessToken);
   const setRefreshToken = useSetRecoilState(token.refreshToken);
   
-  const kakaoLoginApi = usePost({ url: 'auth/kakao-login' })
+  const { mutate: kakaoLoginApi } = usePost({ url: 'auth/kakao-login' })
 
   useEffect(()=>{
     const code = searchParams.get('code');
+    console.log(code);
     if(!code){
       setAlert('잘못된 접근입니다.')
       navigate('/');
