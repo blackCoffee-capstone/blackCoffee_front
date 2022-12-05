@@ -87,7 +87,7 @@ function Search() {
       locationIds: locationIds.join(","),
     }
   });
-  
+
   function reset(){
     setPage(1)
     setSearchWord('')
@@ -95,11 +95,6 @@ function Search() {
     setLocationIds([])
     setSorter('Name')
   }
-  useEffect(()=>{
-    reset();
-  }, [])
-
-  // 검색 함수
   function searching(){
     setPage(1);
     refetchList();
@@ -140,7 +135,7 @@ function Search() {
             </ul>
           </div>
           <div className='show'>
-            <ShowList spots={listData.spots}/>
+            <ShowList listData={listData.spots}/>
             <Pagination page={page} setPage={setPage} totalPage={listData.totalPage} />
           </div>
         </div>

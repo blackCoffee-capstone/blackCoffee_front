@@ -2,6 +2,8 @@
 import styled from 'styled-components'
 // router
 import { useNavigate } from 'react-router-dom';
+// utils
+import { numberFormat } from 'utils/formatting/numberFormat'
 // img
 import NoPhoto from 'assets/image/common/no_photo.png'
 import Wish from 'assets/image/common/icon/wish.svg'
@@ -13,6 +15,7 @@ const ListContainer = styled.ul`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 0 0.5rem;
     border-bottom: 1px solid var(--border-color-light);
     text-align: center;
     height: 11rem;
@@ -29,8 +32,8 @@ const ListContainer = styled.ul`
     &:first-child{
       border-top: 1px solid var(--border-color-default);
     }
-    &>div{
-      padding: 0.5rem 0.6rem;
+    >div{
+      padding: 0.2rem 0.6rem;
       text-overflow: ellipsis;
       overflow: hidden;
     }
@@ -70,14 +73,14 @@ const ListContainer = styled.ul`
         }
       }
     }
-    .volume,
+    .views,
     .variance{
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
       align-items: center;
-      gap: 0 1rem;
-      width: 9rem;
+      gap: 0 0.5rem;
+      width: 8rem;
       white-space: nowrap;
       p{
         font-weight: var(--font-w-bold);
@@ -91,13 +94,20 @@ const ListContainer = styled.ul`
         }
       }
     }
-    .volume{
-      width: 12rem;
+    .wishView{
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      gap: 1rem;
+    }
+    .variance{
+      width: 6rem;
     }
     .wishes{
-      width: 2.5rem;
-      height: 2.5rem;
+      width: 2rem;
+      height: 2rem;
       padding: 0;
+      margin-top: 0.2rem;
       img{
         height: 100%;
         width: 100%;
@@ -111,14 +121,11 @@ const ListContainer = styled.ul`
       .ranking{
         display: none;
       }
+      .views,
       .volume,
       .variance{
         flex-direction: row;
         width: auto;
-      }
-      .wishes{
-        width: 2rem;
-        height: 2rem;
       }
     }
   }
@@ -128,36 +135,31 @@ const ListContainer = styled.ul`
 `
 
 function ShowList(props){
-  const spots = props?.spots ?? [];
+  const listData = props?.listData ?? [];
   const navigate = useNavigate();
 
   return (
     <ListContainer>
-      { spots?.length>0 &&
-        spots?.map((el, i) => {
+      { listData?.length>0 &&
+        listData?.map((el, i) => {
           return(
             <li key={el.id}
               onClick={()=>navigate(`/spot/${el.id}`)}
             >
               <div className='ranking'>
-                { el.rank ?? i+1 }
+                { el.rank ?? el.order ??i+1 }
               </div>
               <div className='spot'>
-                <img src={el.photoUrl ?? NoPhoto} style={{
-                  background: `url(${NoPhoto}) no-repeat center center / 100%`
-                }} />
+                <img src={el.photoUrl ?? NoPhoto}
+                  style={{
+                    background: `url(${NoPhoto}) no-repeat center center / 100%`
+                  }}
+                />
                 <div className="textbox">
                   <h3>{el.name}</h3>
                   <p>{el.address}</p>
                 </div>
               </div>
-              {
-                el.volume && 
-                <div className='volume'>
-                  <h4>검색량</h4>
-                  <p>{el.volume}</p>
-                </div>
-              }
               { el.variance !== undefined &&
                 <div className='variance'>
                   <h4>변동</h4>
@@ -173,20 +175,28 @@ function ShowList(props){
                   </p>
                 </div>
               }
-              { el.wishes !== undefined &&
-                <div className='wishes'>
-                  { 
-                    el.wishes==0 ? <img src={Wish} /> 
-                    : <img src={WishOn} />
-                  }
-                </div>
-              }
+              <div className='wishView'>
+                { el.views!==undefined &&
+                  <div className='views'>
+                    <h4>조회수</h4>
+                    <p>{numberFormat(el.views)}</p>
+                  </div>
+                }
+                { el.wishes !== undefined &&
+                  <div className='wishes'>
+                    { 
+                      el.wishes==0 ? <img src={Wish} /> 
+                      : <img src={WishOn} />
+                    }
+                  </div>
+                }
+              </div>
             </li>
           )
         })
       }
       {
-        spots.length==0 && (
+        listData.length==0 && (
           <p>데이터가 없습니다</p>
         )
       }

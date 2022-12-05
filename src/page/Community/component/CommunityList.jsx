@@ -100,27 +100,21 @@ const ListContainer = styled.ul`
   }
 `
 
-const sampleImage = [
-  "https://lh5.googleusercontent.com/p/AF1QipPe9z6ajG6Zq1WFp6CuVb3VXdgMNI1sWJeuB0Ni=w408-h306-k-no", "https://images.unsplash.com/photo-1503932860988-56df256a6c5f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-  "https://lh5.googleusercontent.com/p/AF1QipPNxflItffH0d_R7QaGqV5rLkQIfPMn4s_-tPwh=w408-h272-k-no"
-]
-
 function CommunityList(props){
-  const spots = props.spots ?? [];
+  const listData = props.listData ?? [];
   const navigate = useNavigate();
 
   return (
     <ListContainer>
       {
-        spots.map((el, i) => {
+        listData.map((el, i) => {
           return(
             <li key={el.id}
-              onClick={()=>navigate(`/spot/${el.id}`)}
+              onClick={()=>navigate(`/community/${el.id}`)}
             >
               <div className='ranking'>{el.num}</div>
               <div className='spot'>
-                <img src={el.image ?? sampleImage[i % 3]} alt={el.name} />
-                {/* <img src={el.image ?? NoPhoto} alt={el.name} /> */}
+                <img src={el.image ?? NoPhoto} alt={el.name} />
                 <div className="textbox">
                   <h3>{el.name}</h3>
                 </div>
@@ -144,8 +138,8 @@ function CommunityList(props){
         })
       }
       {
-        spots.length==0 && (
-          <p>데이터가 없습니다</p>
+        listData.length==0 && (
+          <p style={{ textAlign: 'center' }}>데이터가 없습니다</p>
         )
       }
     </ListContainer>

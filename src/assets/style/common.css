@@ -135,7 +135,7 @@ input[type="password"]{
     border-radius: var(--border-radius-mid);
 }
 textarea {
-	padding: 1.5em;
+	padding: 1em;
 	resize: none;
 }
 label {

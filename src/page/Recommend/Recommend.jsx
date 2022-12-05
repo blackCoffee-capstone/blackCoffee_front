@@ -71,8 +71,8 @@ function Recommend(){
             </div>
           </div>
           <div className='show'>
-            { !showMap && <ShowList spots={listData}/> }
-            { showMap && <ShowMap spots={mapData}/> }
+            { !showMap && <ShowList listData={listData}/> }
+            { showMap && <ShowMap mapData={mapData}/> }
           </div>
         </div>
       </section>

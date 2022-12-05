@@ -129,8 +129,8 @@ function Trend(){
             </div>
           </div>
           <div className='show'>
-            { !showMap && <ShowList spots={listData.ranking}/> }
-            { showMap && <ShowMap spots={mapData.ranking}/> }
+            { !showMap && <ShowList listData={listData.ranking}/> }
+            { showMap && <ShowMap mapData={mapData.ranking}/> }
           </div>
         </div>
       </section>

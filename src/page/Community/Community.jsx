@@ -2,16 +2,17 @@
 import { useState, useEffect } from 'react';
 // style
 import styled from 'styled-components'
+// router
+import { useNavigate } from 'react-router-dom';
 // api
-import useFetch from 'api/useFetch'
+import useAuthFetch from 'api/useAuthFetch'
 // component
 import Filter from 'component/common/Filter'
 import CommunityList from './component/CommunityList'
 import Pagination from 'component/common/Pagination'
 // img
 import { ReactComponent as  SearchSvg } from 'assets/image/common/icon/search.svg'
-// sampleData
-import CommunityListData from 'store/data/CommunityListData';
+
 
 const PageContainer = styled.section`
   .option{
@@ -46,67 +47,67 @@ const PageContainer = styled.section`
           }
         }
       }
-      .search_bar{
-        position: relative;
-        width: 23rem;
-        height: 4rem;
-        input{
-          height: 100%;
+      .right{
+        .search_bar{
+          position: relative;
+          width: 24rem;
+          max-width: 30rem;
+          height: 4rem;
+          input{
+            height: 100%;
+          }
+          svg{
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: auto;
+            aspect-ratio: 1;
+            padding: 1rem;
+            cursor: pointer;
+          }
         }
-        svg{
-          position: absolute;
-          top: 0;
-          right: 0;
-          height: 100%;
-          width: auto;
-          aspect-ratio: 1;
-          padding: 1rem;
-          cursor: pointer;
+        @media screen and (max-width: 600px) {
+          width: 100%;
+          .search_bar{
+            width: 100%;
+          }
+        }
+        button{
+          flex-shrink: 0;
         }
       }
+      
     }
   }
 `
 
-function Myplace() {
-  const [ listData, setListData ] = useState([]);
 
-  const [ sorter, setSorter ] = useState('New');
+function Community() {
+  const [ sorter, setSorter ] = useState('CreatedAt');
   const [ page, setPage ] = useState(1);
-  const [ totalPage, setTotalPage ] = useState(1);
   const [ searchWord, setSearchWord ] = useState('');
-  const [ themeId, setThemeIds ] = useState([]);
-  const [ locationId, setLocationIds ] = useState([]);
+  const [ themeIds, setThemeIds ] = useState([]);
+  const [ locationIds, setLocationIds ] = useState([]);
+  const navigate = useNavigate();
 
-  function reset(){
-    setSearchWord('');
-    setThemeIds([]);
-    setLocationIds([]);
-    setSorter('New');
-  }
-
-  useEffect(()=>{
-    reset();
-    setListData(CommunityListData) // sampleData 넣음
-  }, [])
-
+  const { data: postsData, refetch: refetchPosts } = useAuthFetch({ 
+    url: 'posts',
+    key: ['posts', page, sorter, locationIds, themeIds],
+    params: {
+      page: page,
+      sorter: sorter,
+      word: searchWord,
+      themeIds: themeIds.join(","),
+      locationIds: locationIds.join(","),
+    }
+  });
+  
   // 검색 함수
-  // function searching(){
-  //   getSpotListApi({
-  //     page: page,
-  //     sorter: sorter,
-  //     word: searchWord,
-  //     themeId: themeId[0],
-  //     locationId: locationId[0],
-  //   }, (data)=>{
-  //     setTotalPage(data.totalPage);
-  //     setListData(data.spots);
-  //   });
-  // }
-
-  // useEffect(()=>{
-  //   searching()
-  // }, [page, sorter])
+  function searching(){
+    setPage(1);
+    refetchPosts();
+  }
 
   return (
     <PageContainer className='c_main_section'>
@@ -129,29 +130,34 @@ function Myplace() {
             <div className='two_side'>
               <div className="left">
                 <ul className='sorting'>
-                  <li className={sorter=='New' ? 'on': ''}
-                    onClick={()=>{setSorter('New')}}
+                  <li className={sorter=='CreatedAt' ? 'on': ''}
+                    onClick={()=>{setSorter('CreatedAt')}}
                   >최신순</li>
-                  <li className={sorter=='Rank' ? 'on': ''}
-                    onClick={()=>{setSorter('Rank')}}
+                  <li className={sorter=='View' ? 'on': ''}
+                    onClick={()=>{setSorter('View')}}
+                  >조회순</li>
+                  <li className={sorter=='Like' ? 'on': ''}
+                    onClick={()=>{setSorter('Like')}}
                   >인기순</li>
                 </ul>
               </div>
               <div className="right">
                 <div className='search_bar'>
                   <input type="text" placeholder='검색'
-                    // onKeyUp={(e) => (e.key == 'Enter') && searching() }
+                    onKeyUp={(e) => (e.key == 'Enter') && searching() }
                     onChange={(e) => setSearchWord(e.currentTarget.value) }
                   />
                   <SearchSvg />
                 </div>
-                <button className='c_btn-primary'>글쓰기</button>
+                <button className='c_btn-primary'
+                  onClick={()=> navigate('/community/write')}
+                >글쓰기</button>
               </div>
             </div>
           </div>
           <div className='show'>
-            <CommunityList spots={listData}/>
-            <Pagination page={page} setPage={setPage} totalPage={totalPage} />
+            <CommunityList listData={postsData.posts}/>
+            <Pagination page={page} setPage={setPage} totalPage={postsData.totalPage} />
           </div>
         </div>
       </div>
@@ -159,4 +165,4 @@ function Myplace() {
   );
 }
 
-export default Myplace
+export default Community

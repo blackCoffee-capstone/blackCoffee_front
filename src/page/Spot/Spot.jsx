@@ -14,6 +14,7 @@ import { Map, MapMarker } from 'react-kakao-maps-sdk'
 // api
 import useAuthFetch from 'api/useAuthFetch'
 // img
+import Banner from 'assets/image/Spots/SpotBanner.jpg'
 import Loaction from 'assets/image/common/icon/loaction.svg'
 import NoPhoto from 'assets/image/common/no_photo.png'
 import WishOn from 'assets/image/common/icon/wish_on.svg'
@@ -114,13 +115,12 @@ const PageContainer = styled.section`
           }
         }
         .posts{
-          padding: 1rem 0;
+          padding: 1rem 0.5rem;
           .post{
             max-width: 35rem;
             padding: 1rem;
-            border: 1px solid var(--border-color-light);
-            box-shadow: var(--box-shadow01);
             border-radius: var(--border-radius-mid);
+            box-shadow: var(--box-shadow03);
             a{
               display: block;
               .post_photo{
@@ -169,13 +169,32 @@ const PageContainer = styled.section`
         }
         .facility{
           width: 100%;
-          padding: 1rem 0;
+          padding: 1rem 0.5rem;
           .facility_box{
             width: 20rem;
-            height: 20rem;
-            padding: 1rem;
+            min-height: 18rem;
+            padding: 1.5rem;
             border-radius: var(--border-radius-mid);
-            background-color: var(--base-color-light);
+            box-shadow: var(--box-shadow03);
+            cursor: pointer;
+            user-select: none;
+            a{
+              display: flex;
+              flex-direction: column;
+              gap: 0.5rem;
+              width: 100%;
+              height: 100%;
+              p{
+                font-size: var(--font-size-small);
+                color: var(--font-color-sub);
+                &.category{
+                  color: var(--primary-color-effect);
+                }
+                &.goto{
+                  color: var(--font-color-default);
+                }
+              }
+            }
           }
         }
       }
@@ -191,11 +210,6 @@ function Spot(){
     isLoading: isFilterLoading
   } = useAuthFetch({ url: `spots/${spotId}`, key: ['spot', spotId] });
 
-  const sampleImage = [
-    'https://lh5.googleusercontent.com/p/AF1QipPe9z6ajG6Zq1WFp6CuVb3VXdgMNI1sWJeuB0Ni=w408-h306-k-no',
-    'https://images.unsplash.com/photo-1503932860988-56df256a6c5f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
-  ]
-
   if(spotData.length==0) {
     return (
       <PageContainer className='c_main_section'>
@@ -210,39 +224,33 @@ function Spot(){
   return(
     <PageContainer className='c_main_section'>
       <section className="c_section place_img">
-        { // 이미지 하나만 있을때
-          sampleImage.length==1 &&
-          <div className='img_swiper'>
-            <div className='swiper-slide'>
-              <img src={sampleImage[0]} alt={`${spotData.name} 이미지 1 배경`} style={{
+        <Swiper className='img_swiper'
+          modules={[ Pagination, EffectFade ]}
+          effect={"fade"}
+          pagination={{ clickable: true }}
+          loop
+        >
+          { spotData?.detailSnsPost.length>=1 &&
+            spotData?.detailSnsPost.map((el, i) => {
+              return(
+                <SwiperSlide key={el.id}>
+                  <img src={el.photoUrl} alt={`${spotData.name} 이미지 ${i+1} 배경`} style={{
+                    filter: "blur(5px)"
+                  }}/>
+                  <img src={el.photoUrl} alt={`${spotData.name} 이미지 ${i}`} />
+                </SwiperSlide>
+              )
+            })
+          }
+          { (!spotData?.detailSnsPost || spotData.detailSnsPost.length==0) &&
+            <SwiperSlide>
+              <img src={Banner} alt='기본 배너 배경' style={{
                 filter: "blur(5px)"
               }}/>
-              <img src={sampleImage[0]} alt={`${spotData.name} 이미지 1`} />
-            </div>
-          </div>
-        }
-        { // 이미지 여러개면 swiper로
-          sampleImage.length>1 &&
-          <Swiper className='img_swiper'
-            modules={[ Pagination, EffectFade ]}
-            effect={"fade"}
-            pagination={{ clickable: true }}
-            loop
-          >
-            {
-              sampleImage.map((el, i) => {
-                return(
-                  <SwiperSlide key={i}>
-                    <img src={el} alt={`${spotData.name} 이미지 ${i+1} 배경`} style={{
-                      filter: "blur(5px)"
-                    }}/>
-                    <img src={el} alt={`${spotData.name} 이미지 ${i}`} />
-                  </SwiperSlide>
-                )
-              })
-            }
-          </Swiper>
-        }
+              <img src={Banner} alt='기본 배너 이미지' />
+            </SwiperSlide>
+          }
+        </Swiper>
       </section>
       <section className='c_section information'>
         <div className="c_inner">
@@ -285,7 +293,7 @@ function Spot(){
                         <p className='content_top'>
                           <span className='date'>{el.date?.slice(0,10)}</span> <span><img src={WishOn} /> {numberFormat(el.likeNumber)}</span>
                         </p>
-                        <p className='content'>{el.content}</p>
+                        <p className='content'>{`${el.content.slice(0, 150)}${el.content.length>150 ? '...' : ''}`}</p>
                       </a>
                     </SwiperSlide>
                   )
@@ -303,8 +311,12 @@ function Spot(){
                 spotData.neaybyFacility?.map((el, i) => {
                   return(
                     <SwiperSlide key={i} className='facility_box'>
-                      <h4>{el.name}</h4>
-                      <p>{el.address}</p>
+                      <a href={el.placeUrl} target="_blank" rel="noopener noreferrer">
+                        <h4>{el.name}</h4>
+                        <p>{el.address}</p>
+                        <p className='category'>{el.category}</p>
+                        <p className='goto'>자세히보기</p>
+                      </a>
                     </SwiperSlide>
                   )
                 })
