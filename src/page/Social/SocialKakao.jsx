@@ -26,7 +26,7 @@ function SocialKakao() {
       navigate('/', { replace: true });
       return;
     }
-    kakaoLoginApi({ accessCode: code }, {
+    kakaoLoginApi({ code: code }, {
       onSuccess: (data)=>{
         setUser(data.data.user);
         setAccessToken(data.data.accessToken);
