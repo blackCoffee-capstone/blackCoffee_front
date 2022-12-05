@@ -27,7 +27,7 @@ function SocialKakao() {
       navigate('/');
       return;
     }
-    kakaoLoginApi({ accessToken: code }, {
+    kakaoLoginApi({ accessCode: code }, {
       onSuccess: (data)=>{
         setUser(data.data.user);
         setAccessToken(data.data.accessToken);
@@ -48,7 +48,11 @@ function SocialKakao() {
   }, [])
 
   return (
-    <div></div>
+    <section className='c_main_section'>
+      <section className="c_section" style={{ textAlign: 'center' }}>
+        소셜로그인 하는중...
+      </section>
+    </section>
   )
 }
 
