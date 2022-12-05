@@ -30,7 +30,8 @@ function Recommend(){
   const setAlert = useSetRecoilState(messageBundle.alert)
   const navigate = useNavigate();
   const { data: userData } = useAuthFetch({ 
-    url: 'users', key: ['user']
+    url: 'users', key: ['user', 'recommend'],
+    cacheTime: 0,
   });
   const { data: listData, isLoading: isListLoading } = useAuthFetch({ 
     url: 'recommendations/list', key: ['recommend-list'],

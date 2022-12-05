@@ -7,6 +7,7 @@ import useAuthFetch from 'api/useAuthFetch'
 // component
 import Resign from './Resign';
 import ChangePassword from './ChangePassword';
+import ChangeUserInfo from './ChangeUserInfo';
 // tippy
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css'; // optional
@@ -85,10 +86,11 @@ const PageContainer = styled.section`
 `
 
 function Mypage() {
-  const { data: userData, isLoading: isUserLoading } = useAuthFetch({ url: 'users', key: ['user'] });
+  const { data: userData, isLoading: isUserLoading, refetch: userRefetch } = useAuthFetch({ url: 'users', key: ['user'] });
 
   const [ showResign, setShowResign ] = useState(false);
   const [ showChangePass, setShowChangePass ] = useState(false);
+  const [ showChangeUserInfo, setShowChangeUserInfo ] = useState(false);
 
   return (
     <PageContainer className='c_main_section'>
@@ -96,8 +98,8 @@ function Mypage() {
         <section className="c_section">
           <h2 className='c_title'>마이페이지</h2>
         </section>
-        { !showResign && !showChangePass &&
-          <section className="c_section box profile">
+        { !showResign && !showChangePass && !showChangeUserInfo &&
+          <section className="c_section box">
             <div className='box_top'>
               <h3 className="c_subtitle">프로필</h3>
               <Tippy
@@ -105,7 +107,7 @@ function Mypage() {
                 theme='light'
                 content={
                   <ul className='edit_menu'>
-                    <li>닉네임 변경</li>
+                    <li onClick={()=>setShowChangeUserInfo(true)}>유저 정보 변경</li>
                     <li onClick={()=>setShowChangePass(true)}>비밀번호 변경</li>
                     <li onClick={()=>setShowResign(true)}>회원탈퇴</li>
                   </ul>
@@ -134,7 +136,7 @@ function Mypage() {
                 <span>가입경로</span>
                 {
                   userData.type=='Normal' ? <span className='now_here'><img src={ require("assets/image/common/icon.svg").default} alt="지금여기" />지금여기</span>
-                  : userData.type=='kakao' ? <span className='kakao'><img src={ require("assets/image/common/ci/kakao.svg").default} alt="카카오" />카카오</span>
+                  : userData.type=='Kakao' ? <span className='kakao'><img src={ require("assets/image/common/ci/kakao.svg").default} alt="카카오" />카카오</span>
                   : <span className='facebook'><img src={ require("assets/image/common/ci/facebook_color.png")} alt="페이스북" />페이스북</span>
                 }
               </p>
@@ -147,7 +149,11 @@ function Mypage() {
         }
         {
           showChangePass &&
-          <ChangePassword />
+          <ChangePassword setShowChangePass={setShowChangePass}/>
+        }
+        {
+          showChangeUserInfo &&
+          <ChangeUserInfo setShowChangeUserInfo={setShowChangeUserInfo} userData={userData} userRefetch={userRefetch} />
         }
       </div>
     </PageContainer>

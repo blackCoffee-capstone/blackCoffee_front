@@ -1,5 +1,5 @@
 // core
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // style
 import styled from 'styled-components'
 // api
@@ -9,20 +9,21 @@ import { useNavigate } from 'react-router-dom';
 // recoil
 import { messageBundle, token } from 'store/index';
 import { useSetRecoilState } from 'recoil';
+// utils
+import { pwCheck } from 'utils/checking/pwCheck'
 // component
 import { InputPassword } from 'component/common/InputBundle'
 
-const ResignContainer = styled.div`
-  max-width: 50rem;
+const BoxContainer = styled.div`
   .fill{
     margin-top: 1rem;
     max-width: 40rem;
-    p{
-      margin-bottom: 1rem;
+    .input_title{
+      margin-bottom: 0.8rem;
       color: var(--primary-color)
     }
     button{
-      margin-top: 1rem;
+      margin-top: 1.5rem;
       &.c_btn{
         background-color: var(--base-color-light);
         border-color: var(--border-color-light);
@@ -42,11 +43,16 @@ function Resign({ setShowResign }) {
 
   const { mutate: resignApi } = useAuthPost({ url: 'auth/resign' });
 
-  function resign() {
-    if(!password) {
-      setPasswordError('비밀번호를 입력해주세요');
-      return;
+  useEffect(()=>{
+    if(password && !pwCheck(password)){
+      setPasswordError('8~15자, 숫자, 영어, 특수문자가 각 1개 이상')
+    } else {
+      setPasswordError('');
     }
+  }, [password])
+
+  function resign() {
+    if(!pwCheck(password)) return;
     setConfirm({
       message: '정말 탈퇴하시겠습니까?',
       callback: ()=> {
@@ -73,7 +79,7 @@ function Resign({ setShowResign }) {
   }
 
   return (
-    <ResignContainer className="c_section box resign">
+    <BoxContainer className="c_section box resign">
       <div className='box_top'>
         <h3 className="c_subtitle">탈퇴하기</h3>
         <button onClick={()=> setShowResign(false) }>
@@ -81,7 +87,7 @@ function Resign({ setShowResign }) {
         </button>
       </div>
       <div className='fill'>
-        <p>본인 확인을 위해 비밀번호를 입력해주세요</p>
+        <p className='input_title'>본인 확인을 위해 비밀번호를 입력해주세요</p>
         <InputPassword
           value={password}
           onChange={(e)=>setPassword(e.currentTarget.value)}
@@ -93,7 +99,7 @@ function Resign({ setShowResign }) {
           onClick={()=>resign()}
         >탈퇴하기</button>
       </div>
-    </ResignContainer>
+    </BoxContainer>
   )
 }
 

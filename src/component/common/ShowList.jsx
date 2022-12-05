@@ -103,7 +103,7 @@ const ListContainer = styled.ul`
         width: 100%;
       }
     }
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 600px) {
       &{
         flex-wrap: wrap;
         height: auto;

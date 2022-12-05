@@ -110,6 +110,7 @@ function MessageBundle(){
             <div className="message">
               <p>{alert}</p>
               <button className="btn btn_close"
+                autoFocus
                 onClick={()=>setAlert('')}
               >
                 확인
@@ -132,6 +133,7 @@ function MessageBundle(){
                 확인
               </button>
               <button className="btn btn_close"
+                autoFocus
                 onClick={()=>setConfirm({message: '', callback: null})}
               >
                 취소
@@ -146,6 +148,7 @@ function MessageBundle(){
             <div className="message">
               <p>{error}</p>
               <button className="btn btn_close"
+                autoFocus
                 onClick={()=>setError('')}
               >
                 확인

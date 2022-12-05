@@ -3,14 +3,14 @@ import authAxios from './authAxios'
 // react-query
 import { useMutation } from "@tanstack/react-query";
 // recoil
-import { useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { token } from 'store/index'
 
 function useAuthPost({ url, ...props }) {
-  const accessToken = useRecoilValue(token.accessToken);
+  const [ accessToken, setAccessToken ] = useRecoilState(token.accessToken);
 
   return useMutation(
-    (payload) => authAxios.post(url, payload, {
+    (payload) => authAxios.patch(url, payload, {
       headers:{
         authorization: accessToken ? `Bearer ${accessToken}` : '',
       },
