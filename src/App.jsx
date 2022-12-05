@@ -23,6 +23,7 @@ import Search from './page/Search/Search' // 찾아보기
 import Community from './page/Community/Community'  // 나만의 장소
 const Spot = lazy(() => import('./page/Spot/Spot')); // 여행지 상세페이지
 import Login from './page/Account/Login'  // 로그인
+const SocialKakao = lazy(() => import('./page/Social/SocialKakao')); // 카카오 소셜로그인
 const Signup = lazy(() => import('./page/Account/Signup')); // 회원가입
 const ChooseTheme = lazy(() => import('./page/Account/ChooseTheme')); // 취향 선택
 const FindPassword = lazy(() => import('./page/Account/FindPassword')); // 비밀번호 찾기
@@ -54,6 +55,7 @@ function App() {
                 <Route path="/community" element={<Community />} />
                 <Route path="/spot/:spotId" element={<Spot />} />
                 <Route path="/login" element={ <Login /> } />
+                <Route path="/social/kakao" element={ <SocialKakao /> } />
                 <Route path="/signup" element={
                   <LoginRouterGuard><Signup /></LoginRouterGuard>
                 } />

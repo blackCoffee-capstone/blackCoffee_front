@@ -220,10 +220,7 @@ function Login() {
                   window.Kakao.Auth.authorize({
                     redirectUri: 'http://jigeumyeogi.com/social/kakao',
                   });
-                  location.href='javascript:void(0)';
-                  setAlert('구현중입니다.');
                 }}
-                // onClick={() => location.href='https://manager.meta-buysell.com/kakao/signin'}
               >
                 <img src={ require("assets/image/common/ci/kakao.svg").default }  alt="kakao" />
                 <p>카카오로 로그인</p>
