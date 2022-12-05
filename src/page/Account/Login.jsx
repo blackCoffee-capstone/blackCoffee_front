@@ -218,7 +218,7 @@ function Login() {
                 className="c_btn-kakao"
                 onClick={() => {
                   window.Kakao.Auth.authorize({
-                    redirectUri: 'http://jigeumyeogi.com/social/kakao',
+                    redirectUri: 'https://jigeumyeogi.com/social/kakao',
                   });
                 }}
               >
