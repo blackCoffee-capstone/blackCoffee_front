@@ -51,6 +51,7 @@ const ListContainer = styled.ul`
       width: 100%;
       flex-grow: 1;
       img{
+        flex-shrink: 0;
         width: 13rem;
         height: 9rem;
         object-fit: cover;
