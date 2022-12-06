@@ -8,7 +8,6 @@ import useFetch from 'api/useFetch'
 import { ReactComponent as FilterSvg }  from "assets/image/common/icon/filter.svg";
 import { ReactComponent as ExpandSvg }  from "assets/image/common/icon/expand_more.svg";
 
-
 const FilterContainer = styled.div`
   margin-top: 2rem;
   display: flex;
@@ -25,75 +24,108 @@ const FilterContainer = styled.div`
       height: 1em;
     }
   }
+  .hide{
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden;
+    box-shadow: none !important;
+  }
   .filter_list{
-    background-color: var(--base-color-light);
     border-radius: var(--border-radius-mid);
-    padding: 1.5rem;
-    &.hide{
-      height: 0;
-      padding: 0;
-      overflow: hidden;
-    }
-    >div{
-      margin-bottom: 2rem;
-      h4{
-        margin-bottom: 0.5rem;
-        font-weight: var(--font-w-bold);
-        color: var(--primary-color);
-      }
-      >ul{
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 0.5rem 0.8rem;
-        li{
-          border-radius: var(--border-radius-full);
-          background-color: var(--base-color-grey);
-          padding: 0.2em 0.6em;
+    box-shadow: var(--box-shadow02);
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+    .chooseArea{
+      overflow: scroll;
+      max-height: 40rem;
+      border-bottom: 1px solid var(--border-color-light);
+      >div{
+        margin-bottom: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color-light);
+        &:first-child{
+          padding-top: 0;
+          border-top: none;
+        }
+        h4{
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 0.5rem 0;
+          font-weight: var(--font-w-bold);
+          color: var(--primary-color);
           cursor: pointer;
           transition: var(--transition-fast);
-          &.on{
-            background-color: var(--primary-color);
-            color: var(--primary-color-contrast);
+          &:hover{
+            color: var(--primary-color-effect);
           }
-          :hover{
-            filter: brightness(0.96);
+          svg{
+            width: 1em;
+            height: 1em;
+          }
+        }
+        >ul{
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 0.5rem 0.8rem;
+          li{
+            border-radius: var(--border-radius-full);
+            background-color: var(--base-color-grey);
+            padding: 0.2em 0.6em;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            &.on{
+              background-color: var(--primary-color);
+              color: var(--primary-color-contrast);
+            }
+            :hover{
+              filter: brightness(0.96);
+            }
           }
         }
       }
-    }
-    .place{
-      >ul{
-        >div{
-          margin-top: 1rem;
-          width: 100%;
-          p{
-            margin-bottom: 0.5rem;
-            font-weight: var(--font-w-bold);
-          }
-          .level2{
+      .place{
+        >ul{
+          >div{
             margin-top: 0.5rem;
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem 0.8rem;
+            width: 100%;
+            p{
+              margin-bottom: 0.5rem;
+              font-weight: var(--font-w-bold);
+            }
+            .level2{
+              margin-top: 0.5rem;
+              display: flex;
+              align-items: center;
+              flex-wrap: wrap;
+              gap: 0.5rem 0.8rem;
+            }
           }
+        }
+      }
+      .theme{
+        ul{
+          margin-top: 0.5rem;
         }
       }
     }
     .submit{
-      padding: 0.2em 0.6em;
+      display: block;
+      margin: 1rem auto 0;
     }
   }
 `
 
 function Filter({ setLocationIds, setThemeIds, ...props }){
   const [ showFilter, setShowFilter ] = useState(false);
+  const [ showThemes, setShowThemes ] = useState(false);
+  const [ showLocations, setShowLocations ] = useState(false);
   const [ chosenThemes, setChosenThemes ] = useState([]);
   const [ chosenLocations, setChosenLocations ] = useState([]);
 
-  function onLocationClick(e, id){
-    e.currentTarget.classList.toggle('on');
+  function onLocationClick(id){
     const tempLocationId = chosenLocations.slice();
     const idx = tempLocationId.findIndex((chosen)=>chosen==id)
     if(idx >= 0){
@@ -103,8 +135,7 @@ function Filter({ setLocationIds, setThemeIds, ...props }){
     }
     setChosenLocations(tempLocationId);
   }
-  function onThemeClick(e, id){
-    e.currentTarget.classList.toggle('on');
+  function onThemeClick(id){
     const tempThemeId = chosenThemes.slice();
     const idx = tempThemeId.findIndex((chosen)=>chosen==id)
     if(idx >= 0){
@@ -132,14 +163,6 @@ function Filter({ setLocationIds, setThemeIds, ...props }){
           transform: `rotate(${showFilter ? '180deg' : '0'})`
         }} />
       </button>
-      {/* <div>
-        {
-          chosenThemes.map(el => {
-            const names = filterData.locations.filter(el.id == el);
-            return <li key={el}>{names}</li>
-          })
-        }
-      </div> */}
       <div className={`filter_list ${showFilter ? '': 'hide'}`}>
         {
           isFilterLoading && <div style={{textAlign: 'center'}}>필터 불러오는중...</div>
@@ -147,54 +170,75 @@ function Filter({ setLocationIds, setThemeIds, ...props }){
         {
           !isFilterLoading &&
           <>
-            <div className='place'>
-              <h4>장소</h4>
-              <ul className='level1'>
-                {
-                  filterData.locations.length>0 &&
-                  filterData.locations.map((metro)=>{
-                    return (
-                      <div key={metro.id}>
-                        <p>{metro.metroName}</p>
-                        <ul className='level2'>
-                          <li
-                            onClick={(e)=>{
-                              onLocationClick(e, metro.id);
-                            }}
-                          >{metro.metroName} 전체</li>
-                          {
-                            metro.localNames.length>0 &&
-                            metro.localNames.map((local)=>{
-                              return(
-                                <li key={local.id}
-                                  onClick={(e)=>{
-                                    onLocationClick(e, local.id);
-                                  }}
-                                >{local.localName}</li>
-                              )
-                            })
-                          }
-                        </ul>
-                      </div>
-                    )
-                  })
-                }
-              </ul>
-            </div>
-            <div className="theme">
-              <h4>테마</h4>
-              <ul>
-                {
-                  filterData.themes.length>0 &&
-                  filterData.themes.map((el)=>{
-                    return(
-                      <li key={'theme'+el.id}
-                        onClick={(e)=>{onThemeClick(e, el.id)}}
-                      >{el.name}</li>
-                    ) 
-                  })
-                }
-              </ul>
+            {/* <div className='chosen'>
+              {
+                chosenLocations.map(el => {
+                  const findEl = filterData.locations.find(el.id == el);
+                  return <li key={findEl}>{names}</li>
+                })
+              }
+            </div> */}
+            <div className='chooseArea'>
+              <div className='place'>
+                <h4 onClick={()=> setShowLocations(!showLocations)}>
+                  장소 
+                  <ExpandSvg style={{
+                    transition: "var(--transition-default)",
+                    transform: `rotate(${showLocations ? '180deg' : '0'})`
+                  }} />
+                </h4>
+                <ul className={`level1 ${showLocations ? '' : 'hide'}`}>
+                  {
+                    filterData.locations.length>0 &&
+                    filterData.locations.map((metro)=>{
+                      return (
+                        <div key={metro.id}>
+                          <p>{metro.metroName}</p>
+                          <ul className='level2'>
+                            <li
+                              className={`${chosenLocations.includes(metro.id) ? 'on' : ''}`}
+                              onClick={()=>{ onLocationClick(metro.id) }}
+                            >{metro.metroName} 전체</li>
+                            {
+                              metro.localNames.length>0 &&
+                              metro.localNames.map((local)=>{
+                                return(
+                                  <li key={local.id}
+                                    className={`${chosenLocations.includes(local.id) ? 'on' : ''}`}
+                                    onClick={()=>{ onLocationClick(local.id)}}
+                                  >{local.localName}</li>
+                                )
+                              })
+                            }
+                          </ul>
+                        </div>
+                      )
+                    })
+                  }
+                </ul>
+              </div>
+              <div className="theme">
+                <h4 onClick={()=> setShowThemes(!showThemes)}>
+                  테마
+                  <ExpandSvg style={{
+                    transition: "var(--transition-default)",
+                    transform: `rotate(${showThemes ? '180deg' : '0'})`
+                  }} />
+                </h4>
+                <ul className={`${showThemes ? '' : 'hide'}`}>
+                  {
+                    filterData.themes.length>0 &&
+                    filterData.themes.map((el)=>{
+                      return(
+                        <li key={'theme'+el.id}
+                          className={`${chosenThemes.includes(el.id) ? 'on' : ''}`}
+                          onClick={()=>{onThemeClick(el.id)}}
+                        >{el.name}</li>
+                      ) 
+                    })
+                  }
+                </ul>
+              </div>
             </div>
             <button className='c_btn-primary submit'
               onClick={()=>{
