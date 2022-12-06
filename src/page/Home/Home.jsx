@@ -197,7 +197,7 @@ const PageContainer = styled.section`
       align-items: center;
       justify-content: center;
       img{
-        max-width: 30rem;
+        max-width: 50rem;
       }
     }
   }
@@ -330,7 +330,7 @@ function Home() {
             <Link className='direct_link' to="/trend">트렌드 여행지 확인하기<SlideArrow /></Link>
           </div>
           <div className="img_wrapper">
-            <img src={require('assets/image/main/sample_instagram.jpg')} alt="trend" />
+            <img src={require('assets/image/main/mockup/mockup01.png')} alt="trend" />
           </div>
         </div>
       </section>
@@ -347,7 +347,7 @@ function Home() {
             <Link className='direct_link' to="/search">여행지 검색하기<SlideArrow /></Link>
           </div>
           <div className="img_wrapper">
-            <img src={require('assets/image/main/sample_instagram.jpg')} alt="search" />
+            <img src={require('assets/image/main/mockup/mockup02.png')} alt="search" />
           </div>
         </div>
       </section>
@@ -364,7 +364,7 @@ function Home() {
             <Link className='direct_link' to="/recommend">맞춤 추천 받으러가기<SlideArrow /></Link>
           </div>
           <div className="img_wrapper">
-            <img src={require('assets/image/main/sample_instagram.jpg')} alt="recommend" />
+            <img src={require('assets/image/main/mockup/mockup03.png')} alt="recommend" />
           </div>
         </div>
       </section>
@@ -381,7 +381,7 @@ function Home() {
             <Link className='direct_link' to="/community">여행지 공유하기<SlideArrow /></Link>
           </div>
           <div className="img_wrapper">
-            <img src={require('assets/image/main/sample_instagram.jpg')} alt="community" />
+            <img src={require('assets/image/main/mockup/mockup04.png')} alt="community" />
           </div>
         </div>
       </section>
