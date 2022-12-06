@@ -19,6 +19,7 @@ import { ReactComponent as AddSvg }  from "assets/image/Community/icon_image_add
 
 const PageContainer = styled.section`
   .writeContent .c_inner{
+    max-width: 60rem;
     >div{
       margin: 1rem 0;
       &:first-child{
@@ -48,6 +49,7 @@ const PageContainer = styled.section`
         }
       }
       &.location{
+        max-width: 50rem;
         input{
           &:focus{
             border-color: unset;
