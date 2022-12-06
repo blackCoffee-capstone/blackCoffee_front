@@ -254,8 +254,8 @@ function Home() {
               <p>지금 여기에서 한눈에 확인!</p>
             </div>
             <picture>
-              <source media="(min-width: 600px)" srcSet={require('assets/image/main/banner/banner01.jpg')} />
-              <img src={require('assets/image/main/banner/banner01_min.jpg')} alt="banner01" style={{
+              {/* <source media="(min-width: 600px)" srcSet={require('assets/image/main/banner/banner01.jpg')} /> */}
+              <img src={require('assets/image/main/banner/banner01.jpg')} alt="banner01" style={{
                 objectPosition: "50% 65%",
                 filter: "saturate(1.1)"
               }} />
@@ -267,8 +267,8 @@ function Home() {
               <p>지금 여기에서 찾아보세요</p>
             </div>
             <picture>
-              <source media="(min-width: 600px)" srcSet={require('assets/image/main/banner/banner02.jpg')} />
-              <img src={require('assets/image/main/banner/banner02_min.jpg')} alt="banner02" style={{
+              {/* <source media="(min-width: 600px)" srcSet={require('assets/image/main/banner/banner02.jpg')} /> */}
+              <img src={require('assets/image/main/banner/banner02.jpg')} alt="banner02" style={{
                 filter: "brightness(90%) saturate(1.2)"
               }}/>
             </picture>

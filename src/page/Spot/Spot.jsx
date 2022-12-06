@@ -117,7 +117,7 @@ const PageContainer = styled.section`
         .posts{
           padding: 1rem 0.5rem;
           .post{
-            max-width: 35rem;
+            max-width: 33rem;
             padding: 1rem;
             border-radius: var(--border-radius-mid);
             box-shadow: var(--box-shadow03);
