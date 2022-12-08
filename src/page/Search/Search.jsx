@@ -66,7 +66,7 @@ const PageContainer = styled.section`
 `
 
 function Search() {
-  const [ sorter, setSorter ] = useState('Name');
+  const [ sorter, setSorter ] = useState('View');
   const [ page, setPage ] = useState(1);
   const [ searchWord, setSearchWord ] = useState('');
   const [ themeIds, setThemeIds ] = useState([]);
@@ -93,7 +93,7 @@ function Search() {
     setSearchWord('')
     setThemeIds([])
     setLocationIds([])
-    setSorter('Name')
+    setSorter('View')
   }
   function searching(){
     setPage(1);
@@ -126,9 +126,12 @@ function Search() {
             </div>
             <Filter setThemeIds={setThemeIds} setLocationIds={setLocationIds}  />
             <ul className='sorting'>
-              <li className={sorter=='Name' ? 'on': ''}
-                onClick={()=>{setSorter('Name')}}
-              >이름순</li>
+              <li className={sorter=='View' ? 'on': ''}
+                onClick={()=>{setSorter('View')}}
+              >조회순</li>
+              <li className={sorter=='Wish' ? 'on': ''}
+                onClick={()=>{setSorter('Wish')}}
+              >찜순</li>
               <li className={sorter=='Rank' ? 'on': ''}
                 onClick={()=>{setSorter('Rank')}}
               >랭킹순</li>
