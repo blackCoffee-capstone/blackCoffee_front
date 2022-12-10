@@ -17,7 +17,7 @@ function useAuthFetch({ url, key, params={}, ...props }) {
     () => authAxios.get(url, {
       params: params,
       headers:{
-        authorization: accessToken ? `Bearer ${accessToken}` : '',
+        Authorization: accessToken ? `Bearer ${accessToken}` : '',
       },
     }),
     {

@@ -118,9 +118,9 @@ const FilterContainer = styled.div`
   }
 `
 
-function Filter({ setLocationIds, setThemeIds, ...props }){
+function Filter({ setLocationIds, setThemeIds, filterLocation=true, filterTheme=true, ...props }){
   const [ showFilter, setShowFilter ] = useState(false);
-  const [ showThemes, setShowThemes ] = useState(false);
+  const [ showThemes, setShowThemes ] = useState(true);
   const [ showLocations, setShowLocations ] = useState(false);
   const [ chosenThemes, setChosenThemes ] = useState([]);
   const [ chosenLocations, setChosenLocations ] = useState([]);
@@ -179,71 +179,80 @@ function Filter({ setLocationIds, setThemeIds, ...props }){
               }
             </div> */}
             <div className='chooseArea'>
-              <div className='place'>
-                <h4 onClick={()=> setShowLocations(!showLocations)}>
-                  장소 
-                  <ExpandSvg style={{
-                    transition: "var(--transition-default)",
-                    transform: `rotate(${showLocations ? '180deg' : '0'})`
-                  }} />
-                </h4>
-                <ul className={`level1 ${showLocations ? '' : 'hide'}`}>
-                  {
-                    filterData.locations.length>0 &&
-                    filterData.locations.map((metro)=>{
-                      return (
-                        <div key={metro.id}>
-                          <p>{metro.metroName}</p>
-                          <ul className='level2'>
-                            <li
-                              className={`${chosenLocations.includes(metro.id) ? 'on' : ''}`}
-                              onClick={()=>{ onLocationClick(metro.id) }}
-                            >{metro.metroName} 전체</li>
-                            {
-                              metro.localNames.length>0 &&
-                              metro.localNames.map((local)=>{
-                                return(
-                                  <li key={local.id}
-                                    className={`${chosenLocations.includes(local.id) ? 'on' : ''}`}
-                                    onClick={()=>{ onLocationClick(local.id)}}
-                                  >{local.localName}</li>
-                                )
-                              })
-                            }
-                          </ul>
-                        </div>
-                      )
-                    })
-                  }
-                </ul>
-              </div>
-              <div className="theme">
-                <h4 onClick={()=> setShowThemes(!showThemes)}>
-                  테마
-                  <ExpandSvg style={{
-                    transition: "var(--transition-default)",
-                    transform: `rotate(${showThemes ? '180deg' : '0'})`
-                  }} />
-                </h4>
-                <ul className={`${showThemes ? '' : 'hide'}`}>
-                  {
-                    filterData.themes.length>0 &&
-                    filterData.themes.map((el)=>{
-                      return(
-                        <li key={'theme'+el.id}
-                          className={`${chosenThemes.includes(el.id) ? 'on' : ''}`}
-                          onClick={()=>{onThemeClick(el.id)}}
-                        >{el.name}</li>
-                      ) 
-                    })
-                  }
-                </ul>
-              </div>
+              { filterLocation &&
+                <div className='place'>
+                  <h4 onClick={()=> setShowLocations(!showLocations)}>
+                    장소 
+                    <ExpandSvg style={{
+                      transition: "var(--transition-default)",
+                      transform: `rotate(${showLocations ? '180deg' : '0'})`
+                    }} />
+                  </h4>
+                  <ul className={`level1 ${showLocations ? '' : 'hide'}`}>
+                    {
+                      filterData.locations.length>0 &&
+                      filterData.locations.map((metro)=>{
+                        return (
+                          <div key={metro.id}>
+                            <p>{metro.metroName}</p>
+                            <ul className='level2'>
+                              <li
+                                className={`${chosenLocations.includes(metro.id) ? 'on' : ''}`}
+                                onClick={()=>{ onLocationClick(metro.id) }}
+                              >{metro.metroName} 전체</li>
+                              {
+                                metro.localNames.length>0 &&
+                                metro.localNames.map((local)=>{
+                                  return(
+                                    <li key={local.id}
+                                      className={`${chosenLocations.includes(local.id) ? 'on' : ''}`}
+                                      onClick={()=>{ onLocationClick(local.id)}}
+                                    >{local.localName}</li>
+                                  )
+                                })
+                              }
+                            </ul>
+                          </div>
+                        )
+                      })
+                    }
+                  </ul>
+                </div>
+              }
+              {
+                filterTheme && 
+                <div className="theme">
+                  <h4 onClick={()=> setShowThemes(!showThemes)}>
+                    테마
+                    <ExpandSvg style={{
+                      transition: "var(--transition-default)",
+                      transform: `rotate(${showThemes ? '180deg' : '0'})`
+                    }} />
+                  </h4>
+                  <ul className={`${showThemes ? '' : 'hide'}`}>
+                    {
+                      filterData.themes.length>0 &&
+                      filterData.themes.map((el)=>{
+                        return(
+                          <li key={'theme'+el.id}
+                            className={`${chosenThemes.includes(el.id) ? 'on' : ''}`}
+                            onClick={()=>{onThemeClick(el.id)}}
+                          >{el.name}</li>
+                        ) 
+                      })
+                    }
+                  </ul>
+                </div>
+              }
             </div>
             <button className='c_btn-primary submit'
               onClick={()=>{
-                setThemeIds(chosenThemes);
-                setLocationIds(chosenLocations);
+                if(filterLocation){
+                  setLocationIds(chosenLocations);
+                }
+                if(filterTheme){
+                  setThemeIds(chosenThemes);
+                }
                 setShowFilter(false)
               }}
             >

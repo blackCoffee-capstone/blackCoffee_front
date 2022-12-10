@@ -2,12 +2,17 @@
 import styled from 'styled-components'
 // router
 import { useNavigate } from 'react-router-dom';
+// recoil
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { token, messageBundle } from 'store/index'
+// api
+import useAuthPost from 'api/useAuthPost'
 // utils
 import { numberFormat } from 'utils/formatting/numberFormat'
 // img
 import NoPhoto from 'assets/image/common/no_photo.png'
-import Wish from 'assets/image/common/icon/wish.svg'
 import WishOn from 'assets/image/common/icon/wish_on.svg'
+import { ReactComponent as Wish }  from "assets/image/common/icon/wish.svg";
 
 const ListContainer = styled.ul`
   width: 100%;
@@ -99,17 +104,25 @@ const ListContainer = styled.ul`
       display: flex;
       align-items: center;
       flex-shrink: 0;
-      gap: 1rem;
+      gap: 0.5rem;
     }
     .variance{
       width: 6rem;
     }
     .wishes{
-      width: 2rem;
-      height: 2rem;
-      padding: 0;
+      z-index: 1;
+      width: 3rem;
+      height: 3rem;
+      padding: 0.5rem;
       margin-top: 0.2rem;
+      &:hover{
+        svg{
+          stroke: red !important;
+        }
+      }
+      svg,
       img{
+        transition: var(--transition-default);
         height: 100%;
         width: 100%;
       }
@@ -136,8 +149,31 @@ const ListContainer = styled.ul`
 `
 
 function ShowList(props){
+  const accessToken = useRecoilValue(token.accessToken);
+  const setAlert = useSetRecoilState(messageBundle.alert)
   const listData = props?.listData ?? [];
   const navigate = useNavigate();
+
+  const { mutate: wishApi } = useAuthPost({ url: 'wishes' })
+
+  function onWishClick(e, i, el){
+    e.stopPropagation()
+    if(!accessToken){
+      setAlert('로그인이 필요합니다');
+      return;
+    }
+    wishApi({
+      spotId: el.id,
+      isWish: !el.isWish
+    }, {
+      onError: ()=>{
+        setAlert('찜하는 도중 문제가 발생하였습니다.')
+      },
+      onSuccess: ()=>{
+        listData[i].isWish = !el.isWish
+      }
+    })
+  }
 
   return (
     <ListContainer>
@@ -184,11 +220,10 @@ function ShowList(props){
                   </div>
                 }
                 { el.wishes !== undefined &&
-                  <div className='wishes'>
-                    { 
-                      el.wishes==0 ? <img src={Wish} /> 
-                      : <img src={WishOn} />
-                    }
+                  <div className='wishes'
+                    onClick={(e)=> onWishClick(e, i, el)}
+                  >
+                    { !el.isWish ? <Wish /> : <img src={WishOn} /> }
                   </div>
                 }
               </div>

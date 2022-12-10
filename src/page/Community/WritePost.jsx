@@ -13,6 +13,7 @@ import useAuthPost from 'api/useAuthPost'
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 // component
 import { InputBasic } from 'component/common/InputBundle'
+import Filter from 'component/common/Filter';
 // img
 import { ReactComponent as CloseSvg }  from "assets/image/common/icon/close.svg";
 import { ReactComponent as AddSvg }  from "assets/image/Community/icon_image_add.svg";
@@ -100,7 +101,7 @@ const PageContainer = styled.section`
         }
       }
     }
-    .submit{
+    >.submit{
       display: block;
       height: 4.5rem;
       width: 100%;
@@ -120,7 +121,7 @@ function WritePost() {
   const [ contentError, setContentError ] = useState('');
   const [ location, setLocation ] = useState('');
   const [ locationError, setLocationError ] = useState('');
-  const [ themes, setThemes ] = useState([]);
+  const [ themeIds, setThemeIds ] = useState([]);
   const [ themesError, setThemesError ] = useState([]);
   const [ images, setImages ] = useState([]);
   const [ imageThumbs, setImageThumbs ] = useState([]);
@@ -209,7 +210,7 @@ function WritePost() {
           title: title,
           content: content,
           location: location,
-          themes: themes,
+          themes: themeIds,
           files: images
         }, {
           onSuccess: ()=>{
@@ -303,6 +304,7 @@ function WritePost() {
             />
             { locationError && <p className='c_error_message'>{locationError}</p> }
           </div>
+          <Filter setThemeIds={setThemeIds} filterLocation={false} />
           <button className="c_btn-primary submit"
             onClick={()=> posting()}
           >

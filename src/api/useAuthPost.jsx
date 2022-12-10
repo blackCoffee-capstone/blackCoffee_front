@@ -12,7 +12,7 @@ function useAuthPost({ url, ...props }) {
   return useMutation(
     (payload) => authAxios.post(url, payload, {
       headers:{
-        authorization: accessToken ? `Bearer ${accessToken}` : '',
+        Authorization: accessToken ? `Bearer ${accessToken}` : '',
       },
     }),
     {

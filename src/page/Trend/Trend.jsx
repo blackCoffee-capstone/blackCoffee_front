@@ -10,7 +10,7 @@ import ShowMap from 'component/common/ShowMap'
 import { ReactComponent as  Left } from 'assets/image/common/icon/navigation_left.svg'
 import { ReactComponent as  Right } from 'assets/image/common/icon/navigation_right.svg'
 // api
-import useFetch from 'api/useFetch'
+import useAuthFetch from 'api/useAuthFetch'
 
 const PageContainer = styled.section`
   .option{
@@ -79,12 +79,12 @@ function Trend(){
     return `${year}${(month+1).toString().padStart(2, 0)}${weekNo}`;
   }
 
-  const { data: listData, isLoading: isListLoading } = useFetch({
+  const { data: listData, isLoading: isListLoading } = useAuthFetch({
     url: 'ranks/list',
     params: { date: currentWeek },
     key: ['rank', 'list', currentWeek]
   })
-  const { data: mapData, isLoading: isMapLoading } = useFetch({
+  const { data: mapData, isLoading: isMapLoading } = useAuthFetch({
     url: 'ranks/map',
     params: { date: currentWeek },
     key: ['rank', 'map', currentWeek]

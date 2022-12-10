@@ -76,7 +76,7 @@ function AuthAxiosInterceptor({children}){
             // token 재발급 동안의 요청은 refreshSubscribers에 저장
             return new Promise((resolve, reject) => {
               addRefreshSubscriber((token) => {
-                originalRequest.headers.authorization = "Bearer " + token;
+                originalRequest.headers.Authorization = "Bearer " + token;
                 resolve(axios(originalRequest));
               });
             });

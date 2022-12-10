@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 // style
 import styled from 'styled-components'
 // api
-import useFetch from 'api/useFetch'
+import useAuthFetch from 'api/useAuthFetch'
 // component
 import Filter from 'component/common/Filter'
 import ShowList from 'component/common/ShowList'
@@ -76,7 +76,7 @@ function Search() {
     data: listData, 
     isLoading: isListLoading,
     refetch: refetchList
-  } = useFetch({
+  } = useAuthFetch({
     url: 'spots',
     key: ['spotlist', page, sorter, locationIds, themeIds],
     params: {
