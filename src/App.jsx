@@ -60,6 +60,9 @@ function App() {
                 <Route path="/community/write" element={
                   <AuthRouterGuard><WritePost /></AuthRouterGuard>
                 }/>
+                <Route path="/community/write/:postId" element={
+                  <AuthRouterGuard><WritePost /></AuthRouterGuard>
+                }/>
                 <Route path="/community/:postId" element={
                   <AuthRouterGuard><CommunityDetail /></AuthRouterGuard>
                 }/>

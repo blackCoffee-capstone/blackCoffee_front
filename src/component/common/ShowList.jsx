@@ -11,7 +11,7 @@ import useAuthPost from 'api/useAuthPost'
 import { numberFormat } from 'utils/formatting/numberFormat'
 // img
 import NoPhoto from 'assets/image/common/no_photo.png'
-import WishOn from 'assets/image/common/icon/wish_on.svg'
+import { ReactComponent as WishOn }  from "assets/image/common/icon/wish_on.svg";
 import { ReactComponent as Wish }  from "assets/image/common/icon/wish.svg";
 
 const ListContainer = styled.ul`
@@ -20,11 +20,11 @@ const ListContainer = styled.ul`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0 0.5rem;
     border-bottom: 1px solid var(--border-color-light);
     text-align: center;
-    height: 11rem;
+    height: 10rem;
     padding: 0.5rem 0;
+    gap: 0.2rem 0.5rem;
     overflow: hidden;
     cursor: pointer;
     transition: var(--transition-fast);
@@ -38,96 +38,98 @@ const ListContainer = styled.ul`
       border-top: 1px solid var(--border-color-default);
     }
     >div{
-      padding: 0.2rem 0.6rem;
       text-overflow: ellipsis;
       overflow: hidden;
-    }
-    .ranking{
-      width: 6rem;
-      font-weight: var(--font-w-bold);
-      font-size: var(--font-size-large);
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .spot{
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-      width: 100%;
-      flex-grow: 1;
-      img{
+      &.ranking{
+        width: 6rem;
+        font-weight: var(--font-w-mid);
+        font-size: var(--font-size-mid);
+        white-space: nowrap;
         flex-shrink: 0;
-        width: 13rem;
-        height: 9rem;
-        object-fit: cover;
-        border-radius: var(--border-radius-mid);
-        background-color: var(--loading-color);
-        transition: var(--transition-default);
-        border: none;
       }
-      .textbox{
-        text-align: start;
+      &.spot{
         display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        h3{
-          font-size: var(--font-size-large);
-          font-weight: var(--font-w-mid);
+        align-items: center;
+        gap: 2rem;
+        width: 100%;
+        flex-grow: 1;
+        img{
+          flex-shrink: 0;
+          width: 13rem;
+          height: 9rem;
+          object-fit: cover;
+          border-radius: var(--border-radius-mid);
+          background-color: var(--loading-color);
+          transition: var(--transition-default);
+          border: none;
         }
+        .textbox{
+          text-align: start;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          h3{
+            font-size: var(--font-size-large);
+            font-weight: var(--font-w-mid);
+          }
+          p{
+            color: var(--font-color-sub);
+          }
+        }
+      }
+      &.variance{
+        width: 5rem;
         p{
-          color: var(--font-color-sub);
+          font-weight: var(--font-w-bold);
+          font-size: var(--font-size-mid);
+          &.new{
+            color: red;
+            margin-top: -2px;
+          }
+          &.up{
+            color: orangered;
+          }
+        }
+      }
+      &.wishView{
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-shrink: 0;
+        .views{
+          width: 7rem;
+        }
+        .wishes{
+          z-index: 1;
+          width: 6rem;
+          padding: 0.5rem;
+          margin-top: 0.2rem;
+          user-select: none;
+          svg{
+            width: 2rem;
+            height: 2rem;
+            transition: var(--transition-default);
+          }
+          &:hover{
+            svg{
+              stroke: red !important;
+            }
+          }
         }
       }
     }
-    .views,
-    .variance{
+    .amount{
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
       align-items: center;
       gap: 0 0.5rem;
-      width: 8rem;
       white-space: nowrap;
       p{
-        font-weight: var(--font-w-bold);
-        font-size: var(--font-size-large);
-        &.new{
-          color: red;
-          margin-top: -2px;
-        }
-        &.up{
-          color: orangered;
-        }
+        font-size: var(--font-size-small);
       }
     }
-    .wishView{
-      display: flex;
-      align-items: center;
-      flex-shrink: 0;
-      gap: 0.5rem;
-    }
-    .variance{
-      width: 6rem;
-    }
-    .wishes{
-      z-index: 1;
-      width: 3rem;
-      height: 3rem;
-      padding: 0.5rem;
-      margin-top: 0.2rem;
-      &:hover{
-        svg{
-          stroke: red !important;
-        }
-      }
-      svg,
-      img{
-        transition: var(--transition-default);
-        height: 100%;
-        width: 100%;
-      }
-    }
-    @media screen and (max-width: 600px) {
+    @media screen and (max-width: 768px) {
       &{
         flex-wrap: wrap;
         height: auto;
@@ -135,11 +137,12 @@ const ListContainer = styled.ul`
       .ranking{
         display: none;
       }
-      .views,
-      .volume,
-      .variance{
+      .amount{
         flex-direction: row;
-        width: auto;
+        width: auto !important;
+      }
+      .wishes p{
+        margin-top: -2px;
       }
     }
   }
@@ -171,6 +174,7 @@ function ShowList(props){
       },
       onSuccess: ()=>{
         listData[i].isWish = !el.isWish
+        listData[i].wishes = !el.isWish ? listData[i].wishes-1 : listData[i].wishes+1
       }
     })
   }
@@ -198,7 +202,7 @@ function ShowList(props){
                 </div>
               </div>
               { el.variance !== undefined &&
-                <div className='variance'>
+                <div className='variance amount'>
                   <h4>변동</h4>
                   <p className={`${
                     el.variance===null ? 'new' :
@@ -214,16 +218,17 @@ function ShowList(props){
               }
               <div className='wishView'>
                 { el.views!==undefined &&
-                  <div className='views'>
+                  <div className='views amount'>
                     <h4>조회수</h4>
                     <p>{numberFormat(el.views)}</p>
                   </div>
                 }
                 { el.wishes !== undefined &&
-                  <div className='wishes'
+                  <div className='wishes amount'
                     onClick={(e)=> onWishClick(e, i, el)}
                   >
-                    { !el.isWish ? <Wish /> : <img src={WishOn} /> }
+                    { !el.isWish ? <Wish /> : <WishOn /> }
+                    <p>{el.wishes}</p>
                   </div>
                 }
               </div>

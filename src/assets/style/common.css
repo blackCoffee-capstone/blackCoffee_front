@@ -74,7 +74,7 @@
 
     /* 기타 효과 변수 */
     --loading-color: #eeeeee;  /* 이미지 로딩 전 배경색 */
-    --effect-color: rgba(224, 185, 255, 0.1);  /* 호버 등의 배경 효과 */
+    --effect-color: rgba(223, 202, 241, 0.1);  /* 호버 등의 배경 효과 */
 
     /* 계산 목적 변수 */
     --header-height: 6rem;

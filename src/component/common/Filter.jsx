@@ -7,6 +7,7 @@ import useFetch from 'api/useFetch'
 // img
 import { ReactComponent as FilterSvg }  from "assets/image/common/icon/filter.svg";
 import { ReactComponent as ExpandSvg }  from "assets/image/common/icon/expand_more.svg";
+import { useEffect } from 'react';
 
 const FilterContainer = styled.div`
   display: flex;
@@ -117,12 +118,18 @@ const FilterContainer = styled.div`
   }
 `
 
-function Filter({ setLocationIds, setThemeIds, filterLocation=true, filterTheme=true, buttonStyle={}, ...props }){
+function Filter({ setLocationIds, setThemeIds, filterLocation=true, filterTheme=true, buttonStyle={}, initThemes=[], ...props }){
   const [ showFilter, setShowFilter ] = useState(false);
   const [ showThemes, setShowThemes ] = useState(true);
   const [ showLocations, setShowLocations ] = useState(false);
-  const [ chosenThemes, setChosenThemes ] = useState([]);
+  const [ chosenThemes, setChosenThemes ] = useState(initThemes);
   const [ chosenLocations, setChosenLocations ] = useState([]);
+
+  useEffect(()=>{ // initThemes 늦게오면 업데이트
+    if(initThemes.length != 0){
+      setChosenThemes(initThemes)
+    }
+  }, [initThemes])
 
   function onLocationClick(id){
     const tempLocationId = chosenLocations.slice();

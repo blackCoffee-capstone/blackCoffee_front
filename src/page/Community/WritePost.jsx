@@ -6,9 +6,11 @@ import styled from 'styled-components'
 import { messageBundle } from 'store/index';
 import { useSetRecoilState } from 'recoil';
 // router
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom'
 // api
 import useAuthPost from 'api/useAuthPost'
+import useAuthFetch from 'api/useAuthFetch'
+import useAuthPatch from 'api/useAuthPatch'
 // 카카오 주소 검색
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 // component
@@ -17,6 +19,7 @@ import Filter from 'component/common/Filter';
 // img
 import { ReactComponent as CloseSvg }  from "assets/image/common/icon/close.svg";
 import { ReactComponent as AddSvg }  from "assets/image/Community/icon_image_add.svg";
+import { useEffect } from 'react';
 
 const PageContainer = styled.section`
   .writeContent .c_inner{
@@ -101,17 +104,23 @@ const PageContainer = styled.section`
         }
       }
     }
-    >.submit{
-      display: block;
-      height: 4.5rem;
-      width: 100%;
-      max-width: 10rem;
-      margin: 0 auto;
+    .btn_wapper{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      button{
+        display: block;
+        height: 4.5rem;
+        width: 100%;
+        max-width: 10rem;
+      }
     }
   }
 `
 
 function WritePost() {
+  const { postId } = useParams();
   const setAlert = useSetRecoilState(messageBundle.alert);
   const setConfirm = useSetRecoilState(messageBundle.confirm);
   const navigate = useNavigate();
@@ -129,6 +138,27 @@ function WritePost() {
   const inputFileEl = useRef(); // input file element
 
   const { mutate: postingApi } = useAuthPost({ url: 'posts' });
+  const { mutate: modifyPostingApi } = useAuthPatch({ url: `/posts/${postId}` });
+
+  // 수정인 경우 새로 받아옴
+  const { data: postDetail, isLoading: isPostDetailLoading } = useAuthFetch({
+    url: `posts/${postId}`,
+    key: ['postDetail', postId],
+    enabled: !!postId // 수정인 경우에만 받아옴
+  })
+
+  useEffect(()=>{ // 수정인경우 상세데이터 자동 입력
+    if(!postId) return; // 수정이 아닌경우 중단
+    if(!postDetail.isWriter) {  // 수정 권한 없는 경우
+      setAlert('수정 권한이 없습니다');
+      navigate('/community');
+      return;
+    }
+    setTitle(postDetail.title);
+    setContent(postDetail.content);
+    setAddress(postDetail.address);
+    setThemeIds(postDetail.themes.map(el=>el.id))
+  }, [])
 
   const open = useDaumPostcodePopup();
   const addrSearchComplete  = useCallback((data) => {
@@ -207,7 +237,7 @@ function WritePost() {
       return;
     }
     setConfirm({
-      message: '작성한 내용을 포스팅하시겠습니까?',
+      message: `${postId ? '포스트 내용을 수정하시겠습니까?' : '작성한 내용을 포스팅하시겠습니까?'}`,
       callback: ()=>{
         const formData = new FormData();
         formData.append("title", title);
@@ -217,15 +247,27 @@ function WritePost() {
         for(let i=0,len=images.length; i<len; i++){
           formData.append('files', images[i])
         }
-        postingApi(formData, {
-          onSuccess: ()=>{
-            setAlert('포스팅이 완료되었습니다');
-            navigate('/community');
-          },
-          onError: ()=>{
-            setAlert('포스팅을 올리는데 실패하였습니다');
-          }
-        })
+        if(postId){
+          modifyPostingApi(formData, {
+            onSuccess: ()=>{
+              setAlert('포스팅 수정이 완료되었습니다');
+              navigate('/community');
+            },
+            onError: ()=>{
+              setAlert('포스팅을 올리는데 실패하였습니다');
+            }
+          })
+        } else {
+          postingApi(formData, {
+            onSuccess: ()=>{
+              setAlert('포스팅이 완료되었습니다');
+              navigate('/community');
+            },
+            onError: ()=>{
+              setAlert('포스팅을 올리는데 실패하였습니다');
+            }
+          })
+        }
       }
     })
   }
@@ -245,7 +287,7 @@ function WritePost() {
         <h2>나만의 장소</h2>
       </section>
       <div className="c_section writeContent">
-        <h2 className='c_title'>포스팅</h2>
+        <h2 className='c_title'>포스팅{postId ? ' 수정' : ''}</h2>
         <div className="c_inner">
           <div className="title">
             <h4>제목<i className="c_star"></i></h4>
@@ -316,6 +358,7 @@ function WritePost() {
                   setThemesError('');
                 }
               }}
+              initThemes={themeIds}
               filterLocation={false}
               buttonStyle={{
                 alignSelf: 'flex-start'
@@ -323,11 +366,21 @@ function WritePost() {
             />
             { themesError && <p className='c_error_message'>{themesError}</p> }
           </div>
-          <button className="c_btn-primary submit"
-            onClick={()=> posting()}
-          >
-            포스팅
-          </button>
+          <div className='btn_wapper'>
+            {
+              postId &&
+              <button className="c_btn-primary-reverse cancel"
+                onClick={()=>{ navigate(-1) }}
+              >
+                수정취소
+              </button>
+            }
+            <button className="c_btn-primary submit"
+              onClick={()=>{ posting() }}
+            >
+              {postId? '수정하기' : '포스팅'}
+            </button>
+          </div>
         </div>
       </div>
     </PageContainer>
