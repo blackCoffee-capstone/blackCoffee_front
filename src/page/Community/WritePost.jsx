@@ -49,7 +49,7 @@ const PageContainer = styled.section`
           }
         }
       }
-      &.location{
+      &.address{
         max-width: 50rem;
         input{
           &:focus{
@@ -119,8 +119,8 @@ function WritePost() {
   const [ titleError, setTitleError ] = useState('');
   const [ content, setContent ] = useState('');
   const [ contentError, setContentError ] = useState('');
-  const [ location, setLocation ] = useState('');
-  const [ locationError, setLocationError ] = useState('');
+  const [ address, setAddress ] = useState('');
+  const [ addressError, setAddressError ] = useState('');
   const [ themeIds, setThemeIds ] = useState([]);
   const [ themesError, setThemesError ] = useState([]);
   const [ images, setImages ] = useState([]);
@@ -144,7 +144,7 @@ function WritePost() {
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
     // setAddressCode(data.zonecode);
-    setLocation(fullAddress);
+    setAddress(fullAddress);
   });
   const addrSearchClick = useCallback(() => {
     open({ onComplete: addrSearchComplete });
@@ -181,11 +181,10 @@ function WritePost() {
     setImages(tempImages);
     setImageThumbs(tempImageThumb);
   }
-
   function resetErrors(){
     setTitleError('')
     setContentError('')
-    setLocationError('')
+    setAddressError('')
     setThemesError('')
   }
 
@@ -199,20 +198,26 @@ function WritePost() {
       setContentError('내용을 작성해주세요');
       return;
     }
-    if(!location) {
-      setLocationError('위치를 입력해주세요');
+    if(!address) {
+      setAddressError('위치를 입력해주세요');
+      return;
+    }
+    if(themeIds.length==0) {
+      setThemesError('테마를 선택해주세요');
       return;
     }
     setConfirm({
       message: '작성한 내용을 포스팅하시겠습니까?',
       callback: ()=>{
-        postingApi({
-          title: title,
-          content: content,
-          location: location,
-          themes: themeIds,
-          files: images
-        }, {
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("content", content);
+        formData.append("address", address);
+        formData.append("themes", themeIds.toString());
+        for(let i=0,len=images.length; i<len; i++){
+          formData.append('files', images[i])
+        }
+        postingApi(formData, {
           onSuccess: ()=>{
             setAlert('포스팅이 완료되었습니다');
             navigate('/community');
@@ -291,20 +296,33 @@ function WritePost() {
               }
             </ul>
           </div>
-          <div className='location'>
+          <div className='address'>
             <h4>위치<i className="c_star"></i></h4>
             <InputBasic
-              value={location}
-              onChange={(e)=> setLocation(e.currentTarget.value) }
+              value={address}
+              onChange={(e)=> setAddress(e.currentTarget.value) }
               onClick={()=> {
-                setLocation('');
+                setAddress('');
                 addrSearchClick();
               }}
               readOnly
             />
-            { locationError && <p className='c_error_message'>{locationError}</p> }
+            { addressError && <p className='c_error_message'>{addressError}</p> }
           </div>
-          <Filter setThemeIds={setThemeIds} filterLocation={false} />
+          <div className='themes'>
+            <Filter setThemeIds={(data)=>{
+                setThemeIds(data);
+                if(data.length!=0){
+                  setThemesError('');
+                }
+              }}
+              filterLocation={false}
+              buttonStyle={{
+                alignSelf: 'flex-start'
+              }}
+            />
+            { themesError && <p className='c_error_message'>{themesError}</p> }
+          </div>
           <button className="c_btn-primary submit"
             onClick={()=> posting()}
           >

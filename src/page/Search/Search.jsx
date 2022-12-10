@@ -21,7 +21,7 @@ const PageContainer = styled.section`
       width: 100%;
       max-width: 50rem;
       height: 6rem;
-      margin: 0 auto;
+      margin: 0 auto 1.5rem;
       border: 2.5px solid var(--primary-color);
       border-radius: var(--border-radius-small);
       overflow: hidden;
@@ -50,6 +50,7 @@ const PageContainer = styled.section`
       align-items: center;
       justify-content: flex-end;
       gap: 1rem;
+      margin-top: 1rem;
       li{
         cursor: pointer;
         transition: var(--transition-fast);

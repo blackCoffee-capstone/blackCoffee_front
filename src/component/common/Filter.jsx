@@ -9,7 +9,6 @@ import { ReactComponent as FilterSvg }  from "assets/image/common/icon/filter.sv
 import { ReactComponent as ExpandSvg }  from "assets/image/common/icon/expand_more.svg";
 
 const FilterContainer = styled.div`
-  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   .filter_toggle{
@@ -17,7 +16,6 @@ const FilterContainer = styled.div`
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 1rem;
     svg{
       transition: var(--transition-fast);
       width: 1em;
@@ -35,6 +33,7 @@ const FilterContainer = styled.div`
     border-radius: var(--border-radius-mid);
     box-shadow: var(--box-shadow02);
     padding: 1rem 1.2rem;
+    margin-top: 1rem;
     margin-bottom: 1rem;
     .chooseArea{
       overflow: scroll;
@@ -118,7 +117,7 @@ const FilterContainer = styled.div`
   }
 `
 
-function Filter({ setLocationIds, setThemeIds, filterLocation=true, filterTheme=true, ...props }){
+function Filter({ setLocationIds, setThemeIds, filterLocation=true, filterTheme=true, buttonStyle={}, ...props }){
   const [ showFilter, setShowFilter ] = useState(false);
   const [ showThemes, setShowThemes ] = useState(true);
   const [ showLocations, setShowLocations ] = useState(false);
@@ -155,6 +154,7 @@ function Filter({ setLocationIds, setThemeIds, filterLocation=true, filterTheme=
     <FilterContainer>
       <button className='c_btn-primary-reverse filter_toggle'
         onClick={()=>{setShowFilter(!showFilter)}}
+        style={buttonStyle}
       >
         <FilterSvg />
         필터
