@@ -61,6 +61,11 @@ const PageContainer = styled.section`
         }
       }
       &.images{
+        .change_info{
+          color: var(--font-color-sub);
+          margin-bottom: 1rem;
+          line-height: 1.2;
+        }
         .file_list{
           display: grid;
           grid-template-columns: repeat(5, 1fr);
@@ -309,8 +314,13 @@ function WritePost() {
             </div>
             { contentError && <p className='c_error_message'>{contentError}</p> }
           </div>
+          
           <div className="images">
             <h4>이미지 <strong>(각각 2.5MB)</strong></h4>
+            {
+              postId &&
+              <p className='change_info'>수정시 이미지를 추가하면 원래 이미지는 삭제됩니다</p>
+            }
             <input type="file" ref={inputFileEl}
               accept="image/*"
               capture="camera"

@@ -1,5 +1,3 @@
-// core
-import { useState, useEffect } from 'react';
 // router
 import { useParams } from 'react-router-dom'
 // style
@@ -7,19 +5,24 @@ import styled from 'styled-components'
 // Swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, EffectFade } from 'swiper';
+// recoil
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { token, messageBundle } from 'store/index'
 // utils
 import { numberFormat } from 'utils/formatting/numberFormat'
 // kakao map
 import { Map, MapMarker } from 'react-kakao-maps-sdk'
 // api
 import useAuthFetch from 'api/useAuthFetch'
+import useAuthPost from 'api/useAuthPost'
 // img
 import Banner from 'assets/image/Spots/SpotBanner.jpg'
 import Loaction from 'assets/image/common/icon/loaction.svg'
 import NoPhoto from 'assets/image/common/no_photo.png'
-import WishOn from 'assets/image/common/icon/wish_on.svg'
 import Nearby from 'assets/image/common/icon/nearby.png'
 import { ReactComponent as InstagramColor } from "assets/image/common/ci/instagram-color.svg";
+import { ReactComponent as WishOn }  from "assets/image/common/icon/wish_on.svg";
+import { ReactComponent as Wish }  from "assets/image/common/icon/wish.svg";
 
 const PageContainer = styled.section`
   .place_img{
@@ -70,10 +73,11 @@ const PageContainer = styled.section`
     }
   }
   .information{
-    .c_title{
-      margin-bottom: 2rem;
-    }
     .c_inner{
+      .c_title{
+        margin-bottom: 1rem;
+      }
+      
       >div{
         display: flex;
         align-items: center;
@@ -103,8 +107,6 @@ const PageContainer = styled.section`
             height: 2em;
           }
         }
-      }
-      .map{
       }
       .sns{
         h3{
@@ -146,7 +148,7 @@ const PageContainer = styled.section`
                   .date{
                     color: var(--font-color-sub);
                   }
-                  img{
+                  svg{
                     width: 2rem;
                     height: 2rem;
                   }
@@ -200,15 +202,61 @@ const PageContainer = styled.section`
       }
     }
   }
+  .wish{
+    z-index: 1;
+    position: fixed;
+    bottom: 3rem;
+    right: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    width: 6rem;
+    height: 6rem;
+    background-color: #fff;
+    font-size: var(--font-size-small);
+    border-radius: 50%;
+    box-shadow: var(--box-shadow02);
+    cursor: pointer;
+    &:hover{
+      svg{
+        stroke: red;
+      }
+    }
+    svg{
+      transition: var(--transition-fast);
+      width: 2rem;
+      height: 2rem;
+    }
+  } 
 `
 
 function Spot(){
   const { spotId } = useParams();
+  const accessToken = useRecoilValue(token.accessToken);
+  const setAlert = useSetRecoilState(messageBundle.alert);
 
-  const {
-    data: spotData, 
-    isLoading: isFilterLoading
-  } = useAuthFetch({ url: `spots/${spotId}`, key: ['spot', spotId] });
+  const { data: spotData, isLoading: isFilterLoading } = useAuthFetch({ url: `spots/${spotId}`, key: ['spot', spotId] });
+  const { mutate: wishApi } = useAuthPost({ url: 'wishes' })
+
+  function onWishClick(){
+    if(!accessToken){
+      setAlert('로그인이 필요합니다');
+      return;
+    }
+    wishApi({
+      spotId: Number(spotId),
+      isWish: !spotData.isWish
+    }, {
+      onError: ()=>{
+        setAlert('찜하는 도중 문제가 발생하였습니다.')
+      },
+      onSuccess: ()=>{
+        spotData.isWish = !spotData.isWish
+      }
+    })
+  }
 
   if(spotData.length==0) {
     return (
@@ -255,6 +303,7 @@ function Spot(){
       <section className='c_section information'>
         <div className="c_inner">
           <h2 className='c_title'>{spotData.name}</h2>
+          
           <div className='loaction'>
             <h3><img src={Loaction} />위치</h3>
             <p>{spotData.address}</p>
@@ -291,7 +340,7 @@ function Spot(){
                           background: `url(${NoPhoto}) no-repeat center center / 100%`
                         }} />
                         <p className='content_top'>
-                          <span className='date'>{el.date?.slice(0,10)}</span> <span><img src={WishOn} /> {numberFormat(el.likeNumber)}</span>
+                          <span className='date'>{el.date?.slice(0,10)}</span> <span><WishOn /> {numberFormat(el.likeNumber)}</span>
                         </p>
                         <p className='content'>{`${el.content.slice(0, 150)}${el.content.length>150 ? '...' : ''}`}</p>
                       </a>
@@ -325,6 +374,14 @@ function Spot(){
           </div>
         </div>
       </section>
+      <div className='wish'
+        onClick={()=>onWishClick()}
+      >
+        {
+          spotData.isWish ? <WishOn /> : <Wish />
+        }
+        찜하기
+      </div>
     </PageContainer>
   )
 }

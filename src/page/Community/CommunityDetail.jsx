@@ -13,6 +13,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import useAuthFetch from 'api/useAuthFetch';
 import useAuthPost from 'api/useAuthPost';
 import useAuthDelete from 'api/useAuthDelete';
+// img
+import { ReactComponent as WishOn }  from "assets/image/common/icon/wish_on.svg";
+import { ReactComponent as Wish }  from "assets/image/common/icon/wish.svg";
 
 const PageContainer = styled.section`
   .detail .c_inner{
@@ -30,23 +33,45 @@ const PageContainer = styled.section`
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
-        gap: 1rem;
+        gap: 0 1rem;
         margin: 0;
-        .post_action{
+        .right{
           display: flex;
           align-items: center;
-          justify-content: flex-end;
-          gap: 0.2rem;
-          button{
-            padding: 0.5rem;
-            &.modify_post{
-              color: green;
-            }
-            &.delete_post{
-              color: var(--danger-color);
-            }
+          gap: 1rem;
+          .like{
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: var(--font-size-small);
+            cursor: pointer;
             &:hover{
-              text-decoration: underline
+              svg{
+                stroke: red;
+              }
+            }
+            svg{
+              transition: var(--transition-fast);
+              width: 2.5rem;
+              height: 2.5rem;
+            }
+          }
+          .post_action{
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.2rem;
+            button{
+              padding: 0.5rem;
+              &.modify_post{
+                color: green;
+              }
+              &.delete_post{
+                color: var(--danger-color);
+              }
+              &:hover{
+                text-decoration: underline
+              }
             }
           }
         }
@@ -74,12 +99,11 @@ const PageContainer = styled.section`
             width: 100%;
             height: auto;
             max-width: 40rem;
-            max-height: 50rem;
+            max-height: 60rem;
             img{
               height: 100%;
               width: 100%;
-              object-fit: contain;
-              background-color: var(--loading-color);
+              object-fit: scale-down;
             }
           }
         }
@@ -170,7 +194,7 @@ function CommunityDetail() {
   const { mutate: commentPostApi } = useAuthPost({ url: `/posts/${postId}/comments` });
   const { mutate: commentDeleteApi } = useAuthDelete({ url: `/posts/${postId}/comments/${commentId}` });
   const { mutate: postDeleteApi } = useAuthDelete({ url: `/posts/${postId}` });
-
+  const { mutate: wishApi } = useAuthPost({ url: 'likes' })
   const { data: postDetail, isLoading: isPostDetailLoading } = useAuthFetch({
     url: `posts/${postId}`,
     key: ['postDetail', postId],
@@ -238,6 +262,19 @@ function CommunityDetail() {
       }
     })
   }
+  function onLikeClick(){ // 좋아요 누르기
+    wishApi({
+      postId: Number(postId),
+      isLike: !postDetail.isLike
+    }, {
+      onError: ()=>{
+        setAlert('좋아요하는 도중 문제가 발생하였습니다.')
+      },
+      onSuccess: ()=>{
+        postDetail.isLike = !postDetail.isLike
+      }
+    })
+  }
 
   return (
     <PageContainer className='c_main_section'>
@@ -257,17 +294,27 @@ function CommunityDetail() {
         <div className="c_inner">
           <div className="title">
             <h4>{postDetail.title}</h4>
-            {
-              postDetail.isWriter && 
-              <div className='post_action'>
-                <button className='modify_post'
-                  onClick={()=>{onPostModifyClick()}}
-                >수정</button>
-                <button className='delete_post'
-                  onClick={()=>{onPostDeleteClick()}}
-                >삭제</button>
+            <div className='right'>
+              <div className='like'
+                onClick={()=>onLikeClick()}
+              >
+                <span>좋아요</span>
+                {
+                  postDetail.isLike ? <WishOn /> : <Wish />
+                }
               </div>
-            }
+              {
+                postDetail.isWriter && 
+                <div className='post_action'>
+                  <button className='modify_post'
+                    onClick={()=>{onPostModifyClick()}}
+                  >수정</button>
+                  <button className='delete_post'
+                    onClick={()=>{onPostDeleteClick()}}
+                  >삭제</button>
+                </div>
+              }
+            </div>
           </div>
           <div className='post_info'>
             <span>조회수 {postDetail.views}</span>|<span>{postDetail.user.nickname}</span>|<span>{postDetail.createdAt?.slice(0,10)}</span>
