@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 // api
 import useAuthFetch from 'api/useAuthFetch'
+// Swiper
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper';
 // component
 import Filter from 'component/common/Filter'
 import ShowList from 'component/common/ShowList'
@@ -64,6 +67,23 @@ const PageContainer = styled.section`
       }
     }
   }
+  .show{
+    .ads{
+      height: 15rem;
+      width: 100%;
+      a{
+        display: block;
+        width: 100%;
+        height: 100%;
+        img{
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+        }
+      }
+    }
+  }
 `
 
 function Search() {
@@ -73,11 +93,7 @@ function Search() {
   const [ themeIds, setThemeIds ] = useState([]);
   const [ locationIds, setLocationIds ] = useState([]);
 
-  const {
-    data: listData, 
-    isLoading: isListLoading,
-    refetch: refetchList
-  } = useAuthFetch({
+  const { data: listData, isLoading: isListLoading, refetch: refetchList } = useAuthFetch({
     url: 'spots',
     key: ['spotlist', page, sorter, locationIds, themeIds],
     params: {
@@ -85,6 +101,13 @@ function Search() {
       sorter: sorter,
       word: searchWord,
       themeIds: themeIds.join(","),
+      locationIds: locationIds.join(","),
+    }
+  });
+  const { data: adsData, isLoading: isAdsDataLoading, refetch: refetchAds } = useAuthFetch({
+    url: 'admins/ads',
+    key: ['ads', locationIds],
+    params: {
       locationIds: locationIds.join(","),
     }
   });
@@ -139,6 +162,31 @@ function Search() {
             </ul>
           </div>
           <div className='show'>
+            {
+              adsData && 
+              <Swiper className='ads'
+                modules={[ Autoplay ]}
+                loop
+                speed={500}
+                autoplay={{
+                  delay: 3000,
+                  disableOnInteraction: false,
+                }}
+              >
+                { 
+                  adsData.length>0 &&
+                  adsData.map((el,i)=>{
+                    return(
+                      <SwiperSlide key={i}>
+                        <a href={el.pageUrl} target="_blank" rel="noopener noreferrer">
+                          <img src={el.photoUrl} alt={`광고${i}`} />
+                        </a>
+                      </SwiperSlide>
+                    )
+                  })
+                }
+              </Swiper>
+            }
             <ShowList listData={listData.spots}/>
             <Pagination page={page} setPage={setPage} totalPage={listData.totalPage} />
           </div>
