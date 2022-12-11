@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 // style
 import styled from 'styled-components'
 // router
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 // api
 import useAuthFetch from 'api/useAuthFetch'
 // component
@@ -83,29 +83,33 @@ const PageContainer = styled.section`
 
 
 function Community() {
-  const [ sorter, setSorter ] = useState('CreatedAt');
-  const [ page, setPage ] = useState(1);
-  const [ searchWord, setSearchWord ] = useState('');
-  const [ themeIds, setThemeIds ] = useState([]);
-  const [ locationIds, setLocationIds ] = useState([]);
+  const initParams = {
+    page: 1,
+    sorter: 'CreatedAt',
+    word: '',
+    themeIds: '',
+    locationIds: ''
+  }
   const navigate = useNavigate();
+  const [ searchParams, setSearchParams ] = useSearchParams(initParams);
+  const [ currentParams, setCurrentParams ] = useState(initParams);
+  const [ word, setWord ] = useState('');
 
-  const { data: postsData, refetch: refetchPosts } = useAuthFetch({ 
+  useEffect(()=>{   // searchParams 변경시 currentParams와 연동
+    const params = Object.fromEntries([...searchParams]);
+    setCurrentParams(params);
+    setWord(params.word);
+  }, [searchParams])
+  
+  const { data: postsData, } = useAuthFetch({ 
     url: 'posts',
-    key: ['posts', page, sorter, locationIds, themeIds],
-    params: {
-      page: page,
-      sorter: sorter,
-      word: searchWord,
-      themeIds: themeIds.join(","),
-      locationIds: locationIds.join(","),
-    }
+    key: ['posts', `${JSON.stringify(currentParams)}`],
+    params: currentParams,
   });
   
   // 검색 함수
   function searching(){
-    setPage(1);
-    refetchPosts();
+    setSearchParams({...currentParams, page: 1, word: word});
   }
 
   return (
@@ -125,28 +129,39 @@ function Community() {
       <div className="c_section">
         <div className="c_inner">
           <div className='option'>
-            <Filter setThemeIds={setThemeIds} setLocationIds={setLocationIds}  />
+            <Filter
+              initLocations={currentParams.locationIds=='' ? [] : currentParams.locationIds.split(',').map(el=>Number(el))}
+              initThemes={currentParams.themeIds=='' ? [] : currentParams.themeIds.split(',').map(el=>Number(el))}
+              updateBoth={(locations, themes)=>{ 
+                setSearchParams({
+                  ...currentParams,
+                  locationIds: locations.toString(),
+                  themeIds: themes.toString()
+                })
+              }}
+            />
             <div className='two_side'>
               <div className="left">
                 <ul className='sorting'>
-                  <li className={sorter=='CreatedAt' ? 'on': ''}
-                    onClick={()=>{setSorter('CreatedAt')}}
+                  <li className={currentParams.sorter=='CreatedAt' ? 'on': ''}
+                    onClick={()=>{setSearchParams({...currentParams, sorter: 'CreatedAt'})}}
                   >최신순</li>
-                  <li className={sorter=='View' ? 'on': ''}
-                    onClick={()=>{setSorter('View')}}
+                  <li className={currentParams.sorter=='View' ? 'on': ''}
+                    onClick={()=>{setSearchParams({...currentParams, sorter: 'View'})}}
                   >조회순</li>
-                  <li className={sorter=='Like' ? 'on': ''}
-                    onClick={()=>{setSorter('Like')}}
+                  <li className={currentParams.sorter=='Like' ? 'on': ''}
+                    onClick={()=>{setSearchParams({...currentParams, sorter: 'Like'})}}
                   >인기순</li>
                 </ul>
               </div>
               <div className="right">
                 <div className='search_bar'>
                   <input type="text" placeholder='검색'
+                    value={word}
                     onKeyUp={(e) => (e.key == 'Enter') && searching() }
-                    onChange={(e) => setSearchWord(e.currentTarget.value) }
+                    onChange={(e) => setWord(e.currentTarget.value) }
                   />
-                  <SearchSvg />
+                  <SearchSvg onClick={()=> searching() } />
                 </div>
                 <button className='c_btn-primary'
                   onClick={()=> navigate('/community/write')}
@@ -156,7 +171,7 @@ function Community() {
           </div>
           <div className='show'>
             <CommunityList listData={postsData.posts}/>
-            <Pagination page={page} setPage={setPage} totalPage={postsData.totalPage} />
+            <Pagination page={currentParams.page} setPage={(num)=>setSearchParams({...currentParams, page: num})} totalPage={postsData.totalPage} />
           </div>
         </div>
       </div>

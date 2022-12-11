@@ -118,18 +118,23 @@ const FilterContainer = styled.div`
   }
 `
 
-function Filter({ setLocationIds, setThemeIds, filterLocation=true, filterTheme=true, buttonStyle={}, initThemes=[], ...props }){
+function Filter({ setLocationIds, setThemeIds, updateBoth, filterLocation=true, filterTheme=true, buttonStyle={}, initThemes=[], initLocations=[], ...props }){
   const [ showFilter, setShowFilter ] = useState(false);
   const [ showThemes, setShowThemes ] = useState(true);
   const [ showLocations, setShowLocations ] = useState(false);
   const [ chosenThemes, setChosenThemes ] = useState(initThemes);
-  const [ chosenLocations, setChosenLocations ] = useState([]);
+  const [ chosenLocations, setChosenLocations ] = useState(initLocations);
 
   useEffect(()=>{ // initThemes 늦게오면 업데이트
     if(initThemes.length != 0){
       setChosenThemes(initThemes)
     }
   }, [initThemes])
+  useEffect(()=>{ // initLocations 늦게오면 업데이트
+    if(initLocations.length != 0){
+      setChosenLocations(initLocations)
+    }
+  }, [initLocations])
 
   function onLocationClick(id){
     const tempLocationId = chosenLocations.slice();
@@ -156,6 +161,7 @@ function Filter({ setLocationIds, setThemeIds, filterLocation=true, filterTheme=
     data: filterData, 
     isLoading: isFilterLoading
   } = useFetch({ url: 'filters', key: ['filter'] });
+
 
   return(
     <FilterContainer>
@@ -254,11 +260,11 @@ function Filter({ setLocationIds, setThemeIds, filterLocation=true, filterTheme=
             </div>
             <button className='c_btn-primary submit'
               onClick={()=>{
-                if(filterLocation){
-                  setLocationIds(chosenLocations);
-                }
-                if(filterTheme){
-                  setThemeIds(chosenThemes);
+                if(updateBoth){ // 동시에 업데이트 해야할때
+                  updateBoth(chosenLocations, chosenThemes);
+                } else {
+                  if(filterLocation) setLocationIds(chosenLocations);
+                  if(filterTheme) setThemeIds(chosenThemes);
                 }
                 setShowFilter(false)
               }}

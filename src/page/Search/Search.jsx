@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react'
 // style
 import styled from 'styled-components'
+// router
+import { useSearchParams } from 'react-router-dom'
 // api
 import useAuthFetch from 'api/useAuthFetch'
 // Swiper
@@ -71,6 +73,7 @@ const PageContainer = styled.section`
     .ads{
       height: 15rem;
       width: 100%;
+      margin-bottom: 1rem;
       a{
         display: block;
         width: 100%;
@@ -87,43 +90,41 @@ const PageContainer = styled.section`
 `
 
 function Search() {
-  const [ sorter, setSorter ] = useState('View');
-  const [ page, setPage ] = useState(1);
-  const [ searchWord, setSearchWord ] = useState('');
-  const [ themeIds, setThemeIds ] = useState([]);
-  const [ locationIds, setLocationIds ] = useState([]);
-
-  const { data: listData, isLoading: isListLoading, refetch: refetchList } = useAuthFetch({
-    url: 'spots',
-    key: ['spotlist', page, sorter, locationIds, themeIds],
-    params: {
-      page: page,
-      sorter: sorter,
-      word: searchWord,
-      themeIds: themeIds.join(","),
-      locationIds: locationIds.join(","),
-    }
-  });
-  const { data: adsData, isLoading: isAdsDataLoading, refetch: refetchAds } = useAuthFetch({
-    url: 'admins/ads',
-    key: ['ads', locationIds],
-    params: {
-      locationIds: locationIds.join(","),
-    }
-  });
-
-  function reset(){
-    setPage(1)
-    setSearchWord('')
-    setThemeIds([])
-    setLocationIds([])
-    setSorter('View')
+  const initParams = {
+    page: 1,
+    sorter: 'View',
+    word: '',
+    themeIds: '',
+    locationIds: ''
   }
-  function searching(){
-    setPage(1);
-    refetchList();
-  }
+
+  const [ searchParams, setSearchParams ] = useSearchParams(initParams);
+  const [ currentParams, setCurrentParams ] = useState(initParams);
+  const [ word, setWord ] = useState('');
+
+  useEffect(()=>{   // searchParams 변경시 currentParams와 연동
+    const params = Object.fromEntries([...searchParams]);
+    setCurrentParams(params);
+    setWord(params.word);
+  }, [searchParams])
   
+
+  const { data: listData, isLoading: isListLoading } = useAuthFetch({
+    url: 'spots',
+    key: ['spotlist', `${JSON.stringify(currentParams)}`],
+    params: currentParams,
+  });
+  const { data: adsData, isLoading: isAdsDataLoading } = useAuthFetch({
+    url: 'ads',
+    key: ['ads', `${currentParams.locationIds}`],
+    params: {
+      locationIds: currentParams.locationIds,
+    },
+  });
+
+  function searching(){
+    setSearchParams({...currentParams, page: 1, word: word});
+  }
   return (
     <PageContainer className='c_main_section'>
       <section className="c_section c_top_banner">
@@ -141,29 +142,40 @@ function Search() {
           <div className="option">
             <div className='search_bar'>
               <input type="text" placeholder='여행지 이름으로 검색하기'
+                value={word}
                 onKeyUp={(e) => (e.key == 'Enter') && searching() }
-                onChange={(e) => setSearchWord(e.currentTarget.value) }
+                onChange={(e) => setWord(e.currentTarget.value) }
               />
               <button className='btn_search'
                 onClick={()=>searching()}
               ><SearchSvg /></button>
             </div>
-            <Filter setThemeIds={setThemeIds} setLocationIds={setLocationIds}  />
+            <Filter
+              initLocations={currentParams.locationIds=='' ? [] : currentParams.locationIds.split(',').map(el=>Number(el))}
+              initThemes={currentParams.themeIds=='' ? [] : currentParams.themeIds.split(',').map(el=>Number(el))}
+              updateBoth={(locations, themes)=>{ 
+                setSearchParams({
+                  ...currentParams,
+                  locationIds: locations.toString(),
+                  themeIds: themes.toString()
+                })
+              }}
+            />
             <ul className='sorting'>
-              <li className={sorter=='View' ? 'on': ''}
-                onClick={()=>{setSorter('View')}}
+              <li className={currentParams.sorter=='View' ? 'on': ''}
+                onClick={()=>{setSearchParams({...currentParams, sorter: 'View'})}}
               >조회순</li>
-              <li className={sorter=='Wish' ? 'on': ''}
-                onClick={()=>{setSorter('Wish')}}
+              <li className={currentParams.sorter=='Wish' ? 'on': ''}
+                onClick={()=>{setSearchParams({...currentParams, sorter: 'Wish'})}}
               >찜순</li>
-              <li className={sorter=='Rank' ? 'on': ''}
-                onClick={()=>{setSorter('Rank')}}
+              <li className={currentParams.sorter=='Rank' ? 'on': ''}
+                onClick={()=>{setSearchParams({...currentParams, sorter: 'Rank'})}}
               >랭킹순</li>
             </ul>
           </div>
           <div className='show'>
             {
-              adsData && 
+              adsData && adsData.length>0 &&
               <Swiper className='ads'
                 modules={[ Autoplay ]}
                 loop
@@ -174,7 +186,6 @@ function Search() {
                 }}
               >
                 { 
-                  adsData.length>0 &&
                   adsData.map((el,i)=>{
                     return(
                       <SwiperSlide key={i}>
@@ -188,7 +199,7 @@ function Search() {
               </Swiper>
             }
             <ShowList listData={listData.spots}/>
-            <Pagination page={page} setPage={setPage} totalPage={listData.totalPage} />
+            <Pagination page={currentParams.page} setPage={(num)=>setSearchParams({...currentParams, page: num})} totalPage={listData.totalPage} />
           </div>
         </div>
       </div>
