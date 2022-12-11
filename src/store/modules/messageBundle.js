@@ -16,5 +16,12 @@ const error = atom({
   key: 'error',
   default: "",
 })
+const prompt = atom({
+  key: 'prompt',
+  default: {
+    message: "",
+    callback: null,
+  }
+})
 
-export { alert, confirm, error };
+export { alert, confirm, error, prompt };

@@ -18,6 +18,9 @@ import { ReactComponent as WishOn }  from "assets/image/common/icon/wish_on.svg"
 import { ReactComponent as Wish }  from "assets/image/common/icon/wish.svg";
 
 const PageContainer = styled.section`
+  .c_inner{
+    max-width: 1000px;
+  }
   .box{
     position: relative;
     box-shadow: var(--box-shadow03);

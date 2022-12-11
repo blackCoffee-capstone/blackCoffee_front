@@ -20,6 +20,9 @@ import { numberFormat } from 'utils/formatting/numberFormat';
 import NoPhoto from 'assets/image/common/no_photo.png'
 
 const PageContainer = styled.section`
+  .c_inner{
+    max-width: 1000px;
+  }
   .box{
     position: relative;
     box-shadow: var(--box-shadow03);

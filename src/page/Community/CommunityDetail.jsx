@@ -33,59 +33,70 @@ const PageContainer = styled.section`
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
-        gap: 0 1rem;
+        gap: 0.2rem 1rem;
         margin: 0;
-        .right{
+        .post_info{
           display: flex;
           align-items: center;
-          gap: 1rem;
-          .like{
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: var(--font-size-small);
-            cursor: pointer;
-            &:hover{
-              svg{
-                stroke: red;
-              }
-            }
+          flex-wrap: wrap;
+          gap: 0.7rem;
+          color: var(--font-color-sub);
+          font-weight: var(--font-w-regular);
+        }
+      }
+      &.post_action{
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 0;
+        padding: 0.2rem 0 1rem;
+        border-bottom: 1px solid var(--border-color-default);
+        .like{
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: var(--font-size-small);
+          cursor: pointer;
+          transition: var(--transition-fast);
+          &:hover{
+            color: red;
             svg{
-              transition: var(--transition-fast);
-              width: 2.5rem;
-              height: 2.5rem;
+              stroke: currentColor;
             }
           }
-          .post_action{
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 0.2rem;
-            button{
-              padding: 0.5rem;
-              &.modify_post{
-                color: green;
-              }
-              &.delete_post{
-                color: var(--danger-color);
-              }
-              &:hover{
-                text-decoration: underline
-              }
+          svg{
+            width: 2.2rem;
+            height: 2.2rem;
+          }
+        }
+        .change_action{
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          gap: 0.2rem;
+          button{
+            padding: 0.5rem;
+            &.modify_post{
+              color: green;
+            }
+            &.delete_post{
+              color: var(--danger-color);
+            }
+            &:hover{
+              text-decoration: underline
             }
           }
         }
-      }
-      &.post_info{
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 0.7rem;
-        color: var(--font-color-sub);
-        font-weight: var(--font-w-regular);
-        padding: 0.5rem 0 1rem;
-        margin-top: 0;
-        border-bottom: 1px solid var(--border-color-default);
+        .report{
+          font-size: var(--font-size-small);
+          color: var(--font-color-sub);
+          transition: var(--transition-fast);
+          &:hover{
+            color: var(--font-color-default);
+            text-decoration: underline;
+          }
+        }
       }
       &.content{
         min-height: 15rem;
@@ -186,15 +197,17 @@ function CommunityDetail() {
   const { postId } = useParams();
   const navigate = useNavigate();
   const setAlert = useSetRecoilState(messageBundle.alert);
+  const setPrompt = useSetRecoilState(messageBundle.prompt);
   const setConfirm = useSetRecoilState(messageBundle.confirm);
   const [comment, setComment] = useState('');
   const [showAllComment, setShowAllComment] = useState(false);
   const [commentId, setCommentId] = useState();
 
-  const { mutate: commentPostApi } = useAuthPost({ url: `/posts/${postId}/comments` });
-  const { mutate: commentDeleteApi } = useAuthDelete({ url: `/posts/${postId}/comments/${commentId}` });
-  const { mutate: postDeleteApi } = useAuthDelete({ url: `/posts/${postId}` });
+  const { mutate: commentPostApi } = useAuthPost({ url: `posts/${postId}/comments` });
+  const { mutate: commentDeleteApi } = useAuthDelete({ url: `posts/${postId}/comments/${commentId}` });
+  const { mutate: postDeleteApi } = useAuthDelete({ url: `posts/${postId}` });
   const { mutate: wishApi } = useAuthPost({ url: 'likes' })
+  const { mutate: reportApi } = useAuthPost({ url: `posts/${postId}/reports` })
   const { data: postDetail, isLoading: isPostDetailLoading } = useAuthFetch({
     url: `posts/${postId}`,
     key: ['postDetail', postId],
@@ -275,6 +288,27 @@ function CommunityDetail() {
       }
     })
   }
+  function onReportClick(){
+    setPrompt({
+      message: '신고 이유를 적어주세요',
+      callback: (inputText)=>{
+        reportApi({
+          reason: inputText
+        }, {
+          onSuccess: ()=>{
+            setAlert('신고가 완료되었습니다');
+          },
+          onError: (error)=>{
+            if(error.response?.data?.message=='User already reports post'){
+              setAlert('이미 신고하셨습니다');
+            } else {
+              setAlert('신고하는 도중 에러가 발생했습니다');
+            }
+          }
+        })
+      }
+    })
+  }
 
   return (
     <PageContainer className='c_main_section'>
@@ -294,30 +328,36 @@ function CommunityDetail() {
         <div className="c_inner">
           <div className="title">
             <h4>{postDetail.title}</h4>
-            <div className='right'>
-              <div className='like'
-                onClick={()=>onLikeClick()}
-              >
-                <span>좋아요</span>
-                {
-                  postDetail.isLike ? <WishOn /> : <Wish />
-                }
-              </div>
-              {
-                postDetail.isWriter && 
-                <div className='post_action'>
-                  <button className='modify_post'
-                    onClick={()=>{onPostModifyClick()}}
-                  >수정</button>
-                  <button className='delete_post'
-                    onClick={()=>{onPostDeleteClick()}}
-                  >삭제</button>
-                </div>
-              }
+            <div className='post_info'>
+              <span>조회수 {postDetail.views}</span>|<span>{postDetail.user.nickname}</span>|<span>{postDetail.createdAt?.slice(0,10)}</span>
             </div>
           </div>
-          <div className='post_info'>
-            <span>조회수 {postDetail.views}</span>|<span>{postDetail.user.nickname}</span>|<span>{postDetail.createdAt?.slice(0,10)}</span>
+          <div className='post_action'>
+            {
+              !postDetail.isWriter && 
+              <button className='report'
+                onClick={()=>{ onReportClick()}}
+              >신고하기</button>
+            }
+            {
+              postDetail.isWriter && 
+              <div className='change_action'>
+                <button className='modify_post'
+                  onClick={()=>{onPostModifyClick()}}
+                >수정</button>
+                <button className='delete_post'
+                  onClick={()=>{onPostDeleteClick()}}
+                >삭제</button>
+              </div>
+            }
+            <div className='like'
+              onClick={()=>onLikeClick()}
+            >
+              <span>좋아요</span>
+              {
+                postDetail.isLike ? <WishOn /> : <Wish />
+              }
+            </div>
           </div>
           <div className="content">
             {
