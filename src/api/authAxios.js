@@ -49,7 +49,7 @@ function AuthAxiosInterceptor({children}){
       },
       (error) => {
         const { config: originalRequest, response } = error;
-        if(response.status === 401){
+        if(response?.status == 401 || response?.data?.statusCode==401){
           refreshSubscribers = [];
           errorCount++;
           try{
@@ -101,7 +101,7 @@ function AuthAxiosInterceptor({children}){
       // auth.interceptors.response.eject(requestIntercept);
       auth.interceptors.response.eject(responseIntercept);
     }
-  }, [refreshToken])
+  }, [])
 
   return children
 }

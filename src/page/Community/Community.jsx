@@ -13,7 +13,6 @@ import Pagination from 'component/common/Pagination'
 // img
 import { ReactComponent as  SearchSvg } from 'assets/image/common/icon/search.svg'
 
-
 const PageContainer = styled.section`
   .option{
     >div{

@@ -50,7 +50,7 @@ const ListContainer = styled.ul`
       &.spot{
         display: flex;
         align-items: center;
-        gap: 2rem;
+        gap: 1.5rem;
         width: 100%;
         flex-grow: 1;
         img{
@@ -68,11 +68,21 @@ const ListContainer = styled.ul`
           display: flex;
           flex-direction: column;
           align-items: flex-start;
+          overflow: hidden;
           h3{
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 100%;
             font-size: var(--font-size-large);
             font-weight: var(--font-w-mid);
           }
           p{
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
             color: var(--font-color-sub);
           }
         }
@@ -148,7 +158,7 @@ function CommunityList(props){
   const listData = props.listData ?? [];
   const navigate = useNavigate();
 
-  const { mutate: wishApi } = useAuthPost({ url: 'likes' })
+  const { mutate: likeApi } = useAuthPost({ url: 'likes' })
 
   function onLikeClick(e, i, el){
     e.stopPropagation()
@@ -156,7 +166,7 @@ function CommunityList(props){
       setAlert('로그인이 필요합니다');
       return;
     }
-    wishApi({
+    likeApi({
       postId: el.id,
       isLike: !el.isLike
     }, {

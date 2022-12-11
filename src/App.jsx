@@ -30,6 +30,7 @@ const Signup = lazy(() => import('./page/Account/Signup')); // 회원가입
 const ChooseTheme = lazy(() => import('./page/Account/ChooseTheme')); // 취향 선택
 const FindPassword = lazy(() => import('./page/Account/FindPassword')); // 비밀번호 찾기
 import Mypage from './page/Mypage/Mypage' // 마이페이지 
+const MypageList = lazy(() => import('./page/Mypage/MypageList')); // 사용자 좋아요, 찜 목록
 const AdApplication = lazy(() => import('./page/AdApplication/AdApplication'));  // 광고 신청 페이지
 const Customer = lazy(() => import('./page/Customer/Customer'));  // 고객센터
 const PrivacyPolicy = lazy(() => import('./page/Customer/PrivacyPolicy'));  // 개인정보처리방침
@@ -78,6 +79,9 @@ function App() {
                 <Route path="/findpass" element={<FindPassword />} />
                 <Route path="/mypage" element={
                   <AuthRouterGuard><Mypage /></AuthRouterGuard>
+                } />
+                <Route path="/mypage/:which" element={
+                  <AuthRouterGuard><MypageList /></AuthRouterGuard>
                 } />
                 <Route path="/adapplication" element={<AdApplication />} />
                 <Route path="/customer" element={<Customer />} />

@@ -79,7 +79,7 @@ function Resign({ setShowResign }) {
   }
 
   return (
-    <BoxContainer className="c_section box resign">
+    <BoxContainer className="c_section box">
       <div className='box_top'>
         <h3 className="c_subtitle">탈퇴하기</h3>
         <button onClick={()=> setShowResign(false) }>
