@@ -84,7 +84,7 @@ const PageContainer = styled.section`
 
 function Community() {
   const initParams = {
-    page: 1,
+    page: "1",
     sorter: 'CreatedAt',
     word: '',
     themeIds: '',
@@ -100,7 +100,7 @@ function Community() {
     setCurrentParams(params);
     setWord(params.word);
   }, [searchParams])
-  
+
   const { data: postsData, } = useAuthFetch({ 
     url: 'posts',
     key: ['posts', `${JSON.stringify(currentParams)}`],

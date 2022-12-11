@@ -91,7 +91,7 @@ const PageContainer = styled.section`
 
 function Search() {
   const initParams = {
-    page: 1,
+    page: "1",
     sorter: 'View',
     word: '',
     themeIds: '',
