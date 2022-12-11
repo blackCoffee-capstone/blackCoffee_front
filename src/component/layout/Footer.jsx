@@ -10,6 +10,7 @@ import { ReactComponent as InstagramColor } from "assets/image/common/ci/instagr
 
 const FooterContainer = styled.footer`
   border-top: .1rem solid var(--border-color-light);
+  padding-bottom: var(--space-small);
   /* color: var(--font-color-sub); */
   .footer_menu{
     .c_inner {
@@ -74,12 +75,9 @@ function Footer() {
     <FooterContainer>
       <nav className="footer_menu">
         <div className="c_inner">
-          {/* <li><a href="">오시는길</a></li> */}
-          <li><Link to="customer">고객센터</Link></li>
           <li><Link to="privacypolicy">개인정보처리방침</Link></li>
           <li><Link to="terms">이용약관</Link></li>
           <li><Link to="emaildenial">이메일무단수집거부</Link></li>
-          {/* <li><a href="">여행약관</a></li> */}
         </div>
       </nav>
 
@@ -93,12 +91,12 @@ function Footer() {
               <li>e-mail: bellmir@ajou.ac.kr</li>
               {/* <li>사업자 등록번호 123-12-12345</li> */}
             </ul>
-            <ul className="sns">
+            {/* <ul className="sns">
               <li><a href=""><Twitter /></a></li>
               <li><a href=""><Facebook /></a></li>
               <li><a href=""><Youtube /></a></li>
               <li><a href=""><InstagramColor /></a></li>
-            </ul>
+            </ul> */}
             <p className="copyright">Copyright ⓒblackCoffee. All Rights Reserved.</p>
           </div>	
         </div>
