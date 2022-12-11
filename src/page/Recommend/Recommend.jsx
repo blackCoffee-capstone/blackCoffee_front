@@ -35,11 +35,13 @@ function Recommend(){
   });
   const { data: listData, isLoading: isListLoading } = useAuthFetch({ 
     url: 'recommendations/list', key: ['recommend-list'],
-    enabled: !userData.isNewUser  // 유저가 취향 선택 완료한 경우만
+    enabled: !userData.isNewUser,  // 유저가 취향 선택 완료한 경우만
+    staleTime: 60000*5, // 5분동안은 다시 마운트해도 fetch 안함
   });
   const { data: mapData, isLoading: isMapLoading } = useAuthFetch({
     url: 'recommendations/map',  key: ['recommend-map'],
-    enabled: !userData.isNewUser  // 유저가 취향 선택 완료한 경우만
+    enabled: !userData.isNewUser,  // 유저가 취향 선택 완료한 경우만
+    staleTime: 60000*5, // 5분동안은 다시 마운트해도 fetch 안함
   });
   useEffect(()=>{ // 취향 선택 안했을 때 취향선택으로 던짐
     if(userData.isNewUser){
