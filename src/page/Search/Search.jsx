@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { useSearchParams } from 'react-router-dom'
 // api
 import useAuthFetch from 'api/useAuthFetch'
+import usePost from 'api/usePost'
 // Swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper';
@@ -101,14 +102,16 @@ function Search() {
   const [ searchParams, setSearchParams ] = useSearchParams(initParams);
   const [ currentParams, setCurrentParams ] = useState(initParams);
   const [ word, setWord ] = useState('');
-
+  const [ adThrottle, setAdThrottle ] = useState(false);
+  
   useEffect(()=>{   // searchParams 변경시 currentParams와 연동
     const params = Object.fromEntries([...searchParams]);
     setCurrentParams(params);
     setWord(params.word);
   }, [searchParams])
   
-
+  
+  const { mutate: adClickApi, isLoading: isAdClickLoading } = usePost({ url: 'ads/click' });
   const { data: listData, isLoading: isListLoading } = useAuthFetch({
     url: 'spots',
     key: ['spotlist', `${JSON.stringify(currentParams)}`],
@@ -125,6 +128,20 @@ function Search() {
   function searching(){
     setSearchParams({...currentParams, page: 1, word: word});
   }
+  function onAdClick(id){
+    if(adThrottle) return;
+    if(isAdClickLoading) return;  // 광고 클릭 보내는 중엔 중단
+
+    setAdThrottle(true);
+    setTimeout(() => {  // 5초간 광고 클릭수 증가 중단
+      setAdThrottle(false);
+    }, 5000);
+    adClickApi({
+      adId: id
+    });
+  }
+
+
   return (
     <PageContainer className='c_main_section'>
       <section className="c_section c_top_banner">
@@ -189,7 +206,9 @@ function Search() {
                   adsData.map((el,i)=>{
                     return(
                       <SwiperSlide key={i}>
-                        <a href={el.pageUrl} target="_blank" rel="noopener noreferrer">
+                        <a href={el.pageUrl} target="_blank" rel="noopener noreferrer"
+                          onClick={()=>onAdClick(el.id)}
+                        >
                           <img src={el.photoUrl} alt={`광고${i}`} />
                         </a>
                       </SwiperSlide>
