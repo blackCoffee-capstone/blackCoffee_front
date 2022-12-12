@@ -15,21 +15,21 @@ import { InputEmail, InputPassword } from 'component/common/InputBundle'
 const PageContainer = styled.section`
   .fillup{
     .c_inner{
-      max-width: 1000px;
+      max-width: 500px;
       .signin{
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         gap: var(--space-small) 5%;
-        @media screen and ( max-width:600px ){
+        /* @media screen and ( max-width:600px ){ */
           flex-direction: column;
-        }
+        /* } */
         .left{
           width: 100%;
           padding: 2rem 0;
-          @media screen and ( max-width:600px ){
+          /* @media screen and ( max-width:600px ){ */
             padding-bottom: 0;
-          }
+          /* } */
           >div{
             margin-bottom: 2rem;
             @media screen and ( max-width:600px ){
@@ -63,13 +63,13 @@ const PageContainer = styled.section`
           }
         }
         .line {
-          width: 1px;
-          min-height: 100%;
+          /* width: 1px;
+          min-height: 100%; */
           background-color: var(--border-color-light);
-          @media screen and ( max-width:600px ){
+          /* @media screen and ( max-width:600px ){ */
             width: 100%;
             min-height: 1px;
-          }
+          /* } */
         }
         .right{
           width: 100%;
@@ -202,7 +202,7 @@ function Login() {
             </div>
             <div className="line"></div>
             <div className="right">
-              <button
+              {/* <button
                 type="button"
                 className="c_btn-google"
                 onClick={() => {
@@ -211,7 +211,7 @@ function Login() {
               >
                 <img src={ require("assets/image/common/ci/facebook_color.png")} alt="facebook" />
                 <p>Facebook으로 로그인</p>
-              </button>
+              </button> */}
               <button
                 type="button"
                 className="c_btn-kakao"
