@@ -66,8 +66,11 @@
 <br>
 
 ## 프로젝트 설명
-상태관리 라이브러리로는 recoil를 사용하였습니다.  
-로그인은 JWT를 사용하였습니다.  
+Agile 방법론을 사용하였고, iteration은 2주 간격으로 scrum은 매주 월, 목에 진행하였습니다.  
+로그인은 JWT 기반으로 구현하였습니다.  
+
+### Product Backlog & Sprint
+https://docs.google.com/spreadsheets/d/1pGzQYAeh8ajpWxbkBeFNP68OmQ1KIVgjEAH6xar93XE/edit?usp=sharing  
 
 ### 프로젝트 구조
 * `jsconfig.json`에서 'baseUrl'을 'src'로 설정하여 import 절대경로를 _'src'_ 폴더로 수정하였습니다.  
@@ -88,6 +91,3 @@
 1. Header: 200
 1. .c_loading: 100
 1. .c_screen_filter: 99
-
-### Product Backlog & Sprint
-https://docs.google.com/spreadsheets/d/1pGzQYAeh8ajpWxbkBeFNP68OmQ1KIVgjEAH6xar93XE/edit?usp=sharing
