@@ -4,10 +4,15 @@
 <p align="center"><img src="./src/assets/image/common/logo-primary.svg" alt="now_here" width="200px" /></p>
 <br>
 
-'지금, 여기'는 SNS 빅데이터를 분석하여 새롭게 떠오르는 여행지를 추천해주고 관련 정보를 제공해주는 서비스입니다.  
-아주대학교 캡스톤디자인 수업의 일환으로 04.blackCoffee 팀이 개발하였습니다.  
-이 프로젝트는 해당 서비스의 프론트 페이지를 구성합니다.  
-주소: https://www.jigeumyeogi.com (지금은 비용 때문에 서버를 내렸습니다.)  
+'지금, 여기'는 새롭게 떠오르는 여행지를 추천해주고 관련 정보를 제공해주는 서비스입니다.  
+‘지금, 여기’는 크게 두가지 기능을 제공합니다.  
+1) SNS 빅데이터 분석을 통한 최신 트랜드 여행지 랭킹 서비스  
+2) 사용자별 사용 패턴 분석을 통한 맞춤 여행지 추천 서비스  
+
+이 프로젝트는 5인으로 구성된 blackCoffee팀이 개발하였으며, 캡스톤디자인 과목의 일환으로 2022년 9월부터 12월까지 진행하였습니다.  
+이 저장소는 '지금, 여기'의 프론트 부분입니다. 전체 프로젝트 저장소는 https://github.com/blackCoffee-capstone 를 확인해주세요.  
+
+서비스 URL: https://www.jigeumyeogi.com (지금은 비용 때문에 서버를 내렸습니다.)  
 
 <br>
 
@@ -22,13 +27,15 @@
 
 <br>
 
-## 프론트 서버
+## 사용 기술 스택
+
+### 프론트 서버
 > `서버`  
 > NCloud(ubuntu-18), Nginix  
 > `SSL`  
 > Let's Encrypt
 
-## 사용 라이브러리 및 개발 환경
+### 라이브러리 및 개발 환경
 > `코어`  
 > React(^18.2.0)
 > react-router-dom(^6.4.1)  
@@ -48,18 +55,19 @@
 > tippyjs/react(^4.2.6) - dropdown, tooltip  
 
 > `개발 환경`  
+> window11 / vscode  
 > node -v : v16.13.0  
 > npm -v : 8.1.0  
   
-## 시작하기
+### 로컬 서버 시작하기
 > `npm install`  
 > `npm start`  
   
 <br>
 
-### 프로젝트 설명
-* 상태관리 라이브러리로는 recoil을 사용합니다.  
-* 로그인 방식은 JWT를 사용합니다.  
+## 프로젝트 설명
+상태관리 라이브러리로는 recoil를 사용하였습니다.  
+로그인은 JWT를 사용하였습니다.  
 
 ### 프로젝트 구조
 * `jsconfig.json`에서 'baseUrl'을 'src'로 설정하여 import 절대경로를 _'src'_ 폴더로 수정하였습니다.  
