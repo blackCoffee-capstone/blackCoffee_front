@@ -19,11 +19,11 @@
 ## 04.blackCoffee 팀
 | role | name | part | email | 
 | :--: | :--: | :-- | :-- |
-| 팀장 | 임종용 | 프론트 개발 | bellmir@ajou.ac.kr |
-| 팀원 | 이수민 | 백엔드 개발 | tnals1178@ajou.ac.kr |
-| 팀원 | 이동훈 | 빅데이터 분석 모델 개발 | oss002@ajou.ac.kr |
-| 팀원 | 정예은 | 백엔드 개발 및 SNS 데이터 크롤링 | skqhs7276@ajou.ac.kr |
-| 팀원 | 공민경 | 백엔드 및 개발자 페이지 개발 | alsrud991026@ajou.ac.kr |
+| 팀장 | 임종용 | 프론트 개발, 프론트 서버 배포 | bellmir@ajou.ac.kr |
+| 팀원 | 이수민 | 백엔드 개발, 백엔드 서버 배포 | tnals1178@ajou.ac.kr |
+| 팀원 | 이동훈 | 빅데이터 분석, 자연어처리, 추천 모델 개발 | oss002@ajou.ac.kr |
+| 팀원 | 정예은 | 백엔드 개발, SNS 데이터 크롤링 | skqhs7276@ajou.ac.kr |
+| 팀원 | 공민경 | 관리자 페이지 개발, QA | alsrud991026@ajou.ac.kr |
 
 <br>
 
