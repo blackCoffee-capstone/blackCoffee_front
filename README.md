@@ -7,7 +7,7 @@
 '지금, 여기'는 SNS 빅데이터를 분석하여 새롭게 떠오르는 여행지를 추천해주고 관련 정보를 제공해주는 서비스입니다.  
 아주대학교 캡스톤디자인 수업의 일환으로 04.blackCoffee 팀이 개발하였습니다.  
 이 프로젝트는 해당 서비스의 프론트 페이지를 구성합니다.  
-주소: https://www.jigeumyeogi.com  
+주소: https://www.jigeumyeogi.com (지금은 비용 때문에 서버를 내렸습니다.)  
 
 <br>
 
@@ -21,6 +21,12 @@
 | 팀원 | 공민경 | 백엔드 및 개발자 페이지 개발 | alsrud991026@ajou.ac.kr |
 
 <br>
+
+## 프론트 서버
+> `서버`  
+> NCloud(ubuntu-18), Nginix  
+> `SSL`  
+> Let's Encrypt
 
 ## 사용 라이브러리 및 개발 환경
 > `코어`  
@@ -51,13 +57,23 @@
   
 <br>
 
-## 프로젝트 설명
+### 프로젝트 설명
+* 상태관리 라이브러리로는 recoil을 사용합니다.  
+* 로그인 방식은 JWT를 사용합니다.  
+
 ### 프로젝트 구조
-* _'src/style'_ 폴더 안의 `reset.js`와 `common.js`는 전체 스타일 적용하는 css 느낌으로 사용중이다.
-* 루트 컴포넌트 `App`에선 주요 컴포넌트 들의 layout만 구성한다.
-* `recoil` 파일들은 _'src/store'_ 폴더에 들어있고, 주요 기능 별로 _'store/modules'_안에 모듈화 해둔다. 모듈화한 파일들은 `index.js`에서 합쳐서 `export` 된다.
-* 네트워크를 통하는 함수들은 `api`폴더에 모여있다.
-    * 인증이 필요한 요청의 경우 `authAxios`를 사용한다. authAxios안의 `AuthAxiosInterceptor`라는 커스텀 훅을 App에서 import하여 interceptor를 적용시켰다.
+* `jsconfig.json`에서 'baseUrl'을 'src'로 설정하여 import 절대경로를 _'src'_ 폴더로 수정하였습니다.  
+* 루트 컴포넌트 `App`에서 주요 컴포넌트 들의 layout을 구성합니다.  
+* _'src/assets'_ 는 이미지나 전체 스타일 css 등을 모아놓은 폴더입니다.  
+    * _'src/assets/style'_ 폴더 안의 `reset.css`와 `common.css`는 전체 스타일을 설정합니다.  
+* _'src/page'_ 는 라우팅될 각 페이지들을 모아놓은 폴더입니다.
+* _'src/component'_ 는 여러곳에서 공용으로 사용되는 컴포넌트들을 모아놓은 폴더입니다.
+* _'src/component'_ 는 여러곳에서 공용으로 사용되는 컴포넌트들을 모아놓은 폴더입니다.
+* _'src/utils'_ 는 여러곳에서 공용으로 사용되는 함수들을(이메일 여부 체크, 전화번호 형식 변환 등) 모아놓은 폴더입니다.  
+* _'src/store'_ 는 `recoil` 파일들을 모아놓은 폴더입니다. 각 `recoil atom`은 주요 기능 별로 _'src/store/modules'_ 안에 모듈화 되어있고, `index.js`에서 합쳐저서 `export` 됩니다.  
+    * _'src/store/data'_ 는 목업용 데이터를 모아놓은 곳입니다.  
+* _'src/api'_ 는 API 함수들을 모아놓은 폴더입니다.  
+    * 인증이 필요한 요청의 경우 `authAxios`를 사용합니다. authAxios안의 `AuthAxiosInterceptor`라는 커스텀 훅을 App에서 import하여 interceptor를 적용시켰습니다.  
 
 ### z-index 목록
 1. MessageBundle: 1000
