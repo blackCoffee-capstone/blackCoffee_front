@@ -5,14 +5,16 @@
 <br>
 
 '지금, 여기'는 새롭게 떠오르는 여행지를 추천해주고 관련 정보를 제공해주는 서비스입니다.  
-‘지금, 여기’는 크게 두가지 기능을 제공합니다.  
+‘지금, 여기’는 크게 세가지 기능을 제공합니다.  
 1) SNS 빅데이터 분석을 통한 최신 트랜드 여행지 랭킹 서비스  
 2) 사용자별 사용 패턴 분석을 통한 맞춤 여행지 추천 서비스  
+3) 나만의 장소 공유 커뮤니티 서비스  
 
 이 프로젝트는 5인으로 구성된 blackCoffee팀이 개발하였으며, 캡스톤디자인 과목의 일환으로 2022년 9월부터 12월까지 진행하였습니다.  
 이 저장소는 '지금, 여기'의 프론트 부분입니다. 전체 프로젝트 저장소는 https://github.com/blackCoffee-capstone 를 확인해주세요.  
 
 서비스 URL: https://www.jigeumyeogi.com (지금은 비용 때문에 서버를 내렸습니다.)  
+시연 영상: https://drive.google.com/file/d/1os0kQTzZ57b0KtX4utsMXBXj7kymZGXK/view  
 
 <br>
 
@@ -85,6 +87,11 @@ https://docs.google.com/spreadsheets/d/1pGzQYAeh8ajpWxbkBeFNP68OmQ1KIVgjEAH6xar9
     * _'src/store/data'_ 는 목업용 데이터를 모아놓은 곳입니다.  
 * _'src/api'_ 는 API 함수들을 모아놓은 폴더입니다.  
     * 인증이 필요한 요청의 경우 `authAxios`를 사용합니다. authAxios안의 `AuthAxiosInterceptor`라는 커스텀 훅을 App에서 import하여 interceptor를 적용시켰습니다.  
+
+### 전체 프로젝트 구조  
+
+![판넬_SW캡스톤디자인_blackCoffee](https://user-images.githubusercontent.com/114354852/229087481-a7c99097-c3d5-4938-b735-92a1dad67846.jpg)
+
 
 ### z-index 목록
 1. MessageBundle: 1000
